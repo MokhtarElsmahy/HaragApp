@@ -48,6 +48,7 @@ namespace HaragApp
                 // options.SignIn.RequireConfirmedEmail = true;
             }).AddRoles<IdentityRole>().AddDefaultUI().AddEntityFrameworkStores<ApplicationDbContext>();
             #endregion
+
             #region  jwt
             //فى جزء فى ملف الjson
             services.AddAuthorization();
@@ -73,6 +74,7 @@ namespace HaragApp
                     };
                 });
             #endregion
+
             #region Swagger
             services.AddSwaggerGen(c =>
             {
@@ -106,10 +108,11 @@ namespace HaragApp
                 // Set the comments path for the Swagger JSON and UI from xml file.
                 var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = System.IO.Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
+               // c.IncludeXmlComments(xmlPath); افتكر تشيل الكومت
              
             });
             #endregion
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

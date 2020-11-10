@@ -124,7 +124,7 @@ namespace HaragApp.Controllers.api
             var user = new ApplicationDbUser
             {
 
-                fk_city = userModel.fk_city,
+               
 
                 Email = userModel.email ?? "",
                 UserName = userModel.phone + num + "@yahoo.com",
@@ -132,9 +132,7 @@ namespace HaragApp.Controllers.api
                 showpassword = userModel.password,
                 img = BaisUrlHoste + "/images/User/generic-user.png",
                 IsActive = true,
-                region = userModel.region,
-                active_code = false,
-                close_notify = true,
+              
                 lat = userModel.lat,
                 lng = userModel.lng,
                 address = userModel.location,
@@ -404,9 +402,9 @@ namespace HaragApp.Controllers.api
             user.lat = userModel.lat ?? user.lat;
             user.user_name = userModel.user_name ?? user.user_name;
             user.PhoneNumber = userModel.phone ?? user.PhoneNumber;
-            user.region = userModel.region ?? user.region;
+         
             user.Email = userModel.email;
-            user.fk_city = userModel.fk_city == 0 ? user.fk_city : userModel.fk_city;
+           
 
             if (userModel.Img != null)
             {
