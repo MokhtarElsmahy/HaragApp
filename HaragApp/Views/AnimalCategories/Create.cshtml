@@ -1,0 +1,158 @@
+﻿@model HaragApp.Models.AnimalCategory
+
+@{
+    ViewData["Title"] = "Create";
+}
+@section Styles{
+   
+    <link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css" />
+
+}
+
+<div class="container">
+
+    <div class="row layout-top-spacing">
+        <div class="col-lg-12 col-sm-12 col-12 layout-spacing">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>اضافة صنف جديد</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+
+
+
+                    <form id="myForm" asp-action="Create">  
+
+                        <div class="input-group mb-4">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="text" class="form-control" placeholder="اسم الصنف" asp-for="CategoryName">
+                            <div class="input-group-append">
+                                <button  class="btn btn-primary" type="submit">حفظ</button>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row layout-top-spacing">
+
+
+
+    <div id="tableHover" class="col-lg-12 col-12 layout-spacing">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header">
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                        <h4>قائمة الاصناف</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover mb-4">
+                        <thead>
+                            <tr>
+                                <th>اسم الصنف</th>
+
+                                <th>العمليه</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.CategoryList)
+                            {
+                                <tr class="align-content-center">
+                                    <td>@item.CategoryName</td>
+
+                                    <td class="text-left">
+                                        <a href="#" onclick="EditShow(@item.CategoryID)" class="btn btn-success mb-2">تعديل</a>
+                                        <a class="btn btn-danger mb-2 delete"
+                                           data-id="@item.CategoryID"
+                                           data-controller="AnimalCategories"
+                                           data-action="Delete"
+                                           data-body-message="هل انت متأكد من عملية الحذف ؟">حذف</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="fadeleftModal" class="modal animated fadeInLeft custo-fadeInLeft" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تعديل</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+
+
+            <div class="modal-body" id="ModalBodyDiv">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+
+      
+
+        })
+        var EditShow = function (id) {
+            $.ajax({
+                url: "/AnimalCategories/Edit",
+                type: "GET",
+                data: { id: id },
+                success: function (response) {
+                    $("#fadeleftModal").modal("show");
+                    $("#ModalBodyDiv").html(response);
+
+                }
+
+
+
+            })
+        }
+
+        //var Add = function () {
+        //    var fd = $("#myForm").serialize();
+        //    $.ajax({
+        //        url: "/api/AnimalCategories",
+        //        type: "POST",
+        //        data: fd,
+        //        success: function (response) {
+        //            alert("Success")
+
+        //        }
+
+
+
+        //    })
+        //}
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+}

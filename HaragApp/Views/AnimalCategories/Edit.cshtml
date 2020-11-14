@@ -1,0 +1,42 @@
+﻿@model HaragApp.Models.AnimalCategory
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = null;
+}
+
+
+
+
+    @*<form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="CategoryID" />
+        <div class="form-group">
+            <label asp-for="CategoryName" class="control-label"></label>
+            <input asp-for="CategoryName" class="form-control" />
+            <span asp-validation-for="CategoryName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>*@
+
+    <form asp-action="Edit" method="post">
+       
+        <div class="input-group mb-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CategoryID" />
+            <input type="text" class="form-control" placeholder="اسم الصنف" asp-for="CategoryName">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">تاكيد</button>
+            </div>
+        </div>
+    </form>
+
+
+
+
+
+@section scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

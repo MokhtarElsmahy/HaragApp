@@ -10,6 +10,8 @@ namespace HaragApp.Models
     {
         [Key]
         public int CategoryID { get; set; }
+
+        [Required(ErrorMessage ="*******************")]
         public string CategoryName { get; set; }
 
         public virtual ICollection<Advertisment> Advertisments { get; set; }
