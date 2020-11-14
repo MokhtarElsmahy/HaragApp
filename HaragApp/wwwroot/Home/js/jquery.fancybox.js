@@ -109,7 +109,7 @@
         iframe : {
 
             // Iframe template
-            tpl : '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src="~/Home/"></iframe>',
+            tpl : '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen allowtransparency="true" src=""></iframe>',
 
             // Preload iframe before displaying it
             // This allows to calculate iframe content width and height
@@ -1667,7 +1667,7 @@
 
                     self.setContent( slide,
                         '<video controls>' +
-                          '<source src="~/Home/' + slide.src + '" type="' + slide.opts.videoFormat + '">' +
+                          '<source src="' + slide.src + '" type="' + slide.opts.videoFormat + '">' +
                             'Your browser doesn\'t support HTML5 video' +
                         '</video>'
                     );
@@ -4725,7 +4725,7 @@
 				}
 
 				if ( src && src.length ) {
-					list += '<li data-index="' + i + '"  tabindex="0" class="fancybox-thumbs-loading"><img data-src="~/Home/' + src + '" /></li>';
+					list += '<li data-index="' + i + '"  tabindex="0" class="fancybox-thumbs-loading"><img data-src="' + src + '" /></li>';
 				}
 			});
 

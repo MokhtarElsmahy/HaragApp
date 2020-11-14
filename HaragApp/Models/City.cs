@@ -14,10 +14,10 @@ namespace HaragApp.Models
         public int CityID { get; set; }
         public string CityName { get; set; }
 
-        [ForeignKey("Country")]
-        public int CountryID { get; set; }
+        //[ForeignKey("Country")]
+        //public int CountryID { get; set; }
 
-        public virtual Country Country { get; set; }
+        //public virtual Country Country { get; set; }
 
 
         public virtual ICollection<ApplicationDbUser> Users { get; set; }

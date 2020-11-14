@@ -9,18 +9,26 @@ using HaragApp.Data;
 using HaragApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace HaragApp.Controllers
 {
+   // [Authorize]
     public class AdvertismentsController : Controller
     {
+
         private readonly ApplicationDbContext _context;
         private IHostingEnvironment _hosting { get; set; }
+        private readonly UserManager<ApplicationDbUser> _userManager;
 
-        public AdvertismentsController(ApplicationDbContext context , IHostingEnvironment hosting)
+        public AdvertismentsController(ApplicationDbContext context , IHostingEnvironment hosting ,UserManager<ApplicationDbUser> userManager)
         {
             _context = context;
             _hosting = hosting;
+            _userManager = userManager;
         }
 
         // GET: Advertisments
@@ -54,8 +62,10 @@ namespace HaragApp.Controllers
         // GET: Advertisments/Create
         public IActionResult Create()
         {
+            
+            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName");
             ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName");
-            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityID");
+
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
@@ -65,12 +75,53 @@ namespace HaragApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Advertisment advertisment , List<IFormFile> files)
+        public async Task<IActionResult> Create(Advertisment advertisment , string ImageUrl1, string ImageUrl2, string ImageUrl3, string ImageUrl4, string ImageUrl5)
         {
             if (ModelState.IsValid)
             {
+
+               // var user = await _userManager.GetUserAsync(User);
+                advertisment.UserId = "307d13f5-3199-495b-88dd-fcf23d145726";
                 _context.Add(advertisment);
                 await _context.SaveChangesAsync();
+                if (ImageUrl1 != null)
+                {
+                  AdImage img = new AdImage() { AdID = advertisment.AdID, img = ImageUrl1 };
+                    _context.Add(img);
+                    _context.SaveChanges();
+                }
+                if (ImageUrl2 != null)
+                {
+                    AdImage img = new AdImage() { AdID = advertisment.AdID, img = ImageUrl2 };
+                    _context.Add(img);
+                    _context.SaveChanges();
+                }
+                if (ImageUrl3 != null)
+                {
+                    AdImage img = new AdImage() { AdID = advertisment.AdID, img = ImageUrl3 };
+                    _context.Add(img);
+                    _context.SaveChanges();
+                }
+                if (ImageUrl4 != null)
+                {
+                    AdImage img = new AdImage() { AdID = advertisment.AdID, img = ImageUrl4 };
+                    _context.Add(img);
+                    _context.SaveChanges();
+                }
+                if (ImageUrl5 != null)
+                {
+                    AdImage img = new AdImage() { AdID = advertisment.AdID, img = ImageUrl5 };
+                    _context.Add(img);
+                    _context.SaveChanges();
+                }
+                //if (ImageUrl1 != null)
+                //{
+                //    iSellerReciept.ReceiptImage = ImageUrl;
+                //}
+                //else
+                //{
+                //    iSellerReciept.ReceiptImage = "/assets/img/defaultRecImage.png";
+                //}
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", advertisment.CategoryID);
@@ -171,6 +222,32 @@ namespace HaragApp.Controllers
         private bool AdvertismentExists(int id)
         {
             return _context.Advertisments.Any(e => e.AdID == id);
+        }
+
+        public IActionResult UploadImage()
+        {
+
+            string result = "defaultRecImage.png";
+
+            try
+            {
+                var file = Request.Form.Files;
+                string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
+                var filename = ContentDispositionHeaderValue.Parse(file[0].ContentDisposition).FileName.Trim('"');
+                var newFileName = Guid.NewGuid() + filename;
+                string fullPath = Path.Combine(uploads, newFileName);
+                file[0].CopyTo(new FileStream(fullPath, FileMode.Create));
+
+
+                return Json(new { image = $"/uploads/{newFileName}" });
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return Json(new { image = $"/uploads/{result}" });
+            }
+
+
         }
     }
 }

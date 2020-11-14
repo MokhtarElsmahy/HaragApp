@@ -2310,16 +2310,16 @@
 		this._core.reset(item.index());
 
 		if (video.type === 'youtube') {
-			html = '<iframe width="' + width + '" height="' + height + '" src="~/Home///www.youtube.com/embed/' +
+			html = '<iframe width="' + width + '" height="' + height + '" src="//www.youtube.com/embed/' +
 				video.id + '?autoplay=1&v=' + video.id + '" frameborder="0" allowfullscreen></iframe>';
 		} else if (video.type === 'vimeo') {
-			html = '<iframe src="~/Home///player.vimeo.com/video/' + video.id +
+			html = '<iframe src="//player.vimeo.com/video/' + video.id +
 				'?autoplay=1" width="' + width + '" height="' + height +
 				'" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 		} else if (video.type === 'vzaar') {
 			html = '<iframe frameborder="0"' + 'height="' + height + '"' + 'width="' + width +
 				'" allowfullscreen mozallowfullscreen webkitAllowFullScreen ' +
-				'src="~/Home///view.vzaar.com/' + video.id + '/player?autoplay=true"></iframe>';
+				'src="//view.vzaar.com/' + video.id + '/player?autoplay=true"></iframe>';
 		}
 
 		$('<div class="owl-video-frame">' + html + '</div>').insertAfter(item.find('.owl-video'));

@@ -194,7 +194,7 @@ $(function() {
                                 '<div class="card-body">'+
 
                                     '<div class="task-content">'+
-                                        '<img src="~/Home/~/assets/img/scrumboard-upload-img.svg" class="img-fluid">'+
+                                        '<img src="~/assets/img/scrumboard-upload-img.svg" class="img-fluid">'+
                                     '</div>'+
 
                                     '<div class="task-header">'+
