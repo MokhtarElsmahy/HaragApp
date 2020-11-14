@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HaragApp.Data;
 using HaragApp.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
 namespace HaragApp.Controllers
 {
     public class AdvertismentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IHostingEnvironment _hosting { get; set; }
 
-        public AdvertismentsController(ApplicationDbContext context)
+        public AdvertismentsController(ApplicationDbContext context , IHostingEnvironment hosting)
         {
             _context = context;
+            _hosting = hosting;
         }
 
         // GET: Advertisments
@@ -61,7 +65,7 @@ namespace HaragApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AdID,Title,IsPact,UserId,CityID,CategoryID")] Advertisment advertisment)
+        public async Task<IActionResult> Create(Advertisment advertisment , List<IFormFile> files)
         {
             if (ModelState.IsValid)
             {
