@@ -13,6 +13,7 @@ namespace HaragApp.Models
         [Key]
         public int AdID { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
 
         public bool IsPact { get; set; }
 
