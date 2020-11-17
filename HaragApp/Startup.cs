@@ -17,6 +17,8 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
+using HaragApp.Models;
+
 namespace HaragApp
 {
     public class Startup
@@ -34,6 +36,7 @@ namespace HaragApp
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+    
             #region identiy
             services.AddDefaultIdentity<ApplicationDbUser>(options =>
             {
@@ -114,7 +117,11 @@ namespace HaragApp
             #endregion
 
             services.AddControllersWithViews();
+        
             services.AddRazorPages();
+
+            
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

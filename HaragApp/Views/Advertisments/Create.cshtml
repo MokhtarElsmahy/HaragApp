@@ -1,6 +1,12 @@
-﻿@model HaragApp.Models.Advertisment
+﻿@model HaragApp.ViewModels.AdsImagesVm
 @{
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
+    <style>
+        input[type="file"] {
+            color: transparent;
+        }
+
+    </style>
 }
 
 
@@ -22,81 +28,7 @@
 <section class="login-section">
     <div class="auto-container">
         <div class="row clearfix rtl-dir">
-            <!--<div class="column col-lg-6 col-md-12 col-sm-12 ">-->
-            <!-- Login Form -->
-            <!--<h2>إضافه اعلان مميز  </h2>
-            <div class="login-form text-right">-->
-            <!--Login Form-->
-            <!--<form>
-                    <div class="form-group">
-                        <label>الاسم   </label>
-                        <input type="text" name="username" placeholder="الاسم  " required>
-                    </div>
-                    <div class="form-group">
-                        <label>المدينه   </label>
-                        <select class="form-control" id="">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-
-                    </div>
-                    <div class="form-group">
-                        <label>القسم   </label>
-                        <select class="form-control" id="">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-
-                    </div>
-                    <div class="form-group ">
-                        <label>  الصورة الرئيسية</label>
-                        <input type="file" name="image1" required class="col-md-12">
-                    </div>
-                    <div class="form-group ">
-                        <label>  الصورة الاولى</label>
-                        <input type="file" name="image1" required class="col-md-12">
-                    </div>
-                    <div class="form-group ">
-                        <label>  الصورة الثانيه</label>
-                        <input type="file" name="image1" required class="col-md-12">
-                    </div>
-                    <div class="form-group ">
-                        <label>  الصورة الثالثه</label>
-                        <input type="file" name="image1" required class="col-md-12">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1"> تفاصيل الاعلان</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                    </div>
-                    <div class="form-group ">
-                        <label>سعر الاعلان </label>
-                        <p class="col-md-2" style="display: inline-block;"><b>40 ريال *</b></p>
-                        <input type="text" name="text" placeholder="عدد الايام   " required class="col-md-3" style="display: inline-block;">
-                    </div>
-                    <div class="form-group ">
-                        <label> سعر الاعلان 7 ايام * 40 ريال  </label>
-                        <p class="col-md-2" style="display: inline-block;"><b>350 ريال </b></p>
-                    </div>
-                    <div class="clearfix">
-                        <div class="pull-left">
-                            <div class="form-group text-right">
-                                <button class="theme-btn btn-style-one" type="submit" name="submit-form">تأكيد </button>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                </form>
-            </div>-->
-            <!--End Login Form -->
-            <!--</div>-->
+         
             <div class="column col-lg-12 col-md-12 col-sm-12 ">
                 <!-- Login Form -->
                 <h2>إضافه اعلان عادي </h2>
@@ -110,60 +42,52 @@
 
                         <div class="form-group">
                             <label>المدينه</label>
-                            <select class="form-control" asp-items="@ViewBag.CityID as SelectList" asp-for="CityID">
+                            <select class="form-control h-25" asp-items="@ViewBag.CityID as SelectList" asp-for="CityID">
                                 <option value="-1">اختر مدينه</option>
                             </select>
 
                         </div>
                         <div class="form-group">
                             <label>الصنف</label>
-                            <select class="form-control" asp-items="@ViewBag.CategoryID as SelectList" asp-for="CategoryID">
+                            <select class="form-control h-25" asp-items="@ViewBag.CategoryID as SelectList" asp-for="CategoryID">
                                 <option value="-1">اختر صنف</option>
                             </select>
 
                         </div>
-                        @*<div class="form-group">
-                            <label>إضافه رقم الجوال   </label>
-                            <input asp-for="User.PhoneNumber" placeholder="رقم الجوال  " required>
-                        </div>*@
-                        @*<div class="clearfix">
-                                <div class="pull-right">
-                                    <div class="form-group remember">
-                                        <input type="checkbox" name="shipping-option" id="account-option-2">&nbsp; <label for="account-option-2">إظهار رقم الجوال</label>
-                                    </div>
-                                </div>
-                            </div>*@
-                        <div class="form-group">
-                            <label>  الصورة الرئيسية</label>
-                            <input type="file" required class="col-md-12" id="files1" name="files">
-                            <img id="SelectedImage1" class="img-thumbnail" style="width:100px;height:70px;" />
+                   
+                    <div class="row justify-content-center">
+                        <div class="col-lg-2 col-md-6 col-sm-12">
+                            <label>الصورة الاولى</label>
+                            <input type="file" required id="files1" name="files" class="btn btn-block">
+                            <img id="SelectedImage1" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
                         </div>
-                        <div class="form-group ">
-                            <label>  الصورة الاولى</label>
-                            <input type="file" id="files2" name="files" required class="col-md-12">
-                            <img id="SelectedImage2" class="img-thumbnail" style="width:100px;height:70px;" />
+                       
+                        <div class="col-lg-2 col-md-6 col-sm-12">
+                            <label>الصورة الثانيه</label>
+                            <input type="file" id="files2" name="files" required class="btn btn-block">
+                            <img id="SelectedImage2" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
                         </div>
-                        <div class="form-group ">
-                            <label>  الصورة الثانيه</label>
-                            <input type="file" id="files3" name="files" required class="col-md-12 files">
-                            <img id="SelectedImage3" class="img-thumbnail" style="width:100px;height:70px;" />
+                        <div class="col-lg-2 col-md-6 col-sm-12">
+                            <label>الصورة الثالثه</label>
+                            <input type="file" id="files3" name="files" required class="btn btn-block">
+                            <img id="SelectedImage3" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
                         </div>
-                        <div class="form-group ">
-                            <label>  الصورة الثالثه</label>
-                            <input type="file" id="files4" name="files" required class="col-md-12 files">
-                            <img id="SelectedImage4" class="img-thumbnail" style="width:100px;height:70px;" />
+                        <div class="col-lg-2 col-md-6 col-sm-12">
+                            <label>الصورة الرابعه</label>
+                            <input type="file" id="files4" name="files" required class="btn btn-block">
+                            <img id="SelectedImage4" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
                         </div>
-
-                        <div class="form-group ">
-                            <label>  الصورة الرابعه</label>
-                            <input type="file" id="files5" name="files" required class="col-md-12 files">
-                            <img id="SelectedImage5" class="img-thumbnail" style="width:100px;height:70px;" />
+                        <div class="col-lg-2 col-md-6 col-sm-12">
+                            <label>الصورةالخامسه</label>
+                            <input type="file" id="files5" name="files" required class="btn btn-block">
+                            <img id="SelectedImage5" class="img-thumbnail align-content-center" style="width:100px;height:100px;"/>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlTextarea1"> تفاصيل الاعلان</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-
+                    </div>
+                       
+                       
+                       <br />
+                       <br />
+                       <br />
 
                         <div class="clearfix">
                             <div class="pull-left">

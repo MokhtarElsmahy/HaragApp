@@ -39,7 +39,14 @@ namespace HaragApp.Controllers.api
         {
             var UserDB = db.Users.Where(x => x.Id == userId).Select(x => new UserInfoViewModel
             {
-
+                id=x.Id,
+                user_name = x.user_name,
+                CityID = x.CityID,
+                email = x.Email,
+                phone = x.Phone,
+                lang=x.lang,
+                lat=x.lat,
+               
                
             }).FirstOrDefault();
 
@@ -47,16 +54,15 @@ namespace HaragApp.Controllers.api
         }
         public class UserInfoViewModel
         {
-            public int type_user { get; set; }
+          
             public string id { get; set; }
             public string user_name { get; set; } = "";
-            public int fk_city { get; set; } = 0;
-            public string city_name { get; set; } = "";
             public string email { get; set; } = "";
-            public string img { get; set; } = "";
+            public int CityID { get; set; } = 1;
+           
             public string phone { get; set; } = "";
-            public string region { get; set; } = "";
-            public bool notify { get; set; }
+         
+         
             public string lat { get; set; }
             public string lng { get; set; }
             public string address { get; set; }
@@ -454,20 +460,19 @@ namespace HaragApp.Controllers.api
         }
         #endregion
 
-        
+
         //public Tuple<List<dataorder>, List<dataorder>> GetAllNearestFamousPlaces(double currentLatitude, double currentLongitude,
         //  int km, List<dataorder> data)
         //{
 
-        //    List<dataorder> normal_provider = new List<dataorder>();
-        //    List<dataorder> org_provider = new List<dataorder>();
+        //    List<dataorder> advertsment = new List<dataorder>();
         //    var query = (from c in data
 
         //                 select c).ToList();
         //    foreach (var place in query)
         //    {
         //        double distance = Distance(currentLatitude, currentLongitude, Convert.ToDouble(place.lat), Convert.ToDouble(place.lng));
-        //        if (distance <= km && place.type_deleget == (int)User_Type.deleget)         //nearbyplaces which are within 25 kms  50 w 70
+        //        if (distance <= km )         //nearbyplaces which are within 25 kms  50 w 70
         //        {
         //            dataorder dist = new dataorder();
         //            dist.img = place.img;
@@ -479,23 +484,10 @@ namespace HaragApp.Controllers.api
         //            dist.lat = place.lat;
         //            dist.lng = place.lng;
         //            dist.address = place.address;
-        //            normal_provider.Add(dist);
+        //            advertsment.Add(dist);
 
         //        }
-        //        if (distance <= km && place.type_deleget == (int)User_Type.org_delget)         //nearbyplaces which are within 25 kms  50 w 70
-        //        {
-        //            dataorder dist2 = new dataorder();
-        //            dist2.img = place.img;
-        //            dist2.km = distance / 1000;
-        //            dist2.user_name = place.user_name;
-        //            dist2.rate = place.rate ?? "0";
-        //            dist2.deleget_id = place.deleget_id;
-        //            dist2.type_deleget = place.type_deleget;
-        //            dist2.lat = place.lat;
-        //            dist2.lng = place.lng;
-        //            dist2.address = place.address;
-        //            org_provider.Add(dist2);
-        //        }
+           
         //    }
 
 
@@ -538,8 +530,8 @@ namespace HaragApp.Controllers.api
         public class dataorder
         {
 
-            public string deleget_id { get; set; }
-            public string user_name { get; set; }
+            public string id { get; set; }
+            public string titke { get; set; }
             public string img { get; set; }
             public string rate { get; set; }
             public double km { get; set; }

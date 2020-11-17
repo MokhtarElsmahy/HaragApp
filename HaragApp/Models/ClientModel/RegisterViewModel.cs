@@ -10,8 +10,8 @@ namespace HaragApp.Controllers.api
     {
         [Required(ErrorMessage = "من فضلك ادخل اسم المستخدم")]
         public string user_name { get; set; }
-        [Required(ErrorMessage = "من فضلك ادخل المدينه")]
-        public int fk_city { get; set; }
+        //[Required(ErrorMessage = "من فضلك ادخل المدينه")]
+        ////public int fk_city { get; set; }
 
         [Required(ErrorMessage = "من فضلك ادخل رقم الجوال")]
         public string phone { get; set; }
@@ -22,7 +22,7 @@ namespace HaragApp.Controllers.api
 
         [EmailAddress(ErrorMessage = " من فضلك ادخل البريد الالكترونى بشكل صحيح")]
         public string email { get; set; }
-        public string region { get; set; }
+      
 
         
 
@@ -30,13 +30,13 @@ namespace HaragApp.Controllers.api
         public string password { get; set; }
 
         [Required]
-        public string location { get; set; }
+        public int CityID { get; set; }
         [Required]
         public string lat { get; set; }
         [Required]
         public string lng { get; set; }
-        [Required]
-        public string device_id { get; set; } = "";
+        //[Required]
+        //public string device_id { get; set; } = "";
         /// <summary>
         ///ar or en
         /// </summary>

@@ -13,6 +13,8 @@ using System.IO;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using HaragApp.ViewModels;
+using RestSharp;
 
 namespace HaragApp.Controllers
 {
@@ -49,12 +51,14 @@ namespace HaragApp.Controllers
             var advertisment = await _context.Advertisments
                 .Include(a => a.AnimalCategory)
                 .Include(a => a.City)
-                .Include(a => a.User)
+                .Include(a => a.User).Include(c=>c.AdImages)
                 .FirstOrDefaultAsync(m => m.AdID == id);
             if (advertisment == null)
             {
                 return NotFound();
             }
+            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName",advertisment.CityID);
+            ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName",advertisment.CategoryID);
 
             return View(advertisment);
         }
@@ -75,57 +79,18 @@ namespace HaragApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Advertisment advertisment , string ImageUrl1, string ImageUrl2, string ImageUrl3, string ImageUrl4, string ImageUrl5)
+        public async Task<IActionResult> Create(AdsImagesVm advertisment)
         {
             if (ModelState.IsValid)
             {
-
-               // var user = await _userManager.GetUserAsync(User);
-                advertisment.UserId = "307d13f5-3199-495b-88dd-fcf23d145726";
-                _context.Add(advertisment);
-                await _context.SaveChangesAsync();
-                if (ImageUrl1 != null)
-                {
-                  AdImage img = new AdImage() { AdID = advertisment.AdID, img = ImageUrl1 };
-                    _context.Add(img);
-                    _context.SaveChanges();
-                }
-                if (ImageUrl2 != null)
-                {
-                    AdImage img = new AdImage() { AdID = advertisment.AdID, img = ImageUrl2 };
-                    _context.Add(img);
-                    _context.SaveChanges();
-                }
-                if (ImageUrl3 != null)
-                {
-                    AdImage img = new AdImage() { AdID = advertisment.AdID, img = ImageUrl3 };
-                    _context.Add(img);
-                    _context.SaveChanges();
-                }
-                if (ImageUrl4 != null)
-                {
-                    AdImage img = new AdImage() { AdID = advertisment.AdID, img = ImageUrl4 };
-                    _context.Add(img);
-                    _context.SaveChanges();
-                }
-                if (ImageUrl5 != null)
-                {
-                    AdImage img = new AdImage() { AdID = advertisment.AdID, img = ImageUrl5 };
-                    _context.Add(img);
-                    _context.SaveChanges();
-                }
-                //if (ImageUrl1 != null)
-                //{
-                //    iSellerReciept.ReceiptImage = ImageUrl;
-                //}
-                //else
-                //{
-                //    iSellerReciept.ReceiptImage = "/assets/img/defaultRecImage.png";
-                //}
-                return RedirectToAction(nameof(Index));
+                var client = new RestClient($"https://localhost:44396/api/Advertisments");
+                var request = new RestRequest(Method.POST);
+                request.AddJsonBody(advertisment);
+                IRestResponse response = await client.ExecuteAsync(request);
+                return RedirectToAction(nameof(Create));
             }
             ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", advertisment.CategoryID);
-            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityID", advertisment.CityID);
+            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName", advertisment.CityID);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", advertisment.UserId);
             return View(advertisment);
         }

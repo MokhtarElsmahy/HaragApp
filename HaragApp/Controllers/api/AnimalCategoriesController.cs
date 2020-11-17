@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HaragApp.Data;
 using HaragApp.Models;
+using HaragApp.Commonet;
 
 namespace HaragApp.Controllers.api
 {
@@ -70,8 +71,8 @@ namespace HaragApp.Controllers.api
         [HttpPost]
         public async Task<ActionResult<AnimalCategory>> PostAnimalCategory(AnimalCategory animalCategory)
         {
-            _context.AnimalCategories.Add(animalCategory);
-            await _context.SaveChangesAsync();
+            IAnimalCategory animal = new AnimalServices(_context);
+            animal.Create(animalCategory);
 
             return CreatedAtAction("GetAnimalCategory", new { id = animalCategory.CategoryID }, animalCategory);
         }
