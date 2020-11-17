@@ -26,6 +26,12 @@ namespace HaragApp.Models
 
         [ForeignKey("AnimalCategory")]
         public int CategoryID { get; set; }
+
+
+        public bool IsPaid { get; set; }
+        public string IsPaidDescription { get; set; }
+
+
         public virtual AnimalCategory AnimalCategory { get; set; }
 
         public virtual ICollection<AdImage> AdImages { get; set; }

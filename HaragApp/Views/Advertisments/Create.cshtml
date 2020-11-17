@@ -42,52 +42,58 @@
 
                         <div class="form-group">
                             <label>المدينه</label>
-                            <select class="form-control h-25" asp-items="@ViewBag.CityID as SelectList" asp-for="CityID">
+                            <select class="form-control h-25" asp-items="@ViewBag.CityID as SelectList" asp-for="CityID" required>
                                 <option value="-1">اختر مدينه</option>
                             </select>
 
                         </div>
                         <div class="form-group">
                             <label>الصنف</label>
-                            <select class="form-control h-25" asp-items="@ViewBag.CategoryID as SelectList" asp-for="CategoryID">
+                            <select class="form-control h-25" asp-items="@ViewBag.CategoryID as SelectList" asp-for="CategoryID" required>
                                 <option value="-1">اختر صنف</option>
                             </select>
 
                         </div>
-                   
-                    <div class="row justify-content-center">
-                        <div class="col-lg-2 col-md-6 col-sm-12">
-                            <label>الصورة الاولى</label>
-                            <input type="file" required id="files1" name="files" class="btn btn-block">
-                            <img id="SelectedImage1" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+                        <div class="form-group">
+                           
+                            <input type="checkbox" id="vehicle1"  asp-for="IsPact" required>
+                            <label for="vehicle1">اتعهد بدفع 15ريال فى كل راس يتم بيعه عن طريق الموقع</label><br>
+
                         </div>
-                       
-                        <div class="col-lg-2 col-md-6 col-sm-12">
-                            <label>الصورة الثانيه</label>
-                            <input type="file" id="files2" name="files" required class="btn btn-block">
-                            <img id="SelectedImage2" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+
+                        <div class="row justify-content-center">
+                            <div class="col-lg-2 col-md-6 col-sm-12">
+                                <label>الصورة الاولى</label>
+                                <input type="file" required id="files1" name="files" class="btn btn-block">
+                                <img id="SelectedImage1" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+                            </div>
+
+                            <div class="col-lg-2 col-md-6 col-sm-12">
+                                <label>الصورة الثانيه</label>
+                                <input type="file" id="files2" name="files" required class="btn btn-block">
+                                <img id="SelectedImage2" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+                            </div>
+                            <div class="col-lg-2 col-md-6 col-sm-12">
+                                <label>الصورة الثالثه</label>
+                                <input type="file" id="files3" name="files" required class="btn btn-block">
+                                <img id="SelectedImage3" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+                            </div>
+                            <div class="col-lg-2 col-md-6 col-sm-12">
+                                <label>الصورة الرابعه</label>
+                                <input type="file" id="files4" name="files" required class="btn btn-block">
+                                <img id="SelectedImage4" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+                            </div>
+                            <div class="col-lg-2 col-md-6 col-sm-12">
+                                <label>الصورةالخامسه</label>
+                                <input type="file" id="files5" name="files" required class="btn btn-block">
+                                <img id="SelectedImage5" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+                            </div>
                         </div>
-                        <div class="col-lg-2 col-md-6 col-sm-12">
-                            <label>الصورة الثالثه</label>
-                            <input type="file" id="files3" name="files" required class="btn btn-block">
-                            <img id="SelectedImage3" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
-                        </div>
-                        <div class="col-lg-2 col-md-6 col-sm-12">
-                            <label>الصورة الرابعه</label>
-                            <input type="file" id="files4" name="files" required class="btn btn-block">
-                            <img id="SelectedImage4" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
-                        </div>
-                        <div class="col-lg-2 col-md-6 col-sm-12">
-                            <label>الصورةالخامسه</label>
-                            <input type="file" id="files5" name="files" required class="btn btn-block">
-                            <img id="SelectedImage5" class="img-thumbnail align-content-center" style="width:100px;height:100px;"/>
-                        </div>
-                    </div>
-                       
-                       
-                       <br />
-                       <br />
-                       <br />
+
+
+                        <br />
+                        <br />
+                        <br />
 
                         <div class="clearfix">
                             <div class="pull-left">
@@ -124,7 +130,7 @@
 
 
 @section Scripts {
-    @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
      $("#files1").change(function () {

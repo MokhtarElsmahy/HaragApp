@@ -14,6 +14,9 @@ namespace HaragApp.Models
         public int CityID { get; set; }
         public string CityName { get; set; }
 
+        public string Langtude { get; set; }
+        public string Lantitude { get; set; }
+
         //[ForeignKey("Country")]
         //public int CountryID { get; set; }
 

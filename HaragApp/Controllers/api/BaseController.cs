@@ -472,7 +472,7 @@ namespace HaragApp.Controllers.api
         //    foreach (var place in query)
         //    {
         //        double distance = Distance(currentLatitude, currentLongitude, Convert.ToDouble(place.lat), Convert.ToDouble(place.lng));
-        //        if (distance <= km )         //nearbyplaces which are within 25 kms  50 w 70
+        //        if (distance <= km)         //nearbyplaces which are within 25 kms  50 w 70
         //        {
         //            dataorder dist = new dataorder();
         //            dist.img = place.img;
@@ -487,7 +487,7 @@ namespace HaragApp.Controllers.api
         //            advertsment.Add(dist);
 
         //        }
-           
+
         //    }
 
 
