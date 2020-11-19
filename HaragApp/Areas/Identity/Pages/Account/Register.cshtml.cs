@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HaragApp.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    [Authorize(Roles ="admin")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationDbUser> _signInManager;
@@ -75,11 +75,12 @@ namespace HaragApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationDbUser { UserName = "admin@admin.com", Email = "admin@admin.com",Phone=Input.Phone, CityID=1};
+                var user = new ApplicationDbUser { UserName = $"{Input.Phone}admin.com", Email = "admin@admin.com",Phone=Input.Phone, CityID=1};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    //await _userManager.AddToRoleAsync(user, "admin");
 
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -97,8 +98,8 @@ namespace HaragApp.Areas.Identity.Pages.Account
                     //    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     //}
                     //else
-                  //  {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                    //  {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
                     //return LocalRedirect(returnUrl);
                     return RedirectToAction("Create", "AnimalCategories");
                     //}

@@ -4,12 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace HaragApp.Component.Interfaces
 {
     interface IAdverstisment
     {
-        AdsImagesVm Create(AdsImagesVm advertisment);
+        AdsImagesVm CreateAsync(AdsImagesVm advertisment);
         AdsImagesVm Details(int? id);
     }
 }

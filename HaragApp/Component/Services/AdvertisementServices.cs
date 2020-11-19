@@ -2,6 +2,8 @@
 using HaragApp.Data;
 using HaragApp.Models;
 using HaragApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,18 +12,21 @@ using System.Threading.Tasks;
 
 namespace HaragApp.Component.Services
 {
+   
     public class AdvertisementServices : IAdverstisment
     {
         private readonly ApplicationDbContext _context;
+      
 
         public AdvertisementServices(ApplicationDbContext context)
         {
             _context = context;
+         
         }
 
-        public AdsImagesVm Create(AdsImagesVm advertisment)
+        public AdsImagesVm CreateAsync(AdsImagesVm advertisment)
         {
-                       
+           
             Advertisment ad = new Advertisment()
             {
                 CategoryID = advertisment.CategoryID,
@@ -29,7 +34,7 @@ namespace HaragApp.Component.Services
                 IsPact = advertisment.IsPact,
                 Title = advertisment.Title,
                 Description = advertisment.Description,
-                UserId = "626f057d-409a-49d0-a38f-8bb22f6634a7"
+              
             };
             _context.Add(ad);
             _context.SaveChanges();

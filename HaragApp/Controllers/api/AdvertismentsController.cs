@@ -85,7 +85,7 @@ namespace HaragApp.Controllers.api
         public async Task<ActionResult<Advertisment>> PostAdvertisment(AdsImagesVm advertisment)
         {
             IAdverstisment ads = new AdvertisementServices(_context);
-            ads.Create(advertisment);
+            ads.CreateAsync(advertisment);
             
             return CreatedAtAction("GetAdvertisment", new { id = advertisment.AdID }, advertisment);
         }

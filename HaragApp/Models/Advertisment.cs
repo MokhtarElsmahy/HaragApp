@@ -29,7 +29,7 @@ namespace HaragApp.Models
 
 
         public bool IsPaid { get; set; }
-        public string IsPaidDescription { get; set; }
+        //public string IsPaidDescription { get; set; }
 
 
         public virtual AnimalCategory AnimalCategory { get; set; }

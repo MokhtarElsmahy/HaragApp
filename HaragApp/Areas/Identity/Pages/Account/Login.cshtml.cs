@@ -23,8 +23,8 @@ namespace HaragApp.Areas.Identity.Pages.Account
         private readonly ApplicationDbContext _dbContext;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<ApplicationDbUser> signInManager, 
-            ILogger<LoginModel> logger,ApplicationDbContext dbContext,
+        public LoginModel(SignInManager<ApplicationDbUser> signInManager,
+            ILogger<LoginModel> logger, ApplicationDbContext dbContext,
             UserManager<ApplicationDbUser> userManager)
         {
             _userManager = userManager;
@@ -86,11 +86,37 @@ namespace HaragApp.Areas.Identity.Pages.Account
                 {
                     return Page();
                 }
-                var result = await _signInManager.CheckPasswordSignInAsync(user,Input.Password,false);
+                // var result = await _signInManager.CheckPasswordSignInAsync(user,Input.Password,false);
+                var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return RedirectToAction("Create","AnimalCategories");
+                    #region MyRegion
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles.Contains("admin"))
+                    {
+                        _logger.LogInformation("User logged in.");
+                        return LocalRedirect("/AnimalCategories/Create");
+                    }
+                    else
+                    {
+                        _logger.LogInformation("User logged in.");
+                        return LocalRedirect("/Advertisments/Create");
+                    }
+                    #endregion
+
+                    //if (await _userManager.IsInRoleAsync(user, "admin"))
+                    //{
+                    //    return LocalRedirect("/AnimalCategories/Create");//remember to change this to redirct to dashboard
+                    //}
+                    //else if (await _userManager.IsInRoleAsync(user, "user"))
+                    //{
+                    //    return LocalRedirect("/Advertisments/Create");
+                    //}
+
+                    //_logger.LogInformation("User logged in.");
+                    //return LocalRedirect(returnUrl);
+
+
                 }
                 if (result.RequiresTwoFactor)
                 {

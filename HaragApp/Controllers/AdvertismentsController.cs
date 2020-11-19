@@ -20,7 +20,8 @@ using HaragApp.Component.Services;
 
 namespace HaragApp.Controllers
 {
-   // [Authorize]
+   
+    
     public class AdvertismentsController : Controller
     {
 
@@ -58,10 +59,15 @@ namespace HaragApp.Controllers
             return View(addedADV);
         }
 
+
+        [Authorize]
         // GET: Advertisments/Create
         public IActionResult Create()
         {
             
+            //_context.Roles.Add(new IdentityRole() { Name = "admin" });
+            //_context.Roles.Add(new IdentityRole() { Name = "user" });
+            //_context.SaveChanges();
             ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName");
             ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName");
 
@@ -74,12 +80,19 @@ namespace HaragApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(AdsImagesVm advertisment)
+        public async Task<IActionResult> CreateAsync(AdsImagesVm advertisment)
         {
             if (ModelState.IsValid)
             {
                 IAdverstisment ads = new AdvertisementServices(_context);
-                var addedADV = ads.Create(advertisment);
+                var user = await _userManager.GetUserAsync(User);
+              
+                var addedADV = ads.CreateAsync(advertisment);
+                var add = _context.Advertisments.Find(addedADV.AdID);
+                add.UserId = user.Id;
+                _context.SaveChanges();
+
+
                 return RedirectToAction("Details", new { id = addedADV.AdID });
             }
             ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", advertisment.CategoryID);

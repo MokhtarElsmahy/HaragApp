@@ -9,9 +9,11 @@ using HaragApp.Data;
 using HaragApp.Models;
 using RestSharp;
 using HaragApp.Commonet;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HaragApp.Controllers
 {
+    [Authorize]
     public class AnimalCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
