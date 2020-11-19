@@ -75,7 +75,7 @@ namespace HaragApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationDbUser { UserName = $"{Input.Phone}admin.com", Email = "admin@admin.com",Phone=Input.Phone, CityID=1};
+                var user = new ApplicationDbUser { UserName = $"{Input.Phone}admin.com", Email = $"{Input.Phone}admin.com", Phone=Input.Phone, CityID=1};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

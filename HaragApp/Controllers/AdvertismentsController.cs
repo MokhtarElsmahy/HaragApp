@@ -78,10 +78,14 @@ namespace HaragApp.Controllers
         // POST: Advertisments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateAsync(AdsImagesVm advertisment)
         {
+            /*_context.Roles.Add(new IdentityRole { Name = "admin" });
+            _context.Roles.Add(new IdentityRole { Name = "user" });
+            _context.SaveChanges();*/
             if (ModelState.IsValid)
             {
                 IAdverstisment ads = new AdvertisementServices(_context);

@@ -174,6 +174,7 @@ namespace HaragApp.Controllers.api
                 type_user = 1,
                 CityID = userModel.CityID,
                 SecurityStamp = Guid.NewGuid().ToString(),
+                Phone = userModel.phone
 
             };
 
