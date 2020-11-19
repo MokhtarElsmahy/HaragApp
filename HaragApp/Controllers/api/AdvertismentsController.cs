@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using HaragApp.Data;
 using HaragApp.Models;
 using HaragApp.ViewModels;
+using HaragApp.Component.Interfaces;
+using HaragApp.Component.Services;
 
 namespace HaragApp.Controllers.api
 {
@@ -31,10 +33,11 @@ namespace HaragApp.Controllers.api
 
         // GET: api/Advertisments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Advertisment>> GetAdvertisment(int id)
+        public async Task<ActionResult<AdsImagesVm>> GetAdvertisment(int id)
         {
-            var advertisment = await _context.Advertisments.FindAsync(id);
-
+            //var advertisment = await _context.Advertisments.FindAsync(id);
+            IAdverstisment ads = new AdvertisementServices(_context);
+            var advertisment = ads.Details(id);
             if (advertisment == null)
             {
                 return NotFound();
@@ -81,56 +84,10 @@ namespace HaragApp.Controllers.api
         [HttpPost]
         public async Task<ActionResult<Advertisment>> PostAdvertisment(AdsImagesVm advertisment)
         {
-
-
-
-            Advertisment ad = new Advertisment()
-            {
-                CategoryID = advertisment.CategoryID,
-                CityID = advertisment.CityID,
-                IsPact = advertisment.IsPact,
-                Title = advertisment.Title,
-                UserId = "307d13f5-3199-495b-88dd-fcf23d145726"
-            };
-            _context.Add(ad);
-             await _context.SaveChangesAsync();
-
-            if (advertisment.ImageUrl1 != null)
-            {
-                AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl1 };
-                _context.Add(img);
-                await _context.SaveChangesAsync();
-
-            }
-            if (advertisment.ImageUrl2 != null)
-            {
-                AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl2 };
-                _context.Add(img);
-                await _context.SaveChangesAsync();
-
-            }
-            if (advertisment.ImageUrl3 != null)
-            {
-                AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl3 };
-                _context.Add(img);
-                await _context.SaveChangesAsync();
-
-            }
-            if (advertisment.ImageUrl4 != null)
-            {
-                AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl4 };
-                _context.Add(img);
-                await _context.SaveChangesAsync();
-
-            }
-            if (advertisment.ImageUrl5 != null)
-            {
-                AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl5 };
-                _context.Add(img);
-                await _context.SaveChangesAsync();
-            }
+            IAdverstisment ads = new AdvertisementServices(_context);
+            ads.Create(advertisment);
             
-            return CreatedAtAction("GetAdvertisment", new { id = ad.AdID }, advertisment);
+            return CreatedAtAction("GetAdvertisment", new { id = advertisment.AdID }, advertisment);
         }
 
         // DELETE: api/Advertisments/5

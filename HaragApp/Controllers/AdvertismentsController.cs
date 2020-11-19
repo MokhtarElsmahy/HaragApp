@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using HaragApp.ViewModels;
 using RestSharp;
+using HaragApp.Component.Interfaces;
+using HaragApp.Component.Services;
 
 namespace HaragApp.Controllers
 {
@@ -41,26 +43,19 @@ namespace HaragApp.Controllers
         }
 
         // GET: Advertisments/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
+                IAdverstisment ads = new AdvertisementServices(_context);
+                var addedADV = ads.Details(id);
 
-            var advertisment = await _context.Advertisments
-                .Include(a => a.AnimalCategory)
-                .Include(a => a.City)
-                .Include(a => a.User).Include(c=>c.AdImages)
-                .FirstOrDefaultAsync(m => m.AdID == id);
-            if (advertisment == null)
-            {
-                return NotFound();
-            }
-            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName",advertisment.CityID);
-            ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName",advertisment.CategoryID);
+            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName",addedADV.CityID);
+            ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", addedADV.CategoryID);
 
-            return View(advertisment);
+            return View(addedADV);
         }
 
         // GET: Advertisments/Create
@@ -79,15 +74,13 @@ namespace HaragApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AdsImagesVm advertisment)
+        public IActionResult Create(AdsImagesVm advertisment)
         {
             if (ModelState.IsValid)
             {
-                var client = new RestClient($"https://localhost:44396/api/Advertisments");
-                var request = new RestRequest(Method.POST);
-                request.AddJsonBody(advertisment);
-                IRestResponse response = await client.ExecuteAsync(request);
-                return RedirectToAction(nameof(Create));
+                IAdverstisment ads = new AdvertisementServices(_context);
+                var addedADV = ads.Create(advertisment);
+                return RedirectToAction("Details", new { id = addedADV.AdID });
             }
             ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", advertisment.CategoryID);
             ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName", advertisment.CityID);

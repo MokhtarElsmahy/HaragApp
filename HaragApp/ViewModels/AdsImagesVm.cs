@@ -10,11 +10,14 @@ namespace HaragApp.ViewModels
     {
         public int AdID { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
 
         [Required]
         public bool IsPact { get; set; }
         public string UserId { get; set; }
         public int CityID { get; set; }
+        public string CityName { get; set; }
+        public string CategoryName { get; set; }
         public int CategoryID { get; set; }
         public string ImageUrl1 { get; set; }
         public string ImageUrl2 { get; set; }
