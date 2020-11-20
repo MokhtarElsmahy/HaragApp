@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HaragApp.Component.Interfaces;
+using HaragApp.Component.Services;
 using HaragApp.Data;
 using HaragApp.PathUrl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -268,5 +270,12 @@ namespace HaragApp.Controllers.api
 
         //}
 
+
+        [HttpPost(ApiRoutes.setting.GetPaidAdv)]
+        public IActionResult PaidAdv()
+        {
+            IAdverstisment dd = new AdvertisementServices(db);
+            return Json(new { data = dd.GetAllPaidAdv() });
+        }
     }
 }

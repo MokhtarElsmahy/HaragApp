@@ -20,8 +20,8 @@ using HaragApp.Component.Services;
 
 namespace HaragApp.Controllers
 {
-   
-    
+
+
     public class AdvertismentsController : Controller
     {
 
@@ -29,10 +29,10 @@ namespace HaragApp.Controllers
         private IHostingEnvironment _hosting { get; set; }
         private readonly UserManager<ApplicationDbUser> _userManager;
 
-        public AdvertismentsController(ApplicationDbContext context , IHostingEnvironment hosting ,UserManager<ApplicationDbUser> userManager)
+        public AdvertismentsController(ApplicationDbContext context, IHostingEnvironment hosting, UserManager<ApplicationDbUser> userManager)
         {
-            _context = context;
             _hosting = hosting;
+            _context = context;
             _userManager = userManager;
         }
 
@@ -50,10 +50,10 @@ namespace HaragApp.Controllers
             {
                 return NotFound();
             }
-                IAdverstisment ads = new AdvertisementServices(_context);
-                var addedADV = ads.Details(id);
+            IAdverstisment ads = new AdvertisementServices(_context);
+            var addedADV = ads.Details(id);
 
-            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName",addedADV.CityID);
+            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName", addedADV.CityID);
             ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", addedADV.CategoryID);
 
             return View(addedADV);
@@ -64,7 +64,7 @@ namespace HaragApp.Controllers
         // GET: Advertisments/Create
         public IActionResult Create()
         {
-            
+
             //_context.Roles.Add(new IdentityRole() { Name = "admin" });
             //_context.Roles.Add(new IdentityRole() { Name = "user" });
             //_context.SaveChanges();
@@ -98,7 +98,7 @@ namespace HaragApp.Controllers
             {
                 IAdverstisment ads = new AdvertisementServices(_context);
                 var user = await _userManager.GetUserAsync(User);
-              
+
                 var addedADV = ads.CreateAsync(advertisment);
                 var add = _context.Advertisments.Find(addedADV.AdID);
                 add.UserId = user.Id;
@@ -232,5 +232,94 @@ namespace HaragApp.Controllers
 
 
         }
+
+        public IActionResult IndexPaidAdv()
+        {
+            IAdverstisment dd = new AdvertisementServices(_context);
+            return View(dd.GetAllPaidAdv());
+        }
+        [Authorize(Roles = "admin")]
+        public IActionResult CreatePaidAdd()
+        {
+
+            //_context.Roles.Add(new IdentityRole() { Name = "admin" });
+            //_context.Roles.Add(new IdentityRole() { Name = "user" });
+            //_context.SaveChanges();
+            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName");
+            ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName");
+
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            return View();
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePaidAddAsync(AdsImagesVm advertisment)
+        {
+            /*_context.Roles.Add(new IdentityRole { Name = "admin" });
+            _context.Roles.Add(new IdentityRole { Name = "user" });
+            _context.SaveChanges();*/
+            if (ModelState.IsValid)
+            {
+                IAdverstisment ads = new AdvertisementServices(_context);
+                var user = await _userManager.GetUserAsync(User);
+
+                var addedADV = ads.CreateAsync(advertisment);
+                var add = _context.Advertisments.Find(addedADV.AdID);
+                add.UserId = user.Id;
+                _context.SaveChanges();
+
+
+                return RedirectToAction("Details", new { id = addedADV.AdID });
+            }
+            ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", advertisment.CategoryID);
+            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName", advertisment.CityID);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", advertisment.UserId);
+            return View(advertisment);
+        }
+
+        [HttpGet]
+        public IActionResult EditPaidAdd(int id)
+        {
+
+            IAdverstisment ads = new AdvertisementServices(_context);
+            var model = ads.GetPaidAdv(id);
+
+            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName", model.CityID);
+            ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", model.CategoryID);
+
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult EditPaidAdd(AdsImagesVm advertisment)
+        {
+            if (ModelState.IsValid)
+            {
+
+                IAdverstisment ads = new AdvertisementServices(_context);
+                ads.EditPaidAdv(advertisment);
+                return RedirectToAction("IndexPaidAdv");
+            }
+
+
+            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName", advertisment.CityID);
+            ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", advertisment.CategoryID);
+
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            return View(advertisment);
+        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public IActionResult DeletePaidAdd(int Id)
+        {
+            IAdverstisment dd = new AdvertisementServices(_context);
+            dd.DeletePaidAdd(Id);
+            return RedirectToAction(nameof(IndexPaidAdv));
+        }
+
     }
 }

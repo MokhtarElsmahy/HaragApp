@@ -32,6 +32,7 @@ namespace HaragApp.Component.Services
             {
                 CategoryID = advertisment.CategoryID,
                 CityID = advertisment.CityID,
+                IsPaid= advertisment.IsPaid,
                 IsPact = advertisment.IsPact,
                 Title = advertisment.Title,
                 Description = advertisment.Description,
@@ -101,17 +102,22 @@ namespace HaragApp.Component.Services
             adsVM.CityName = adv.City.CityName;
             adsVM.Description = adv.Description;
             var adImages = adv.AdImages.ToList();
-            adsVM.ImageUrl1 = adImages[0].img;
-            adsVM.ImageUrl2 = adImages[1].img;
-            adsVM.ImageUrl3 = adImages[2].img;
-            adsVM.ImageUrl4 = adImages[3].img;
+         
+            adsVM.ImageUrl1 = adImages[0].img ;
+            adsVM.ImageUrl2 = adImages[1].img ;
+            adsVM.ImageUrl3 = adImages[2].img ;
+            adsVM.ImageUrl4 = adImages[3].img ;
             adsVM.ImageUrl5 = adImages[4].img;
+            
+        
+            
             if (adv == null)
             {
                 return null;
             }
             return adsVM;
         }
+
 
         public List<AdsImagesVm> GetUserAdvertisementsAsync(string id)
         {
@@ -140,6 +146,60 @@ namespace HaragApp.Component.Services
 
             return adsImagesVms;
         }
+        public ICollection<PaidAddViewModel> GetAllPaidAdv()
+        {
+            
+            return _context.Advertisments.Include(x=>x.AdImages).ToList().Where(c => c.IsPaid == true)
+                .Select(x=>new PaidAddViewModel { Title=x.Title , AdID=x.AdID ,ImageUrl1=x.AdImages.ToList()[0].img}).ToList();
+        }
 
+        public void DeletePaidAdd(int id)
+        {
+            var add = _context.Advertisments.Find(id);
+            _context.Remove(add);
+            _context.SaveChanges();
+        }
+
+        public AdsImagesVm GetPaidAdv(int id)
+        {
+            var ad = _context.Advertisments.Include(c => c.AdImages).FirstOrDefault(c => c.AdID == id);
+            AdsImagesVm model = new AdsImagesVm()
+            {
+                AdID = ad.AdID,
+                CategoryID = ad.CategoryID,
+                CityID = ad.CityID,
+                Description = ad.Description,
+                Title = ad.Title,
+                UserId = ad.UserId,
+                ImageUrl1 = ad.AdImages.ToList()[0].img,
+                ImageUrl2 = ad.AdImages.ToList()[1].img,
+                ImageUrl3 = ad.AdImages.ToList()[2].img,
+                ImageUrl4 = ad.AdImages.ToList()[3].img,
+                ImageUrl5 = ad.AdImages.ToList()[4].img
+
+            };
+            return model;
+        }
+
+        public void EditPaidAdv(AdsImagesVm advertisment)
+        {
+            var ad = _context.Advertisments.Find(advertisment.AdID);
+            ad.CityID = advertisment.CityID;
+            ad.CategoryID = advertisment.CategoryID;
+            ad.Description = advertisment.Description;
+            ad.IsPact = advertisment.IsPact;
+            ad.IsPaid = advertisment.IsPaid;
+            ad.Title = advertisment.Title;
+            ad.UserId = advertisment.UserId;
+
+            var AdImages = _context.AdImages.Where(c => c.AdID == advertisment.AdID).ToList();
+            AdImages[0].img = advertisment.ImageUrl1;
+            AdImages[1].img = advertisment.ImageUrl2;
+            AdImages[2].img = advertisment.ImageUrl3;
+            AdImages[3].img = advertisment.ImageUrl4;
+            AdImages[4].img = advertisment.ImageUrl5;
+
+            _context.SaveChanges();
+        }
     }
 }

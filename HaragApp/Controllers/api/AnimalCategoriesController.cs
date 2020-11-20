@@ -77,22 +77,7 @@ namespace HaragApp.Controllers.api
             return CreatedAtAction("GetAnimalCategory", new { id = animalCategory.CategoryID }, animalCategory);
         }
 
-        // DELETE: api/AnimalCategories/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<AnimalCategory>> DeleteAnimalCategory(int id)
-        {
-            var animalCategory = await _context.AnimalCategories.FindAsync(id);
-            if (animalCategory == null)
-            {
-                return NotFound();
-            }
-
-            _context.AnimalCategories.Remove(animalCategory);
-            await _context.SaveChangesAsync();
-
-            return animalCategory;
-        }
-
+      
         private bool AnimalCategoryExists(int id)
         {
             return _context.AnimalCategories.Any(e => e.CategoryID == id);

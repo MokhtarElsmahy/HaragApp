@@ -120,7 +120,12 @@ namespace HaragApp.Controllers.api
 
             return advList;
         }*/
-
+        public  ActionResult<IEnumerable<PaidAddViewModel>> PaidAdv()
+        {
+            IAdverstisment dd = new AdvertisementServices(_context);
+            var x = dd.GetAllPaidAdv();
+            return  x.ToList();
+        }
         private bool AdvertismentExists(int id)
         {
             return _context.Advertisments.Any(e => e.AdID == id);

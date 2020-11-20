@@ -13,5 +13,12 @@ namespace HaragApp.Component.Interfaces
         AdsImagesVm CreateAsync(AdsImagesVm advertisment);
         AdsImagesVm Details(int? id);
         List<AdsImagesVm> GetUserAdvertisementsAsync(string id);
+
+        ICollection<PaidAddViewModel> GetAllPaidAdv();
+        public void DeletePaidAdd(int id);
+
+        public AdsImagesVm GetPaidAdv(int id);
+
+        public void EditPaidAdv(AdsImagesVm advertisment);
     }
 }

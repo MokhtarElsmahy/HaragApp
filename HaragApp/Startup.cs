@@ -163,7 +163,7 @@ namespace HaragApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Advertisments}/{action=Create}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

@@ -6,22 +6,32 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using HaragApp.Models;
+using HaragApp.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using HaragApp.Data;
+using HaragApp.Component.Interfaces;
+using HaragApp.Component.Services;
 
 namespace HaragApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly UserManager<ApplicationDbUser> _userManager;
+        private readonly ApplicationDbContext _context;
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context,UserManager<ApplicationDbUser> userManager)
         {
             _logger = logger;
+            _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
         {
-            
-            return View();
+            HomeViewModel model = new HomeViewModel();
+            IAdverstisment dd = new AdvertisementServices(_context);
+            model.PaidAdvs = dd.GetAllPaidAdv();
+            return View(model);
         }
 
         public IActionResult Privacy()

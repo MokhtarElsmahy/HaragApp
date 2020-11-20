@@ -14,6 +14,7 @@ namespace HaragApp.ViewModels
 
         [Required]
         public bool IsPact { get; set; }
+        public bool IsPaid { get; set; }
         public string UserId { get; set; }
         public int CityID { get; set; }
         public string CityName { get; set; }
