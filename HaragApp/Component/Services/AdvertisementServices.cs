@@ -4,6 +4,7 @@ using HaragApp.Models;
 using HaragApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -111,5 +112,34 @@ namespace HaragApp.Component.Services
             }
             return adsVM;
         }
+
+        public List<AdsImagesVm> GetUserAdvertisementsAsync(string id)
+        {
+            var Advs = _context.Advertisments.Include(xx => xx.AdImages).Include(xx=>xx.AnimalCategory).Include(xx=>xx.City).Where(xx => xx.UserId == id).ToList();
+            List<AdsImagesVm> adsImagesVms = new List<AdsImagesVm>();
+            foreach (var item in Advs)
+            {
+                AdsImagesVm ads = new AdsImagesVm();
+                ads.AdID = item.AdID;
+                ads.UserId = item.UserId;
+                ads.Title = item.Title;
+                ads.CategoryID = item.CategoryID;
+                ads.CategoryName = item.AnimalCategory.CategoryName;
+                ads.CityID = item.CityID;
+                ads.CityName = item.City.CityName;
+                ads.Description = item.Description;
+                ads.ImageUrl1 = item.AdImages.ToList()[0].img;
+                ads.ImageUrl2 = item.AdImages.ToList()[1].img;
+                ads.ImageUrl3 = item.AdImages.ToList()[2].img;
+                ads.ImageUrl4 = item.AdImages.ToList()[3].img;
+                ads.ImageUrl5 = item.AdImages.ToList()[4].img;
+
+                adsImagesVms.Add(ads);
+
+            }
+
+            return adsImagesVms;
+        }
+
     }
 }

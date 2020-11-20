@@ -7,40 +7,44 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HaragApp.Data;
 using HaragApp.Models;
-using HaragApp.ViewModels;
 using HaragApp.Component.Interfaces;
 using HaragApp.Component.Services;
+using HaragApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace HaragApp.Controllers.api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdvertismentsController : ControllerBase
+    public class UserAdvertismentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationDbUser> _userManager;
 
-        public AdvertismentsController(ApplicationDbContext context, UserManager<ApplicationDbUser> userManager)
+        public UserAdvertismentsController(ApplicationDbContext context, UserManager<ApplicationDbUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: api/Advertisments
+        // GET: api/UserAdvertisments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Advertisment>>> GetAdvertisments()
+        public async Task<ActionResult<IEnumerable<AdsImagesVm>>> GetAdvertisments()
         {
-            return await _context.Advertisments.ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
+
+            IAdverstisment ads = new AdvertisementServices(_context);
+            var advList = ads.GetUserAdvertisementsAsync(user.Id);
+
+            return advList;
         }
 
-        // GET: api/Advertisments/5
+        // GET: api/UserAdvertisments/5
         [HttpGet("{id}")]
-        public ActionResult<AdsImagesVm> GetAdvertisment(int id)
+        public async Task<ActionResult<Advertisment>> GetAdvertisment(int id)
         {
-            //var advertisment = await _context.Advertisments.FindAsync(id);
-            IAdverstisment ads = new AdvertisementServices(_context);
-            var advertisment = ads.Details(id);
+            var advertisment = await _context.Advertisments.FindAsync(id);
+
             if (advertisment == null)
             {
                 return NotFound();
@@ -49,7 +53,7 @@ namespace HaragApp.Controllers.api
             return advertisment;
         }
 
-        // PUT: api/Advertisments/5
+        // PUT: api/UserAdvertisments/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
@@ -81,19 +85,19 @@ namespace HaragApp.Controllers.api
             return NoContent();
         }
 
-        // POST: api/Advertisments
+        // POST: api/UserAdvertisments
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Advertisment>> PostAdvertisment(AdsImagesVm advertisment)
+        public async Task<ActionResult<Advertisment>> PostAdvertisment(Advertisment advertisment)
         {
-            IAdverstisment ads = new AdvertisementServices(_context);
-            ads.CreateAsync(advertisment);
-            
+            _context.Advertisments.Add(advertisment);
+            await _context.SaveChangesAsync();
+
             return CreatedAtAction("GetAdvertisment", new { id = advertisment.AdID }, advertisment);
         }
 
-        // DELETE: api/Advertisments/5
+        // DELETE: api/UserAdvertisments/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Advertisment>> DeleteAdvertisment(int id)
         {
@@ -108,18 +112,6 @@ namespace HaragApp.Controllers.api
 
             return advertisment;
         }
-
-        /*// GET: api/Advertisments/GetUserAds
-        [HttpGet]
-        public async Task<List<AdsImagesVm>> GetUserAdsAsync()
-        {
-            //var user = await _userManager.GetUserAsync(User);
-
-            IAdverstisment ads = new AdvertisementServices(_context);
-            var advList = ads.GetUserAdvertisementsAsync("81d2ca23-6407-48f8-884e-89233fca3df7");
-
-            return advList;
-        }*/
 
         private bool AdvertismentExists(int id)
         {

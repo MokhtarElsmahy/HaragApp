@@ -74,7 +74,15 @@ namespace HaragApp.Controllers
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
+        public async Task<IActionResult> GetUserAdsAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
 
+            IAdverstisment ads = new AdvertisementServices(_context);
+            var advList = ads.GetUserAdvertisementsAsync(user.Id);
+
+            return Content(advList.ToString());
+        }
         // POST: Advertisments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

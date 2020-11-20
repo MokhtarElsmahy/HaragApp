@@ -12,5 +12,6 @@ namespace HaragApp.Component.Interfaces
     {
         AdsImagesVm CreateAsync(AdsImagesVm advertisment);
         AdsImagesVm Details(int? id);
+        List<AdsImagesVm> GetUserAdvertisementsAsync(string id);
     }
 }
