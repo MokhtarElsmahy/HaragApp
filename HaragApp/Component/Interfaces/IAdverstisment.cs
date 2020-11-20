@@ -20,5 +20,7 @@ namespace HaragApp.Component.Interfaces
         public AdsImagesVm GetPaidAdv(int id);
 
         public void EditPaidAdv(AdsImagesVm advertisment);
+        bool userDeleteADV(int id);
+        AdsImagesVm userUpdateADV(int id , AdsImagesVm newADV);
     }
 }

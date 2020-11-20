@@ -200,6 +200,42 @@ namespace HaragApp.Component.Services
             AdImages[4].img = advertisment.ImageUrl5;
 
             _context.SaveChanges();
+        public bool userDeleteADV(int id)
+        {
+            var advertisment = _context.Advertisments.Find(id);
+            _context.Advertisments.Remove(advertisment);
+            _context.SaveChanges();
+            var advertismentCheck = _context.Advertisments.Find(id);
+            if (advertismentCheck == null)
+            {
+                return true;
+            }else
+            {
+                return false;
+            }
+        }
+
+        public AdsImagesVm userUpdateADV(int id , AdsImagesVm newADV)
+        {
+            var oldADV = _context.Advertisments
+                   .Include(xx => xx.AdImages)
+                   .Include(xx => xx.AnimalCategory)
+                   .Include(xx => xx.City)
+                   .Where(xx => xx.AdID == newADV.AdID).FirstOrDefault();
+
+            oldADV.Title = newADV.Title;
+            oldADV.AdImages.ToList()[0].img = newADV.ImageUrl1;
+            oldADV.AdImages.ToList()[1].img = newADV.ImageUrl2;
+            oldADV.AdImages.ToList()[2].img = newADV.ImageUrl3;
+            oldADV.AdImages.ToList()[3].img = newADV.ImageUrl4;
+            oldADV.AdImages.ToList()[4].img = newADV.ImageUrl5;
+            oldADV.CityID = newADV.CityID;
+            oldADV.CategoryID = newADV.CategoryID;
+            oldADV.Description = newADV.Description;
+
+            _context.SaveChanges();
+
+            return newADV;
         }
     }
 }
