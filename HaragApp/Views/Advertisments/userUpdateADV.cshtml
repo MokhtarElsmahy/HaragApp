@@ -1,0 +1,332 @@
+﻿@model HaragApp.ViewModels.AdsImagesVm
+@{
+	ViewData["Title"] = "Update";
+	Layout = "~/Views/Shared/_LayoutHome.cshtml";
+	<style>
+		input[type="file"] {
+			color: transparent;
+		}
+	</style>
+}
+
+
+<!--Page Title-->
+<section class="page-title" style="background-image:url(/Home/images/background/8.jpg);">
+	<div class="auto-container">
+		<div class="inner-container clearfix">
+			<h1>إضافة إعلان </h1>
+			<ul class="bread-crumb clearfix">
+				<li><a href="index.html">الرئيسيه</a></li>
+				<li>إضافة إعلان </li>
+			</ul>
+		</div>
+	</div>
+</section>
+<!--End Page Title-->
+<!--Login Section-->
+<section class="login-section">
+	<div class="auto-container">
+		<div class="row clearfix rtl-dir">
+
+			<div class="column col-lg-12 col-md-12 col-sm-12 ">
+				<!-- Login Form -->
+				<h2>إضافه اعلان عادي </h2>
+				<div class="login-form text-right">
+					<!--Login Form-->
+					<form asp-action="userUpdateADV" method="post">
+						<div class="form-group">
+							<label>الاسم   </label>
+							<input type="text" asp-for="Title" placeholder="الاسم  " value="@Model.Title" required>
+						</div>
+
+						<div class="form-group">
+							<label>المدينه</label>
+							<select class="form-control h-25" asp-items="@ViewBag.CityID as SelectList" asp-for="CityID" value="@Model.CityName" required>
+							</select>
+
+						</div>
+						<div class="form-group">
+							<label>الصنف</label>
+							<select class="form-control h-25" asp-items="@ViewBag.CategoryID as SelectList" asp-for="CategoryID" value="@Model.CategoryName" required>
+							</select>
+
+						</div>
+						<div class="form-group">
+							<label for="exampleFormControlTextarea1">التفاصيل</label>
+							<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" type="text" asp-for="Description" value="@Model.Description" required></textarea>
+						</div>
+						<div class="form-group">
+
+							<input type="checkbox" id="vehicle1" asp-for="IsPact" checked required>
+							<label for="vehicle1">اتعهد بدفع 15ريال فى كل راس يتم بيعه عن طريق الموقع</label><br>
+
+						</div>
+
+						<div class="row justify-content-center">
+							<div class="col-lg-2 col-md-6 col-sm-12">
+								<label>الصورة الاولى</label>
+								<input type="file"  id="files1" name="files" class="btn btn-block" value="@Model.ImageUrl1">
+								<img id="SelectedImage1" src="@Model.ImageUrl1" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+							</div>
+
+							<div class="col-lg-2 col-md-6 col-sm-12">
+								<label>الصورة الثانيه</label>
+								<input type="file" id="files2" name="files"  class="btn btn-block" value="@Model.ImageUrl2">
+								<img id="SelectedImage2" src="@Model.ImageUrl2" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+							</div>
+							<div class="col-lg-2 col-md-6 col-sm-12">
+								<label>الصورة الثالثه</label>
+								<input type="file" id="files3" name="files"  class="btn btn-block" value="@Model.ImageUrl3">
+								<img id="SelectedImage3" src="@Model.ImageUrl3" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+							</div>
+							<div class="col-lg-2 col-md-6 col-sm-12">
+								<label>الصورة الرابعه</label>
+								<input type="file" id="files4" name="files"  class="btn btn-block" value="@Model.ImageUrl4">
+								<img id="SelectedImage4" src="@Model.ImageUrl4" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+							</div>
+							<div class="col-lg-2 col-md-6 col-sm-12">
+								<label>الصورةالخامسه</label>
+								<input type="file" id="files5" name="files"  class="btn btn-block" value="@Model.ImageUrl5">
+								<img id="SelectedImage5" src="@Model.ImageUrl5" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+							</div>
+						</div>
+
+
+						<br />
+						<br />
+						<br />
+
+						<div class="clearfix">
+							<div class="pull-left">
+								<div class="form-group text-right">
+									<button class="theme-btn btn-style-one" type="submit" name="submit-form">تعديــل </button>
+								</div>
+							</div>
+
+						</div>
+						<input id="ImageUrl1" name="ImageUrl1" type="hidden" value="@Model.ImageUrl1"/>
+						<input id="ImageUrl2" name="ImageUrl2" type="hidden" value="@Model.ImageUrl2"/>
+						<input id="ImageUrl3" name="ImageUrl3" type="hidden" value="@Model.ImageUrl3"/>
+						<input id="ImageUrl4" name="ImageUrl4" type="hidden" value="@Model.ImageUrl4"/>
+						<input id="ImageUrl5" name="ImageUrl5" type="hidden" value="@Model.ImageUrl5"/>
+						<input id="AdID" name="AdID" type="hidden" value="@Model.AdID"/>
+					</form>
+				</div>
+				<!--End Login Form -->
+			</div>
+
+
+		</div>
+	</div>
+</section>
+<!--End Login  Section-->
+<!-- count Section -->
+<section class="subscribe-section">
+	<div class="auto-container">
+		<div class="inner-container clearfix">
+			<h3>يمكنك القيام بحساب المموله من هنا </h3>
+			<a href="#" class="call-btn">ابدا الان</a>
+		</div>
+	</div>
+</section>
+
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+	<script>
+	 $("#files1").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#ImageUrl1").val(response.image);
+					   $("#SelectedImage1").attr("src", response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+				//.done(function (response) {
+
+				//        alert(response.ImageURL)
+				//       // $("#ImageUrl").val(response.ImageURL);
+				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+
+				// })
+				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				//    	alert("FAIL");
+				//});
+	 });
+	 $("#files2").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#ImageUrl2").val(response.image);
+					   $("#SelectedImage2").attr("src", response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+				//.done(function (response) {
+
+				//        alert(response.ImageURL)
+				//       // $("#ImageUrl").val(response.ImageURL);
+				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+
+				// })
+				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				//    	alert("FAIL");
+				//});
+	 });
+	 $("#files3").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#ImageUrl3").val(response.image);
+					   $("#SelectedImage3").attr("src", response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+				//.done(function (response) {
+
+				//        alert(response.ImageURL)
+				//       // $("#ImageUrl").val(response.ImageURL);
+				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+
+				// })
+				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				//    	alert("FAIL");
+				//});
+	});
+	 $("#files4").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#ImageUrl4").val(response.image);
+					   $("#SelectedImage4").attr("src", response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+				//.done(function (response) {
+
+				//        alert(response.ImageURL)
+				//       // $("#ImageUrl").val(response.ImageURL);
+				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+
+				// })
+				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				//    	alert("FAIL");
+				//});
+	});
+	 $("#files5").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#ImageUrl5").val(response.image);
+					   $("#SelectedImage5").attr("src", response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+				//.done(function (response) {
+
+				//        alert(response.ImageURL)
+				//       // $("#ImageUrl").val(response.ImageURL);
+				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+
+				// })
+				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				//    	alert("FAIL");
+				//});
+		});
+
+	</script>
+}
+
+

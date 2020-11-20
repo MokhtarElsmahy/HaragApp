@@ -74,14 +74,16 @@ namespace HaragApp.Controllers
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
-        public async Task<IActionResult> GetUserAdsAsync()
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserAds()
         {
             var user = await _userManager.GetUserAsync(User);
 
             IAdverstisment ads = new AdvertisementServices(_context);
             var advList = ads.GetUserAdvertisementsAsync(user.Id);
 
-            return Content(advList.ToString());
+            return View(advList);
         }
         // POST: Advertisments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
@@ -201,7 +203,57 @@ namespace HaragApp.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        
+        
+        public IActionResult userDeleteADV(int id)
+        {
+            IAdverstisment ads = new AdvertisementServices(_context);
+            ads.userDeleteADV(id);
+            return RedirectToAction("GetUserAds", "Advertisments");
+        }
 
+        [HttpGet]
+        public IActionResult userUpdateADV(int id)
+        {
+            var adv = _context.Advertisments
+                .Include(a => a.AnimalCategory)
+                .Include(a => a.City)
+                .Include(a => a.User).Include(c => c.AdImages)
+                .FirstOrDefault(m => m.AdID == id);
+            var adsVM = new AdsImagesVm();
+            adsVM.AdID = adv.AdID;
+            adsVM.Title = adv.Title;
+            adsVM.UserId = adv.UserId;
+            adsVM.CategoryID = adv.CategoryID;
+            adsVM.CategoryName = adv.AnimalCategory.CategoryName;
+            adsVM.CityID = adv.CityID;
+            adsVM.CityName = adv.City.CityName;
+            adsVM.Description = adv.Description;
+            var adImages = adv.AdImages.ToList();
+            adsVM.ImageUrl1 = adImages[0].img;
+            adsVM.ImageUrl2 = adImages[1].img;
+            adsVM.ImageUrl3 = adImages[2].img;
+            adsVM.ImageUrl4 = adImages[3].img;
+            adsVM.ImageUrl5 = adImages[4].img;
+            ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", adsVM.CategoryID);
+            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName", adsVM.CityID);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", adsVM.UserId);
+            return View(adsVM);
+        }
+
+        [HttpPost]
+        public IActionResult userUpdateADV(AdsImagesVm newADV)
+        {
+            if (ModelState.IsValid)
+            {
+                IAdverstisment adverstisment = new AdvertisementServices(_context);
+                adverstisment.userUpdateADV(newADV.AdID , newADV);
+
+            }
+
+            return RedirectToAction("GetUserAds", "Advertisments");
+
+        }
         private bool AdvertismentExists(int id)
         {
             return _context.Advertisments.Any(e => e.AdID == id);

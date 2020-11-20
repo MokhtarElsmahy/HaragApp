@@ -57,32 +57,17 @@ namespace HaragApp.Controllers.api
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdvertisment(int id, Advertisment advertisment)
+        public AdsImagesVm PutAdvertisment(int id, AdsImagesVm advertisment)
         {
             if (id != advertisment.AdID)
             {
-                return BadRequest();
+                return null;
             }
+            IAdverstisment adverstisment = new AdvertisementServices(_context);
+            var adv = adverstisment.userUpdateADV(id, advertisment);
 
-            _context.Entry(advertisment).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AdvertismentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return adv;
         }
 
         // POST: api/UserAdvertisments
@@ -99,20 +84,14 @@ namespace HaragApp.Controllers.api
 
         // DELETE: api/UserAdvertisments/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Advertisment>> DeleteAdvertisment(int id)
+        public bool DeleteAdvertisment(int id)
         {
-            var advertisment = await _context.Advertisments.FindAsync(id);
-            if (advertisment == null)
-            {
-                return NotFound();
-            }
+            IAdverstisment ads = new AdvertisementServices(_context);
+            var boolCheck = ads.userDeleteADV(id);
 
-            _context.Advertisments.Remove(advertisment);
-            await _context.SaveChangesAsync();
-
-            return advertisment;
+            return boolCheck;
         }
-
+   
         private bool AdvertismentExists(int id)
         {
             return _context.Advertisments.Any(e => e.AdID == id);
