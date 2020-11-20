@@ -200,6 +200,7 @@ namespace HaragApp.Component.Services
             AdImages[4].img = advertisment.ImageUrl5;
 
             _context.SaveChanges();
+        }
         public bool userDeleteADV(int id)
         {
             var advertisment = _context.Advertisments.Find(id);
