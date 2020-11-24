@@ -6,6 +6,7 @@ using HaragApp.Component.Interfaces;
 using HaragApp.Component.Services;
 using HaragApp.Data;
 using HaragApp.PathUrl;
+using HaragApp.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -17,7 +18,7 @@ namespace HaragApp.Controllers.api
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
-  
+
     public class ClientAppController : BaseController
     {
         private readonly UserManager<ApplicationDbUser> _userManager;
@@ -39,7 +40,7 @@ namespace HaragApp.Controllers.api
             return View();
         }
 
-    
+
         [HttpPost(ApiRoutes.setting.ContactUs)]
         public ActionResult ContactUs(string lang = "ar")
         {
@@ -61,7 +62,7 @@ namespace HaragApp.Controllers.api
                 return Json(new
                 {
                     key = 1,
-                  //  Setting
+                    //  Setting
                 });
 
 
@@ -96,7 +97,7 @@ namespace HaragApp.Controllers.api
                 return Json(new
                 {
                     key = 1,
-                  //  data
+                    //  data
                 });
 
 
@@ -130,7 +131,7 @@ namespace HaragApp.Controllers.api
                 return Json(new
                 {
                     key = 1,
-                   // data
+                    // data
                 });
 
 
@@ -190,7 +191,7 @@ namespace HaragApp.Controllers.api
                 return Json(new
                 {
                     key = 1,
-                   // data
+                    // data
                 });
 
 
@@ -225,7 +226,7 @@ namespace HaragApp.Controllers.api
                 return Json(new
                 {
                     key = 1,
-                   // data
+                    // data
                 });
 
 
@@ -271,11 +272,36 @@ namespace HaragApp.Controllers.api
         //}
 
 
-        [HttpPost(ApiRoutes.setting.GetPaidAdv)]
-        public IActionResult PaidAdv()
+        [AllowAnonymous]
+        [HttpPost(ApiRoutes.setting.GetAllPaidAdv)]
+        public IActionResult GetAllPaidAdv()
         {
             IAdverstisment dd = new AdvertisementServices(db);
-            return Json(new { data = dd.GetAllPaidAdv() });
+            var d = dd.GetAllPaidAdv();
+            return Json(new { data = d });
+        }
+
+        [AllowAnonymous]
+        [HttpPost(ApiRoutes.setting.Shop)]
+        public IActionResult Shop(ShopViewModel model)
+        {
+            IAdverstisment dd = new AdvertisementServices(db);
+            var d = dd.Shop(model);
+            return Json(new
+            {
+                advertisments = d.Advertisments,
+                Cities = d.Cities,
+                Categories = d.Categories,
+                search = d.search,
+                pageNo = d.PageNo,
+                AllAdsCount = d.AllAdsCount,
+                CategoryId = d.CategoryId,
+                CityId = d.CityId,
+                Km = d.Km,
+                Lang = d.Lang,
+                Lat = d.Lat,
+                NumberOFDisplayedAds = d.Advertisments.Count()
+            });
         }
     }
 }

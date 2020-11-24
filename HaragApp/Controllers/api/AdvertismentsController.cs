@@ -49,8 +49,7 @@ namespace HaragApp.Controllers.api
             return advertisment;
         }
 
-        // PUT: api/Advertisments/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+     
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAdvertisment(int id, Advertisment advertisment)
@@ -81,9 +80,7 @@ namespace HaragApp.Controllers.api
             return NoContent();
         }
 
-        // POST: api/Advertisments
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+    
         [HttpPost]
         public async Task<ActionResult<Advertisment>> PostAdvertisment(AdsImagesVm advertisment)
         {
@@ -109,23 +106,6 @@ namespace HaragApp.Controllers.api
             return advertisment;
         }
 
-        /*// GET: api/Advertisments/GetUserAds
-        [HttpGet]
-        public async Task<List<AdsImagesVm>> GetUserAdsAsync()
-        {
-            //var user = await _userManager.GetUserAsync(User);
-
-            IAdverstisment ads = new AdvertisementServices(_context);
-            var advList = ads.GetUserAdvertisementsAsync("81d2ca23-6407-48f8-884e-89233fca3df7");
-
-            return advList;
-        }*/
-        //public  ActionResult<IEnumerable<PaidAddViewModel>> PaidAdv()
-        //{
-        //    IAdverstisment dd = new AdvertisementServices(_context);
-        //    var x = dd.GetAllPaidAdv();
-        //    return  x.ToList();
-        //}
         private bool AdvertismentExists(int id)
         {
             return _context.Advertisments.Any(e => e.AdID == id);

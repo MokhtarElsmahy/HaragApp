@@ -146,7 +146,7 @@ namespace HaragApp.Component.Services
 
             return adsImagesVms;
         }
-        public ICollection<PaidAddViewModel> GetAllPaidAdv()
+        public List<PaidAddViewModel> GetAllPaidAdv()
         {
             
             return _context.Advertisments.Include(x=>x.AdImages).ToList().Where(c => c.IsPaid == true)
@@ -237,6 +237,156 @@ namespace HaragApp.Component.Services
             _context.SaveChanges();
 
             return newADV;
+        }
+
+        public ShopViewModel Shop(ShopViewModel model)
+        {
+
+            model.Advertisments = _context.Advertisments.Include(c => c.AdImages).Include(c=>c.AnimalCategory).Include(c=>c.City)
+                .Select(x=>new AdsImagesVm  { AdID=x.AdID, Title=x.Title ,CategoryID=x.CategoryID,CityID=x.CityID, CategoryName = x.AnimalCategory.CategoryName, CityName=x.City.CityName ,Lang=Convert.ToDouble(x.City.Langtude),
+                  Lat=  Convert.ToDouble(x.City.Lantitude)
+                , ImageUrl1=x.AdImages.ToList()[0].img,
+                    ImageUrl2= x.AdImages.ToList()[1].img
+                ,
+                    ImageUrl3 = x.AdImages.ToList()[2].img
+                ,
+                    ImageUrl4 = x.AdImages.ToList()[3].img
+                ,
+                    ImageUrl5 = x.AdImages.ToList()[4].img
+             
+                 
+                }).ToList();
+            model.Cities = _context.Cities.ToList();
+            model.Categories = _context.AnimalCategories.ToList();
+            model.PageNo = model.PageNo;
+            model.search = model.search;
+            model.Km = model.Km;
+            if (model.search != null)
+            {
+
+                if (model.CategoryId != 0)
+                {
+
+                    if (model.CityId != 0)
+                    {
+                        model.Advertisments = model.Advertisments.Where(c => c.CategoryID == model.CategoryId && c.CityID == model.CityId && (c.Title.Contains(model.search) || c.CategoryName.Contains(model.search))).ToList();
+                    }
+                    else
+                    {
+                        model.Advertisments = model.Advertisments.Where(c => c.CategoryID == model.CategoryId && (c.Title.Contains(model.search) || c.CategoryName.Contains(model.search))).ToList();
+                    }
+
+                }
+                else
+                {
+                    if (model.CityId != 0)
+                    {
+                        model.Advertisments = model.Advertisments.Where(c => c.CityID == model.CityId && (c.Title.Contains(model.search) || c.CategoryName.Contains(model.search))).ToList();
+                    }
+                    else
+                    {
+                        model.Advertisments = model.Advertisments.Where(c => (c.Title.Contains(model.search) || c.CategoryName.Contains(model.search))).ToList();
+                    }
+
+
+                }
+
+            }
+            else
+            {
+                if (model.CategoryId != 0)
+                {
+
+                    if (model.CityId != 0)
+                    {
+
+                        model.Advertisments = model.Advertisments.Where(c => c.CategoryID == model.CategoryId && c.CityID == model.CityId).ToList();
+                    }
+                    else
+                    {
+                        model.Advertisments = model.Advertisments.Where(c => c.CategoryID == model.CategoryId).ToList();
+                    }
+
+
+
+
+                }
+                else
+                {
+                    if (model.CityId != 0)
+                    {
+                        model.Advertisments = model.Advertisments.Where(c => c.CityID == model.CityId).ToList();
+                    }
+
+
+                }
+            }
+            if (model.Lang != 0)
+            {
+
+                model.Advertisments = GetNearestAdvertisments(model.Lat, model.Lang, model.Km, model.Advertisments);
+            }
+
+            model.AllAdsCount = model.Advertisments.Count();
+            model.Advertisments = model.Advertisments.OrderByDescending(c => c.AdID).Skip((model.PageNo - 1) * 6).Take(6).ToList();
+            return model;
+        }
+        public List<AdsImagesVm> GetNearestAdvertisments(double currentLatitude, double currentLongitude,
+         int km, List<AdsImagesVm> data)
+        {
+
+            List<AdsImagesVm> advertsments = new List<AdsImagesVm>();
+            var query = (from c in data
+
+                         select c).ToList();
+            foreach (var ad in data)
+            {
+                double distance = Distance(currentLatitude, currentLongitude, Convert.ToDouble(ad.Lat), Convert.ToDouble(ad.Lang));
+                if (distance <= km)         //nearbyplaces which are within 25 kms  50 w 70
+                {
+                    AdsImagesVm dist = new AdsImagesVm();
+                   
+                    dist.Title = ad.Title;
+                    dist.CityID = ad.CityID;
+                    dist.CityName = ad.CityName;
+                    dist.CategoryID = ad.CategoryID;
+                    dist.CategoryName = ad.CategoryName;
+                    dist.Description = ad.Description;
+                    dist.Lang = ad.Lang;
+                    dist.Lat = ad.Lat;
+                    dist.ImageUrl1 = ad.ImageUrl1;
+                    dist.ImageUrl2 = ad.ImageUrl2;
+                    dist.ImageUrl3 = ad.ImageUrl3;
+                    dist.ImageUrl4 = ad.ImageUrl4;
+                    dist.ImageUrl5 = ad.ImageUrl5;
+                    advertsments.Add(dist);
+
+                }
+
+            }
+
+
+            return advertsments;
+        }
+
+        private double Distance(double lat1, double lon1, double lat2, double lon2)
+        {
+            double theta = lon1 - lon2;
+            double dist = Math.Sin(deg2rad(lat1)) * Math.Sin(deg2rad(lat2)) + Math.Cos(deg2rad(lat1)) * Math.Cos(deg2rad(lat2)) * Math.Cos(deg2rad(theta));
+            dist = Math.Acos(dist);
+            dist = rad2deg(dist);
+            dist = (dist * 60 * 1.1515) / 0.6213711922;
+            // dist = (dist  * 1.609344);   //miles to kms
+            return (dist);
+        }
+        private double deg2rad(double deg)
+        {
+            return (deg * Math.PI / 180.0);
+        }
+
+        private double rad2deg(double rad)
+        {
+            return (rad * 180.0 / Math.PI);
         }
     }
 }

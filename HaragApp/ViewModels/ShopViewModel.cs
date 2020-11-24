@@ -13,7 +13,7 @@ namespace HaragApp.ViewModels
         public int CityId { get; set; }
         public int PageNo { get; set; }
 
-        public List<Advertisment> Advertisments { get; set; }
+        public List<AdsImagesVm> Advertisments { get; set; }
         public List<AnimalCategory> Categories { get; set; }
         public List<City> Cities { get; set; }
        public int Km { get; set; }

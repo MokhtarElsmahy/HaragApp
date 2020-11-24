@@ -18,6 +18,7 @@ using System.Text;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 using HaragApp.Models;
+using Newtonsoft.Json;
 
 namespace HaragApp
 {
@@ -33,6 +34,7 @@ namespace HaragApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -116,8 +118,10 @@ namespace HaragApp
             });
             #endregion
 
+            // services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllersWithViews();
-        
+           // services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddRazorPages();
 
             

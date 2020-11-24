@@ -14,7 +14,7 @@ namespace HaragApp.Component.Interfaces
         AdsImagesVm Details(int? id);
         List<AdsImagesVm> GetUserAdvertisementsAsync(string id);
 
-        ICollection<PaidAddViewModel> GetAllPaidAdv();
+        List<PaidAddViewModel> GetAllPaidAdv();
         public void DeletePaidAdd(int id);
 
         public AdsImagesVm GetPaidAdv(int id);
@@ -22,5 +22,6 @@ namespace HaragApp.Component.Interfaces
         public void EditPaidAdv(AdsImagesVm advertisment);
         bool userDeleteADV(int id);
         AdsImagesVm userUpdateADV(int id , AdsImagesVm newADV);
+        public ShopViewModel Shop(ShopViewModel model);
     }
 }

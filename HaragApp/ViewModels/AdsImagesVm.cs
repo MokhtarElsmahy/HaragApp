@@ -18,8 +18,15 @@ namespace HaragApp.ViewModels
         public string UserId { get; set; }
         public int CityID { get; set; }
         public string CityName { get; set; }
+        public double Lang { get; set; }
+        public double Lat { get; set; }
+
         public string CategoryName { get; set; }
         public int CategoryID { get; set; }
+        public int Km { get; set; }
+        public int PageNo { get; set; }
+
+        public string search { get; set; }
         public string ImageUrl1 { get; set; }
         public string ImageUrl2 { get; set; }
         public string ImageUrl3 { get; set; }

@@ -35,8 +35,8 @@
             <!--content side-->
             <div class="content-side col-lg-9 col-md-12 col-sm-12">
                 <div class="shop-upper-box clearfix">
-                    <div class="items-label pull-left">عرض 7 من 100</div>
-                    <form asp-action="Shop" id="myform" >
+                    <div class="items-label pull-left">showing @Model.Advertisments.Count() of @Model.AllAdsCount</div>
+                    <form asp-action="Shop" id="myform" > 
 
                         <div class="sort-by pull-right">
                             <input type="number" value="@Model.Km" name="Km" placeholder="km10" /> <button  class="btn btn-primary" >بحث</button>
@@ -56,7 +56,7 @@
                         <div class="shop-item col-lg-4 col-md-6 col-sm-12">
                             <div class="inner-box">
                                 <div class="image">
-                                    <img src="@item.AdImages.ToList()[0].img" alt="">
+                                    <img src="@item.ImageUrl1" alt="">
                                     @*<div class="overlay-box">
                                             <div class="icon-box">
                                                 <a href="cart.html" class="cart-btn"><i class="fa fa-heart"></i> أضف الي المفضله</a>
@@ -115,7 +115,7 @@
                             @foreach (var item in Model.Categories)
                             {
 
-                                <li><a asp-action="Shop" asp-route-CityId="@Model.CityId" asp-route-CategoryId="@item.CategoryID" asp-route-search="@Model.search">@item.CategoryName</a></li>
+                                <li><a asp-action="Shop"  asp-route-CategoryId="@item.CategoryID" asp-route-search="@Model.search">@item.CategoryName</a></li>
                             }
 
 
@@ -128,7 +128,7 @@
                             @foreach (var item in Model.Cities)
                             {
 
-                                <li><a asp-action="Shop" asp-route-CityId="@item.CityID" asp-route-CategoryId="@Model.CategoryId" asp-route-search="@Model.search">@item.CityName</a></li>
+                                <li><a asp-action="Shop" asp-route-CityId="@item.CityID" asp-route-search="@Model.search">@item.CityName</a></li>
                             }
 
 

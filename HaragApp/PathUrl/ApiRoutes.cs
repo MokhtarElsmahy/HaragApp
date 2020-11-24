@@ -26,7 +26,8 @@ namespace HaragApp.PathUrl
             public const string AboutUs = Base + "/AboutUs";
             public const string GetAdvertsment = Base + "/GetAdvertsment";
             public const string GetSetting = Base + "/GetSetting";
-            public const string GetPaidAdv = Base + "/GetPaidAdv";
+            public const string GetAllPaidAdv = Base + "/GetAllPaidAdv";
+            public const string Shop = Base + "/Shop";
             public const string Addcomplaints = Base + "/Addcomplaints";
 
             public const string GetQAndAnswerforDeleget = Base + "/GetQAndAnswerforDeleget";
