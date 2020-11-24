@@ -373,5 +373,134 @@ namespace HaragApp.Controllers
             return RedirectToAction(nameof(IndexPaidAdv));
         }
 
+
+        public IActionResult Shop(ShopViewModel model)
+        {
+           
+            model.Advertisments = _context.Advertisments.Include(c => c.AdImages).ToList();
+            model.Cities = _context.Cities.ToList();
+            model.Categories = _context.AnimalCategories.ToList();
+           
+           if (model.search != null)
+            {
+                
+                if (model.CategoryId != 0)
+                {
+                   
+                    if (model.CityId != 0)
+                    {
+                        model.Advertisments = model.Advertisments.Where(c => c.CategoryID == model.CategoryId && c.CityID == model.CityId && (c.Title.Contains(model.search) || c.AnimalCategory.CategoryName.Contains(model.search))).ToList();
+                    }
+                    else
+                    {
+                        model.Advertisments = model.Advertisments.Where(c => c.CategoryID == model.CategoryId && (c.Title.Contains(model.search) || c.AnimalCategory.CategoryName.Contains(model.search))).ToList();
+                    }
+                    model.Advertisments = GetNearestAdvertisments(model.Lat, model.Lang, model.Km, model.Advertisments);
+                    model.AllAdsCount = model.Advertisments.Count();
+                    model.Advertisments = model.Advertisments.Skip((model.PageNo - 1) * 6).Take(6).ToList();
+                }
+                else
+                {
+                    if (model.CityId != 0)
+                    {
+                        model.Advertisments = model.Advertisments.Where(c => c.CityID == model.CityId && (c.Title.Contains(model.search) || c.AnimalCategory.CategoryName.Contains(model.search))).ToList();
+                    }
+                    else
+                    {
+                        model.Advertisments = model.Advertisments.Where(c => (c.Title.Contains(model.search) || c.AnimalCategory.CategoryName.Contains(model.search))).ToList();
+                    }
+                    model.Advertisments = GetNearestAdvertisments(model.Lat, model.Lang, model.Km, model.Advertisments);
+                    model.AllAdsCount = model.Advertisments.Count();
+                    model.Advertisments = model.Advertisments.Skip((model.PageNo - 1) * 6).Take(6).ToList();
+                   
+                }
+
+            }
+            else
+            {
+                if (model.CategoryId != 0)
+                {
+                   
+                    if (model.CityId != 0)
+                    {
+
+                        model.Advertisments = model.Advertisments.Where(c => c.CategoryID == model.CategoryId && c.CityID == model.CityId).ToList();
+                    }
+                    else
+                    {
+                        model.Advertisments = model.Advertisments.Where(c => c.CategoryID == model.CategoryId).ToList();
+                    }
+                    model.Advertisments = GetNearestAdvertisments(model.Lat, model.Lang, model.Km, model.Advertisments);
+                    model.AllAdsCount = model.Advertisments.Count();
+                    model.Advertisments = model.Advertisments.Skip((model.PageNo - 1) * 6).Take(6).ToList();
+                    
+
+
+                }
+                else
+                {
+                    if (model.CityId != 0)
+                    {
+                        model.Advertisments = model.Advertisments.Where(c => c.CityID == model.CityId).ToList();
+                    }
+                    model.Advertisments = GetNearestAdvertisments(model.Lat, model.Lang, model.Km, model.Advertisments);
+                    model.AllAdsCount = model.Advertisments.Count();
+                    model.Advertisments = model.Advertisments.Skip((model.PageNo - 1) * 6).Take(6).ToList();
+                    
+                }
+            }
+            return View(model);
+        }
+
+
+        public List<Advertisment> GetNearestAdvertisments(double currentLatitude, double currentLongitude,
+          int km, List<Advertisment> data)
+        {
+
+            List<Advertisment> advertsments = new List<Advertisment>();
+            var query = (from c in data
+
+                         select c).ToList();
+            foreach (var ad in data)
+            {
+                double distance = Distance(currentLatitude, currentLongitude, Convert.ToDouble(ad.City.Lantitude), Convert.ToDouble(ad.City.Langtude));
+                if (distance <= km)         //nearbyplaces which are within 25 kms  50 w 70
+                {
+                    Advertisment dist = new Advertisment();
+                    dist.AdImages = ad.AdImages;
+                    dist.Title = ad.Title;
+                    dist.CityID = ad.CityID;
+                    dist.CategoryID = ad.CategoryID;
+                    dist.Description = ad.Description;
+                    advertsments.Add(dist);
+
+                }
+
+            }
+
+
+            return advertsments;
+        }
+
+        private double Distance(double lat1, double lon1, double lat2, double lon2)
+        {
+            double theta = lon1 - lon2;
+            double dist = Math.Sin(deg2rad(lat1)) * Math.Sin(deg2rad(lat2)) + Math.Cos(deg2rad(lat1)) * Math.Cos(deg2rad(lat2)) * Math.Cos(deg2rad(theta));
+            dist = Math.Acos(dist);
+            dist = rad2deg(dist);
+            dist = (dist * 60 * 1.1515) / 0.6213711922;
+            // dist = (dist  * 1.609344);   //miles to kms
+            return (dist);
+        }
+        private double deg2rad(double deg)
+        {
+            return (deg * Math.PI / 180.0);
+        }
+
+        private double rad2deg(double rad)
+        {
+            return (rad * 180.0 / Math.PI);
+        }
+        
     }
 }
