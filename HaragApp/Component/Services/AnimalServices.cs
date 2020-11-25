@@ -1,5 +1,6 @@
 ﻿using HaragApp.Data;
 using HaragApp.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,12 @@ namespace HaragApp.Commonet
         public AnimalCategory Get(int id)
         {
             var s = _context.AnimalCategories.Where(x => x.CategoryID == id).FirstOrDefault();
+            return s;
+        }
+
+        public List<AnimalCategory> GetAll()
+        {
+            var s = _context.AnimalCategories.ToList();
             return s;
         }
     }

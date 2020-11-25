@@ -304,7 +304,7 @@ namespace HaragApp.Controllers
             return View();
         }
 
-
+       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -393,7 +393,48 @@ namespace HaragApp.Controllers
         }
 
 
-       
-        
+        public async Task<IActionResult> AddToFav(int adID)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
+            {
+                return Json(new { message = "Please Login First" });
+
+            }
+            IAdverstisment adv = new AdvertisementServices(_context);
+
+            var check = adv.AddToFav(adID, user.Id.ToString());
+            if (check)
+            {
+                return Json(new { message = "success" });
+
+            }
+            return Json(new { message = "Failed" });
+
+
+        }
+
+
+        [Authorize]
+        public async Task<IActionResult> ShowFavouriteAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            IAdverstisment adverstisment = new AdvertisementServices(_context);
+            var adVMs = adverstisment.GetUserFavorites(user.Id.ToString());
+            return View(adVMs);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DeleteFavAsync(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            IAdverstisment adverstisment = new AdvertisementServices(_context);
+            adverstisment.DeleteFav(user.Id, id);
+
+            return RedirectToAction("ShowFavourite", "Advertisments");
+        }
+
+    
+
     }
 }

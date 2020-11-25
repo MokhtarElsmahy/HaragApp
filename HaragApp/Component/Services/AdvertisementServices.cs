@@ -101,6 +101,7 @@ namespace HaragApp.Component.Services
             adsVM.CityID = adv.CityID;
             adsVM.CityName = adv.City.CityName;
             adsVM.Description = adv.Description;
+            adsVM.userPhone = adv.User.Phone;
             var adImages = adv.AdImages.ToList();
          
             adsVM.ImageUrl1 = adImages[0].img ;
@@ -387,6 +388,158 @@ namespace HaragApp.Component.Services
         private double rad2deg(double rad)
         {
             return (rad * 180.0 / Math.PI);
+        }
+
+
+        public bool AddToFav(int AdID , String userID)
+        {
+            var fav = _context.Favorites.SingleOrDefault(x => x.AdID == AdID && x.UserId == userID);
+            Favorite favADv = new Favorite();
+            if (fav == null)
+            {
+                favADv.AdID = AdID;
+                favADv.UserId = userID ;
+                _context.Favorites.Add(favADv);
+                _context.SaveChanges();
+            }
+
+            var advertismentCheck = _context.Favorites.Where(xx => xx.AdID == AdID && xx.UserId == userID).SingleOrDefault();
+            if (advertismentCheck == null)
+            {
+                return false;
+            }
+            
+
+            return true;
+
+        }
+
+        public List<favoriteViewModel> GetUserFavorites(string userID)
+        {
+
+            var ADS = _context.Favorites.Include(x => x.Advertisment).Include(x => x.Advertisment.AdImages).Include(x => x.Advertisment.AnimalCategory).Include(x => x.Advertisment.City).Where(x => x.UserId == userID).ToList();
+            List<favoriteViewModel> adVMs = new List<favoriteViewModel>();
+            foreach (var item in ADS)
+            {
+                adVMs.Add(new favoriteViewModel
+                {
+                    AdID = item.AdID,
+                    CategoryName = item.Advertisment.AnimalCategory.CategoryName,
+                    CityName = item.Advertisment.City.CityName,
+                    Title = item.Advertisment.Title,
+                    ImageUrl1 = item.Advertisment.AdImages.ToList()[0].img,
+                    Description = item.Advertisment.Description
+                });
+            }
+
+            return (adVMs);
+        }
+
+        public bool DeleteFav(string userID , int ADVid)
+        {
+            var favAD = _context.Favorites.FirstOrDefault(x => x.AdID == ADVid && x.UserId == userID);
+            _context.Favorites.Remove(favAD);
+            _context.SaveChanges();
+
+            var check = _context.Favorites.FirstOrDefault(x => x.AdID == ADVid && x.UserId == userID);
+            if (check == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public List<favoriteViewModel> GetAdvertismentsForIndex()
+        {
+
+
+            int pageNo = 1;
+            int pageSize = 6;
+            var advs = _context.Advertisments.OrderBy(p => p.AdID).Skip((pageNo - 1) * pageSize).Take(pageSize).Include(p => p.AnimalCategory).Include(xx=>xx.AdImages)
+                .Select(xx => new favoriteViewModel
+            {
+                CategoryName = xx.AnimalCategory.CategoryName,
+                Title = xx.Title,
+                ImageUrl1 = xx.AdImages.ToList()[0].img
+            }).ToList();
+            return advs;
+
+        }
+
+        public List<AdsImagesVm> GetAllAdvertisemtsData()
+        {
+            var ads = _context.Advertisments.Include(xx => xx.AdImages).Include(xx => xx.City).Include(xx => xx.AnimalCategory).Include(xx=>xx.User).ToList();
+            List<AdsImagesVm> adsImagesVms = new List<AdsImagesVm>();
+
+            foreach (var item in ads)
+            {
+                adsImagesVms.Add(new AdsImagesVm()
+                {
+                    AdID = item.AdID,
+                    CategoryID = item.CategoryID,
+                    CityName = item.City.CityName,
+                    Description = item.Description,
+                    CategoryName = item.AnimalCategory.CategoryName,
+                    CityID = item.CityID,
+                    ImageUrl1 = item.AdImages.ToList()[0].img,
+                    ImageUrl2 = item.AdImages.ToList()[1].img,
+                    ImageUrl3 = item.AdImages.ToList()[2].img,
+                    ImageUrl4 = item.AdImages.ToList()[3].img,
+                    ImageUrl5 = item.AdImages.ToList()[4].img,
+                    Title = item.Title,
+                    UserId = item.UserId,
+                    userPhone = item.User.Phone
+
+                });
+            }
+
+
+            return adsImagesVms;
+        }
+
+        public favoriteViewModel GetAdvertisementByID(int ADid)
+        {
+            var ad = _context.Advertisments.Include(c => c.AdImages).Include(xx=>xx.City).Include(xx=>xx.AnimalCategory).FirstOrDefault(c => c.AdID == ADid);
+            favoriteViewModel model = new favoriteViewModel()
+            {
+                AdID = ad.AdID,
+
+                Description = ad.Description,
+                Title = ad.Title,
+
+                ImageUrl1 = ad.AdImages.ToList()[0].img,
+               CategoryName = ad.AnimalCategory.CategoryName,
+               CityName = ad.City.CityName
+
+            };
+            return model;
+        }
+
+        public List<favoriteViewModel> GetTopFiveFavs()
+        {
+            var results = from p in _context.Favorites
+                          group p by p.AdID into g
+                          select new { id = g.Key, total = g.Count() };
+            var TOP = results.OrderByDescending(xx => xx.total).Take(5);
+            List<favoriteViewModel> favoriteViewModel = new List<favoriteViewModel>();
+
+            IAdverstisment aa = new AdvertisementServices(_context);
+            foreach (var item in TOP)
+            {
+                var adv = aa.GetAdvertisementByID(item.id);
+                favoriteViewModel.Add(new favoriteViewModel
+                {
+                    AdID = adv.AdID,
+                    CategoryName = adv.CategoryName,
+                    CityName = adv.CityName,
+                    ImageUrl1 = adv.ImageUrl1,
+                    Title = adv.Title,
+                    Description = adv.Description
+                });
+
+
+            }
+            return favoriteViewModel;
         }
     }
 }

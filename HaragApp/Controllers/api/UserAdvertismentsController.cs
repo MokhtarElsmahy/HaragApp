@@ -96,5 +96,7 @@ namespace HaragApp.Controllers.api
         {
             return _context.Advertisments.Any(e => e.AdID == id);
         }
+
+    
     }
 }

@@ -24,24 +24,13 @@ namespace HaragApp.Controllers.api
 
         // GET: api/AnimalCategories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AnimalCategory>>> GetAnimalCategories()
+        public ActionResult<IEnumerable<AnimalCategory>> GetAnimalCategories()
         {
-            return await _context.AnimalCategories.ToListAsync();
+            IAnimalCategory aa = new AnimalServices(_context);
+            var categories = aa.GetAll();
+            return categories;
         }
 
-        // GET: api/AnimalCategories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AnimalCategory>> GetAnimalCategory(int id)
-        {
-            var animalCategory = await _context.AnimalCategories.FindAsync(id);
-
-            if (animalCategory == null)
-            {
-                return NotFound();
-            }
-
-            return animalCategory;
-        }
 
         // PUT: api/AnimalCategories/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for

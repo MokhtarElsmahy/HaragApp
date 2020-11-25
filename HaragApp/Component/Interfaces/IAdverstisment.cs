@@ -23,5 +23,15 @@ namespace HaragApp.Component.Interfaces
         bool userDeleteADV(int id);
         AdsImagesVm userUpdateADV(int id , AdsImagesVm newADV);
         public ShopViewModel Shop(ShopViewModel model);
+
+        public bool AddToFav(int AdID, String userID);
+
+        List<favoriteViewModel> GetUserFavorites(string userID);
+        public bool DeleteFav(string userID, int ADVid);
+
+        public List<favoriteViewModel> GetAdvertismentsForIndex();
+        public List<AdsImagesVm> GetAllAdvertisemtsData();
+        public favoriteViewModel GetAdvertisementByID(int ADid);
+        public List<favoriteViewModel> GetTopFiveFavs();
     }
 }

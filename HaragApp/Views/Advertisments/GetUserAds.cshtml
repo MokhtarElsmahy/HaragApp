@@ -15,13 +15,14 @@
                         <div class="row card-body">
                             <div class="col-6">
                                 <h5 class="card-title" style="text-align:right;"><a asp-action="Details" asp-controller="Advertisments" asp-route-id="@item.AdID">@item.Title</a></h5>
-                                <p class="card-text mb-2" style="text-align:right;">@item.Description</p>
-                                <div style="text-align:right;">
-                                    <a  class="btn btn-primary btn-block" style="text-align:center;" asp-action="userUpdateADV" asp-controller="Advertisments" asp-route-id="@item.AdID">تعديــل</a>
-                                    <a  class="btn btn-danger btn-block" style="text-align:center;" asp-action="userDeleteADV" asp-controller="Advertisments" asp-route-id="@item.AdID">حــذف</a>
-                                </div>
+                                <p class="card-text mb-2" style="text-align:right;text-overflow: ellipsis; overflow: hidden;  white-space: nowrap; width:100%;">@item.Description</p>
+
                             </div>
-                            <img class="col-sm-6" style="width:100px;height:200px" src="@item.ImageUrl2" alt="sans" />
+                            <img class="col-md-6 col-sm-12 img-thumbnail" style="height:200px;width:100%" src="@item.ImageUrl2" alt="sans" />
+                        </div>
+                        <div style="text-align:right;">
+                            <a class="btn btn-primary btn-block" style="text-align:center;" asp-action="userUpdateADV" asp-controller="Advertisments" asp-route-id="@item.AdID">تعديــل</a>
+                            <a class="btn btn-danger btn-block" style="text-align:center;" asp-action="userDeleteADV" asp-controller="Advertisments" asp-route-id="@item.AdID">حــذف</a>
                         </div>
                     </div>
                 </div>

@@ -36,11 +36,13 @@ namespace HaragApp.PathUrl
             public const string AboutUsforDeleget = Base + "/AboutUsforDeleget";
             public const string GetSettingforDeleget = Base + "/GetSettingforDeleget";
             public const string AddcomplaintsforDeleget = Base + "/AddcomplaintsforDeleget";
+
+
         }
-   
-  
-   
-    
+
+
+
+
         public static class Identity
         {
             // delegt

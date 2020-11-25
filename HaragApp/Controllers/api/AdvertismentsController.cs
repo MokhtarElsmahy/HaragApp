@@ -29,9 +29,11 @@ namespace HaragApp.Controllers.api
 
         // GET: api/Advertisments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Advertisment>>> GetAdvertisments()
+        public  ActionResult<List<AdsImagesVm>> GetAdvertisments()
         {
-            return await _context.Advertisments.ToListAsync();
+            IAdverstisment ads = new AdvertisementServices(_context);
+            
+            return ads.GetAllAdvertisemtsData(); ;
         }
 
         // GET: api/Advertisments/5

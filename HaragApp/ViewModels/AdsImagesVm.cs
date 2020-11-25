@@ -20,7 +20,7 @@ namespace HaragApp.ViewModels
         public string CityName { get; set; }
         public double Lang { get; set; }
         public double Lat { get; set; }
-
+        public string userPhone { get; set; }
         public string CategoryName { get; set; }
         public int CategoryID { get; set; }
         public int Km { get; set; }

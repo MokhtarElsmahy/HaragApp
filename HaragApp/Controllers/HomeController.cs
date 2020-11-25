@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using HaragApp.Data;
 using HaragApp.Component.Interfaces;
 using HaragApp.Component.Services;
+using HaragApp.Commonet;
 
 namespace HaragApp.Controllers
 {
@@ -30,7 +31,11 @@ namespace HaragApp.Controllers
         {
             HomeViewModel model = new HomeViewModel();
             IAdverstisment dd = new AdvertisementServices(_context);
+            IAnimalCategory aa = new AnimalServices(_context);
             model.PaidAdvs = dd.GetAllPaidAdv();
+            model.animalCategories = aa.GetAll();
+            model.advertisments = dd.GetAdvertismentsForIndex();
+            model.TOPadvertisments = dd.GetTopFiveFavs();
             return View(model);
         }
 
@@ -44,5 +49,7 @@ namespace HaragApp.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        
     }
 }

@@ -10,5 +10,6 @@ namespace HaragApp.Commonet
     {
         AnimalCategory Create(AnimalCategory animalCategory);
         AnimalCategory Get(int id);
+        List<AnimalCategory> GetAll();
     }
 }
