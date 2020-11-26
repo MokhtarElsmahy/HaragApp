@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HaragApp.Data;
 using HaragApp.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace HaragApp.Controllers
 {
@@ -33,14 +36,14 @@ namespace HaragApp.Controllers
                 return NotFound();
             }
 
-            var config = await _context.Configs
+            var configs = await _context.Configs
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (config == null)
+            if (configs == null)
             {
                 return NotFound();
             }
 
-            return View(config);
+            return View(configs);
         }
 
         // GET: Configs/Create
@@ -53,32 +56,26 @@ namespace HaragApp.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,about")] Config config)
+        public async Task<IActionResult> Create(Configs configs)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(config);
+                _context.Add(configs);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(config);
+            return View(configs);
         }
 
         // GET: Configs/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit()
         {
-            if (id == null)
+            var configs = _context.Configs.ToList()[0];
+            if (configs == null)
             {
                 return NotFound();
             }
-
-            var config = await _context.Configs.FindAsync(id);
-            if (config == null)
-            {
-                return NotFound();
-            }
-            return View(config);
+            return View(configs);
         }
 
         // POST: Configs/Edit/5
@@ -86,9 +83,9 @@ namespace HaragApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,about")] Config config)
+        public async Task<IActionResult> Edit(int id,Configs configs)
         {
-            if (id != config.ID)
+            if (id != configs.ID)
             {
                 return NotFound();
             }
@@ -97,12 +94,12 @@ namespace HaragApp.Controllers
             {
                 try
                 {
-                    _context.Update(config);
+                    _context.Update(configs);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ConfigExists(config.ID))
+                    if (!ConfigsExists(configs.ID))
                     {
                         return NotFound();
                     }
@@ -113,7 +110,7 @@ namespace HaragApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(config);
+            return View(configs);
         }
 
         // GET: Configs/Delete/5
@@ -124,14 +121,14 @@ namespace HaragApp.Controllers
                 return NotFound();
             }
 
-            var config = await _context.Configs
+            var configs = await _context.Configs
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (config == null)
+            if (configs == null)
             {
                 return NotFound();
             }
 
-            return View(config);
+            return View(configs);
         }
 
         // POST: Configs/Delete/5
@@ -139,13 +136,13 @@ namespace HaragApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var config = await _context.Configs.FindAsync(id);
-            _context.Configs.Remove(config);
+            var configs = await _context.Configs.FindAsync(id);
+            _context.Configs.Remove(configs);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ConfigExists(int id)
+        private bool ConfigsExists(int id)
         {
             return _context.Configs.Any(e => e.ID == id);
         }

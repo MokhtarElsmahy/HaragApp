@@ -1,32 +1,316 @@
-﻿@model HaragApp.Models.Config
+﻿@model HaragApp.Models.Configs
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+@section Styles{
 
-<h4>Config</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="about" class="control-label"></label>
-                <input asp-for="about" class="form-control" />
-                <span asp-validation-for="about" class="text-danger"></span>
+    <style>
+        .form-group label, label {
+            color: black;
+        }
+    </style>
+}
+
+
+<div class="container">
+    <hr />
+    <h1>تعديــل</h1>
+
+    <hr />
+    <form asp-action="Edit">
+        <div class="row">
+            <div class="col-12">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="OurMessage" class="control-label">رسالتنــا</label>
+                    <input asp-for="OurMessage" class="form-control" />
+                    <span asp-validation-for="OurMessage" class="text-danger"> </span>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="about" class="control-label"> عن/حــول</label>
+                    <input asp-for="about" class="form-control" />
+                    <span asp-validation-for="about" class="text-danger"> </span>
+                </div>
             </div>
-        </form>
-    </div>
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="OurHistory" class="control-label"> تاريخنــا</label>
+                    <input asp-for="OurHistory" class="form-control" />
+                    <span asp-validation-for="OurHistory" class="text-danger"> </span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="Mobile1" class="control-label"> الهاتف الأول</label>
+                    <input asp-for="Mobile1" class="form-control" />
+                    <span asp-validation-for="Mobile1" class="text-danger"> </span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="Mobile2" class="control-label"> الهاتف الثاني</label>
+                    <input asp-for="Mobile2" class="form-control" />
+                    <span asp-validation-for="Mobile2" class="text-danger"> </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="FaceBookLink" class="control-label"> لينك الفيسبوك</label>
+                    <input asp-for="FaceBookLink" class="form-control" />
+                    <span asp-validation-for="FaceBookLink" class="text-danger"> </span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="TwitterLink" class="control-label"> لينك التويتر</label>
+                    <input asp-for="TwitterLink" class="form-control" />
+                    <span asp-validation-for="TwitterLink" class="text-danger"> </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"> إيميل التواصــل</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"> </span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="address" class="control-label"> العنوان</label>
+                    <input asp-for="address" class="form-control" />
+                    <span asp-validation-for="address" class="text-danger"> </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="WorkFrom" class="control-label"> وقت بداية العمــل</label>
+                    <input asp-for="WorkFrom" class="form-control" />
+                    <span asp-validation-for="WorkFrom" class="text-danger"> </span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="WorkTo" class="control-label"> وقت نهاية العمــل</label>
+                    <input asp-for="WorkTo" class="form-control" />
+                    <span asp-validation-for="WorkTo" class="text-danger"> </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="slider1Image" class="control-label"> صورة السلايدر الاولى</label>
+                    <input type="file" name="files" id="files1" class="btn btn-block form-control" value="@Model.slider1Image">
+                    <span asp-validation-for="slider1Image" class="text-danger"> </span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="slider1Text" class="control-label"> نص صورة السلايدر الأولى</label>
+                    <input asp-for="slider1Text" class="form-control" />
+                    <span asp-validation-for="slider1Text" class="text-danger"> </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="slider2Image" class="control-label"> صورة السلايدر الثانية</label>
+                    <input type="file" name="files" id="files2" class="btn btn-block form-control" value="@Model.slider2Image">
+                    <span asp-validation-for="slider2Image" class="text-danger"> </span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="slider2Text" class="control-label"> نص صورة السلايدر الثانية</label>
+                    <input asp-for="slider2Text" class="form-control" />
+                    <span asp-validation-for="slider2Text" class="text-danger"> </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="slider3Image" class="control-label"> صورة السلايدر الثالثة</label>
+                    <input type="file" name="files" id="files3" class="btn btn-block form-control" value="@Model.slider3Image">
+                    <span asp-validation-for="slider3Image" class="text-danger"> </span>
+                </div>
+
+
+            </div>
+            <div class="col-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+                <div class="form-group">
+                    <label asp-for="slider3Text" class="control-label"> نص صورة السلايدر الثالية</label>
+                    <input asp-for="slider3Text" class="form-control" />
+                    <span asp-validation-for="slider3Text" class="text-danger"> </span>
+                </div>
+            </div>
+        </div>
+
+        <input id="slider1Image" name="slider1Image" type="hidden" value="@Model.slider1Image" />
+        <input id="slider2Image" name="slider2Image" type="hidden" value="@Model.slider2Image" />
+        <input id="slider3Image" name="slider3Image" type="hidden" value="@Model.slider3Image" />
+        <input id="ID" name="ID" type="hidden" value="@Model.ID" />
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary btn-block w-50 m-auto" />
+
+        </div>
+
+
+
+    </form>
 </div>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
+
+
+@section Scripts {
+    <script>
+	 $("#files1").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#slider1Image").val(response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+				//.done(function (response) {
+
+				//        alert(response.ImageURL)
+				//       // $("#ImageUrl").val(response.ImageURL);
+				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+
+				// })
+				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				//    	alert("FAIL");
+				//});
+	 });
+	 $("#files2").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#slider2Image").val(response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+				//.done(function (response) {
+
+				//        alert(response.ImageURL)
+				//       // $("#ImageUrl").val(response.ImageURL);
+				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+
+				// })
+				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				//    	alert("FAIL");
+				//});
+	 });
+	 $("#files3").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#slider3Image").val(response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+
+	});
+
+
+    </script>
+}

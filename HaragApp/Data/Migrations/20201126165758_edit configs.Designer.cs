@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HaragApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201125174648_addCommenttoDB")]
-    partial class addCommenttoDB
+    [Migration("20201126165758_edit configs")]
+    partial class editconfigs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -229,32 +229,67 @@ namespace HaragApp.Data.Migrations
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("HaragApp.Models.Comment", b =>
+            modelBuilder.Entity("HaragApp.Models.Configs", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AdID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CommentText")
+                    b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Date")
+                    b.Property<string>("FaceBookLink")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Mobile1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mobile2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OurHistory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OurMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TwitterLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WorkFrom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WorkTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("about")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider1Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider1Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider2Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider2Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider3Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider3Text")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("AdID");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comment");
+                    b.ToTable("Configs");
                 });
 
             modelBuilder.Entity("HaragApp.Models.Favorite", b =>
@@ -441,19 +476,6 @@ namespace HaragApp.Data.Migrations
 
                     b.HasOne("HaragApp.Data.ApplicationDbUser", "User")
                         .WithMany("Advertisments")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("HaragApp.Models.Comment", b =>
-                {
-                    b.HasOne("HaragApp.Models.Advertisment", "Advertisment")
-                        .WithMany("Comments")
-                        .HasForeignKey("AdID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HaragApp.Data.ApplicationDbUser", "User")
-                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 

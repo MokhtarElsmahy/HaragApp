@@ -1,36 +1,143 @@
-﻿@model IEnumerable<HaragApp.Models.Config>
+﻿@model IEnumerable<HaragApp.Models.Configs>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Styles{
 
-<h1>Index</h1>
+    <link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css" />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.about)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.about)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
 }
-    </tbody>
-</table>
+
+
+<div class="container">
+    <h1 style="text-align:center">الرئيسية</h1>
+
+    <p>
+        <a asp-action="Edit" class="btn btn-warning">Create New</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.about)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OurMessage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OurHistory)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mobile1)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mobile2)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FaceBookLink)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TwitterLink)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkFrom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkTo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.slider1Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.slider2Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.slider3Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.slider1Text)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.slider2Text)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.slider3Text)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.about)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OurMessage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OurHistory)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mobile1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mobile2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FaceBookLink)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TwitterLink)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WorkFrom)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WorkTo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.slider1Image)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.slider2Image)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.slider3Image)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.slider1Text)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.slider2Text)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.slider3Text)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

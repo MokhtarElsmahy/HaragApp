@@ -15,7 +15,7 @@ namespace HaragApp.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -227,14 +227,62 @@ namespace HaragApp.Data.Migrations
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("HaragApp.Models.Config", b =>
+            modelBuilder.Entity("HaragApp.Models.Configs", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FaceBookLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mobile1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mobile2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OurHistory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OurMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TwitterLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WorkFrom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WorkTo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("about")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider1Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider1Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider2Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider2Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider3Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider3Text")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
