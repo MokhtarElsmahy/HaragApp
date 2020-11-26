@@ -23,33 +23,31 @@ namespace HaragApp.Controllers
         }
 
         // GET: Configs
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
         {
-            return View(await _context.Configs.ToListAsync());
+            if(_context.Configs.ToList().Count == 0)
+            {
+                return View(new Configs());
+            }
+            else
+            {
+                return View(_context.Configs.ToList()[0]);
+            }
         }
 
-        // GET: Configs/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var configs = await _context.Configs
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (configs == null)
-            {
-                return NotFound();
-            }
-
-            return View(configs);
-        }
 
         // GET: Configs/Create
         public IActionResult Create()
         {
-            return View();
+            var data = _context.Configs.ToList();
+            if(data.Count == 0 || data == null)
+            {
+                return View();
+
+            }else
+            {
+                return RedirectToAction("Edit", new { id = data[0].ID , configs = data[0] });
+            }
         }
 
         // POST: Configs/Create
@@ -99,52 +97,14 @@ namespace HaragApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ConfigsExists(configs.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    
                 }
                 return RedirectToAction(nameof(Index));
             }
             return View(configs);
         }
 
-        // GET: Configs/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var configs = await _context.Configs
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (configs == null)
-            {
-                return NotFound();
-            }
-
-            return View(configs);
-        }
-
-        // POST: Configs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var configs = await _context.Configs.FindAsync(id);
-            _context.Configs.Remove(configs);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ConfigsExists(int id)
-        {
-            return _context.Configs.Any(e => e.ID == id);
-        }
+   
     }
 }

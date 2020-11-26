@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HaragApp.Models.Configs>
+﻿@model HaragApp.Models.Configs
 
 @{
     ViewData["Title"] = "Index";
@@ -7,136 +7,119 @@
 @section Styles{
 
     <link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&amp;display=swap" rel="stylesheet">
+<style>
+    *{
+        font-family:Bahnschrift;
+    }
+    th{
+        font-size:50px;
+    }
+</style>
 
 }
 
 
 <div class="container">
+    <br />
     <h1 style="text-align:center">الرئيسية</h1>
 
     <p>
-        <a asp-action="Edit" class="btn btn-warning">Create New</a>
+        <a asp-action="create" class="btn btn-warning">تعديـل / اضافة</a>
     </p>
 
-    <table class="table">
-        <thead>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.about)
+                    العنصــر
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.OurMessage)
+                <th style="text-align:center">
+                    المحتـــــــــوى
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.OurHistory)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Mobile1)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Mobile2)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FaceBookLink)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TwitterLink)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.address)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.WorkFrom)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.WorkTo)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.slider1Image)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.slider2Image)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.slider3Image)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.slider1Text)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.slider2Text)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.slider3Text)
-                </th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.about)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OurMessage)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OurHistory)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Mobile1)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Mobile2)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FaceBookLink)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TwitterLink)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.address)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.WorkFrom)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.WorkTo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.slider1Image)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.slider2Image)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.slider3Image)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.slider1Text)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.slider2Text)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.slider3Text)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                    </td>
-                </tr>
-            }
+
+            <tr>
+                <td>حــول</td>
+                <td>@Html.DisplayFor(modelItem => Model.about)</td>
+            </tr>
+
+            <tr>
+                <td>تاريخنا</td>
+                <td>@Html.DisplayFor(modelItem => Model.OurHistory)</td>
+            </tr>
+
+            <tr>
+                <td>رسالتنا</td>
+                <td>@Html.DisplayFor(modelItem => Model.OurMessage)</td>
+            </tr>
+
+            <tr>
+                <td>العنوان</td>
+                <td>@Html.DisplayFor(modelItem => Model.address)</td>
+            </tr>
+
+            <tr>
+                <td>الايميل</td>
+                <td>@Html.DisplayFor(modelItem => Model.Email)</td>
+            </tr>
+
+            <tr>
+                <td>لينك الفيسبوك</td>
+                <td>@Html.DisplayFor(modelItem => Model.FaceBookLink)</td>
+            </tr>
+
+            <tr>
+                <td>لينك التويتر</td>
+                <td>@Html.DisplayFor(modelItem => Model.TwitterLink)</td>
+            </tr>
+
+            <tr>
+                <td>1 رقم الهاتف</td>
+                <td>@Html.DisplayFor(modelItem => Model.Mobile1)</td>
+            </tr>
+            <tr>
+                <td>رقم الهاتف 2</td>
+                <td>@Html.DisplayFor(modelItem => Model.Mobile2)</td>
+            </tr>
+
+
+            <tr>
+                <td>الصورة الأولى</td>
+                <td>@Html.DisplayFor(modelItem => Model.slider1Image)</td>
+            </tr>
+            <tr>
+                <td>نص الصورة الأولى</td>
+                <td>@Html.DisplayFor(modelItem => Model.slider1Text)</td>
+            </tr>
+            <tr>
+                <td>الصورة الثانية</td>
+                <td>@Html.DisplayFor(modelItem => Model.slider2Image)</td>
+            </tr>
+            <tr>
+                <td>نص الصورة الثانية</td>
+                <td>@Html.DisplayFor(modelItem => Model.slider2Text)</td>
+            </tr>
+            <tr>
+                <td>الصورة الثالثة</td>
+                <td>@Html.DisplayFor(modelItem => Model.slider3Image)</td>
+            </tr>
+            <tr>
+                <td>نص الصورة الثالثة</td>
+                <td>@Html.DisplayFor(modelItem => Model.slider3Text)</td>
+            </tr>
+
+            <tr>
+                <td>ساعات العمل من</td>
+                <td>@Html.DisplayFor(modelItem => Model.WorkFrom)</td>
+            </tr>
+            <tr>
+                <td>ساعات العمل إلى</td>
+                <td>@Html.DisplayFor(modelItem => Model.WorkTo)</td>
+            </tr>
         </tbody>
     </table>
 </div>
