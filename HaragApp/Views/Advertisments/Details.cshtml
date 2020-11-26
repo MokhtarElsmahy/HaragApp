@@ -159,7 +159,7 @@
 
                                         </ul>
                                     </div>
-                                    <div class="text">@Model.Description</div>
+                                    @*<div class="text">@Model.Description</div>*@
                                     <div class="clearfix">
                                         <button onclick="addtoFav(@Model.AdID)" type="button" class="btn btn-danger btn-block mb-1"> أضف الي المفضله  <i class="fa  fa-heart fa-1x " aria-hidden="true"></i></button>
                                         <a  href="https://wa.me/@Model.userPhone"> <button type="button" class="btn btn-success btn-block">  تواصل واتســاب <i class="fab  fa-whatsapp fa-1x " aria-hidden="true"></i></button></a>
@@ -178,14 +178,14 @@
                             <!--Tab Btns-->
                             <ul class="tab-btns tab-buttons clearfix">
                                 <li data-tab="#prod-description" class="tab-btn ">الوصف </li>
-                                <li data-tab="#prod-reviews" class="tab-btn active-btn">التعليقـات</li>
+                                @*<li data-tab="#prod-reviews" class="tab-btn active-btn">التعليقـات</li>*@
                             </ul>
 
                             <!--Tabs Content-->
                             <div class="tabs-container tabs-content">
 
                                 <!--Tab / Active Tab-->
-                                <div class="tab " id="prod-description">
+                                <div class="tab active-tab" id="prod-description">
 
                                     <div class="content">
                                         <p>
@@ -195,13 +195,13 @@
                                 </div>
 
                                 <!--Tab-->
-                                <div class="tab active-tab" id="prod-reviews">
+                                <!--<div class="tab active-tab" id="prod-reviews">-->
 
                                     <!--Reviews Container-->
-                                    <div class="reviews-container">
+                                    <!--<div class="reviews-container">-->
 
                                         <!--Reviews-->
-                                        <article class="review-box clearfix">
+                                        <!--<article class="review-box clearfix">
                                             <figure class="rev-thumb"><img src="~/assets/img/userLogo.png" alt=""></figure>
                                             <div class="rev-content">
                                                 <div class="rev-info"><span>دينا محمد</span> June 7, 2013</div>
@@ -211,10 +211,10 @@
                                         </article>
 
 
-                                    </div>
+                                    </div>-->
 
                                     <!-- Comment Form -->
-                                    <div class="shop-comment-form">
+                                    <!--<div class="shop-comment-form">
                                         <h2>أضف تقيم</h2>
                                         <div class="mail-text"><span class="theme_color">ملحوظه* بريدك الالكتروني لن يتم نشره </span> </div>
                                         <div class="rating-box">
@@ -244,7 +244,7 @@
 
                                     </div>
 
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </div><!-- End product info tabs -->
