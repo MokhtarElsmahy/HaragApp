@@ -1,4 +1,9 @@
 ﻿@inject HaragApp.Data.ApplicationDbContext Context
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<HaragApp.Data.ApplicationDbUser> SignInManager
+@inject UserManager<HaragApp.Data.ApplicationDbUser> UserManager
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,15 +56,36 @@
                     <div class="inner-container clearfix">
                         <div class="top-left">
                             <ul class="clearfix">
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    var user = await UserManager.GetUserAsync(User);
+                                    var Favs = Context.Favorites.Where(c => c.UserId == user.Id).ToList();
+                                    int FavCount = 0;
+                                    if (Favs != null)
+                                    {
+                                        FavCount = Favs.Count();
+                                    }
+                                    <li>
+                                        <div class="cart-btn">
+                                            <a href="fav.html" title="">
+                                                <i class="flaticon-heart"></i>
+                                                <span class="count">@FavCount</span>
+                                            </a>
+                                        </div>
+                                    </li>
+}
+                                else
+                                {
+                                    <li>
+                                        <div class="cart-btn">
+                                            <a href="fav.html" title="">
+                                                <i class="flaticon-heart"></i>
+                                                <span class="count">00</span>
+                                            </a>
+                                        </div>
+                                    </li>
+                                }
 
-                                <li>
-                                    <div class="cart-btn">
-                                        <a href="fav.html" title="">
-                                            <i class="flaticon-heart"></i>
-                                            <span class="count">2</span>
-                                        </a>
-                                    </div>
-                                </li>
 
 
                             </ul>
@@ -67,7 +93,11 @@
                         <div class="top-right clearfix">
                             <ul class="social-icon-one clearfix">
                                 <li>
-                                    <a href="/identity/account/login" class="rtl-dir">تسجيل الدخول  | انشاء حساب </a>
+                                    <a href="/identity/account/login" class="rtl-dir">تسجيل الدخول </a>
+
+                                </li>
+                                <li>
+                                    <a href="/identity/account/register" class="rtl-dir">انشاء حساب </a>
 
                                 </li>
                                 <!-- <li><a href="profile.html" class="rtl-dir"><i class="far fa-user-circle profile-icon"></i>دينا محمد</a>
@@ -76,9 +106,9 @@
 
                             </ul>
 
-                            <div class="call-btn">
-                                <a href="count-sponser.html"> حساب الممولة</a>
-                            </div>
+                            @*<div class="call-btn">
+                                    <a href="count-sponser.html"> حساب الممولة</a>
+                                </div>*@
                         </div>
                     </div>
                 </div>
@@ -142,18 +172,18 @@
                             <div class="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                                 <ul class="navigation clearfix">
                                     <li class="current ">
-                                        <a href="index.html">الرئيسية</a>
+                                        <a href="/Home/Index">الرئيسية</a>
                                     </li>
                                     <li class="">
-                                        <a href="about.html">من نحن </a>
+                                        <a href="/Home/about">من نحن </a>
                                     </li>
 
 
                                     <li class="">
-                                        <a href="shop.html">الاعلانات</a>
+                                        <a href="/Advertisments/Shop">الاعلانات</a>
 
                                     </li>
-                                    <li><a href="contact.html">تواصل معنا</a></li>
+                                    <li><a href="/Home/contact">تواصل معنا</a></li>
 
                                 </ul>
                             </div>
@@ -240,7 +270,7 @@
                 <div class="widgets-section rtl-dir">
                     <div class="row clearfix">
                         <!--Footer Column-->
-                        <div class="footer-column col-lg-3 col-md-6 col-sm-12">
+                        @*<div class="footer-column col-lg-3 col-md-6 col-sm-12">
                             <div class="footer-widget about-widget">
                                 <div class="footer-logo">
                                     <figure>
@@ -254,35 +284,35 @@
                                         <li><a href="@Context.Configs.FirstOrDefault().FaceBookLink"><i class="fab fa-facebook-f"></i></a></li>
                                         <li><a href="@Context.Configs.FirstOrDefault().TwitterLink"><i class="fab fa-twitter"></i></a></li>
                                         <li><a href="@Context.Configs.FirstOrDefault().Email"><i class="fab fa-google-plus-g"></i></a></li>
-                                      
+
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
 
                         <!--Footer Column-->
-                        <div class="footer-column col-lg-3 col-md-6 col-sm-12">
+                        <!--<div class="footer-column col-lg-3 col-md-6 col-sm-12">
                             <div class="footer-widget services-widget">
                                 <h2 class="widget-title">رابط سريعه</h2>
                                 <div class="widget-content">
                                     <ul class="services-list">
 
                                         <li><a href="contact.html">تواصل معنا</a></li>
-                                        <li><a href="conditions.html">الشروط والاحكام</a></li>
-                                        <li><a href="faq.html">الاسئله الشائعه</a></li>
-                                        <li><a href="privacy.html">سياسه الخصوصيه</a></li>
-                                    </ul>
+                                        <li><a href="conditions.html">الشروط والاحكام</a></li>-->
+                                        @*<li><a href="faq.html">الاسئله الشائعه</a></li>
+                                        <li><a href="privacy.html">سياسه الخصوصيه</a></li>*@
+                                    <!--</ul>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
 
                         <!--Footer Column-->
                         <!--<div class="footer-column col-lg-3 col-md-6 col-sm-12">-->
-                            <!--Footer Column-->
-                            <!--<div class="footer-widget gallery-widget">
-                                <h2 class="widget-title">الاعلانات</h2>-->
-                                <!--Footer Column-->
-                                <!--<div class="widget-content">
+                        <!--Footer Column-->
+                        <!--<div class="footer-widget gallery-widget">
+                            <h2 class="widget-title">الاعلانات</h2>-->
+                        <!--Footer Column-->
+                        @*<div class="widget-content">
                                     <div class="outer clearfix">
                                         <figure class="image">
                                             <a href="images/resource/feature-1.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-1.jpg" alt=""></a>
@@ -310,28 +340,26 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>-->
-
-
+                        </div>*@
                         <!--Footer Column-->
-                        <div class="footer-column col-lg-3 col-md-6 col-sm-12">
+                        <!--<div class="footer-column col-lg-3 col-md-6 col-sm-12">-->
                             <!--Footer Column-->
-                            <div class="footer-widget news-widget">
-                                <h2 class="widget-title">تواصل معنا</h2>
+                            <!--<div class="footer-widget news-widget">
+                                <h2 class="widget-title">تواصل معنا</h2>-->
                                 <!--Footer Column-->
-                                <div class="widget-content">
+                                <!--<div class="widget-content">
                                     <div class="post">
-                                        <h4><a href="#">@Context.Configs.FirstOrDefault().Mobile1</a></h4>
+                                        <h4><a href="#"></a></h4>
                                     </div>
                                     <div class="post">
-                                        <h4><a href="#">@Context.Configs.FirstOrDefault().Mobile2</a></h4>
+                                        <h4><a href="#"></a></h4>
                                     </div>
                                     <div class="post">
-                                        <h4><a href="#">@Context.Configs.FirstOrDefault().Email</a></h4>
+                                        <h4><a href="#"></a></h4>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>

@@ -45,6 +45,18 @@ namespace HaragApp.Controllers
             return View();
         }
 
+        public IActionResult about()
+        {
+            Configs config = _context.Configs.FirstOrDefault();
+            return View(config);
+        }
+
+        public IActionResult Contact()
+        {
+            Configs config = _context.Configs.FirstOrDefault();
+            return View(config);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

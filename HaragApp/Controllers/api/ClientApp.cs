@@ -40,29 +40,22 @@ namespace HaragApp.Controllers.api
             return View();
         }
 
-
+        [AllowAnonymous]
         [HttpPost(ApiRoutes.setting.ContactUs)]
-        public ActionResult ContactUs(string lang = "ar")
+        public ActionResult ContactUs()
         {
             try
             {
+                var data = db.Configs.Select(x => new
+                {
+                    mobile1=x.Mobile1,
+                    mobile2=x.Mobile2,
+                    email=x.Email
 
-
-                //var Setting = db.Setting.Select(x => new
-                //{
-                //    x.phone,
-                //    x.email,
-
-                //    x.location,
-                //    text = lang == "ar" ? x.text_ar_client : x.text_en_client
-
-                //}).FirstOrDefault();
-
-
+                }).FirstOrDefault();
                 return Json(new
                 {
-                    key = 1,
-                    //  Setting
+                    data
                 });
 
 
@@ -78,60 +71,24 @@ namespace HaragApp.Controllers.api
             }
 
         }
+
+
         [AllowAnonymous]
-        [HttpPost(ApiRoutes.setting.Condtions)]
-        public ActionResult Condtions(string lang = "ar")
-        {
-            try
-            {
-
-
-                //var data = db.Setting.Select(x => new
-                //{
-
-                //    text = lang == "ar" ? x.Condtions_ar_client : x.Condtions_en_client
-
-                //}).FirstOrDefault();
-
-
-                return Json(new
-                {
-                    key = 1,
-                    //  data
-                });
-
-
-
-            }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    key = 0,
-                    msg = ex.Message
-                });
-            }
-
-        }
         [HttpPost(ApiRoutes.setting.AboutUs)]
-        public ActionResult AboutUs(string lang = "ar")
+        public ActionResult AboutUs()
         {
             try
             {
+                var data = db.Configs.Select(x => new
+                {
+                    about = x.about
 
-
-                //var data = db.Setting.Select(x => new
-                //{
-
-                //    text = lang == "ar" ? x.aboutUs_ar_client : x.aboutUs_en_client
-
-                //}).FirstOrDefault();
+                }).FirstOrDefault();
 
 
                 return Json(new
                 {
-                    key = 1,
-                    // data
+                    data
                 });
 
 
@@ -147,129 +104,6 @@ namespace HaragApp.Controllers.api
             }
 
         }
-        [AllowAnonymous]
-        [HttpPost(ApiRoutes.setting.GetSetting)]
-        public ActionResult GetSetting(string phone, string lang = "ar")
-        {
-            try
-            {
-
-
-                //var data = db.Setting.Select(x => new
-                //{
-
-                //    aboutUs_client = lang == "ar" ? x.aboutUs_ar_client : x.aboutUs_en_client,
-                //    aboutUs_delegt = lang == "ar" ? x.aboutUs_ar_delegt : x.aboutUs_en_delegt,
-
-                //    Condtions_client = lang == "ar" ? x.Condtions_ar_client : x.Condtions_en_client,
-                //    Condtions_delegt = lang == "ar" ? x.Condtions_ar_delegt : x.Condtions_en_delegt,
-
-
-                //    text1_client = lang == "ar" ? x.text1_ar_client : x.text1_en_client,
-                //    text2_client = lang == "ar" ? x.text2_ar_client : x.text2_en_client,
-                //    text3_client = lang == "ar" ? x.text3_ar_client : x.text3_en_client,
-                //    // text_client = lang == "ar" ? x.text_ar_client : x.text_en_client,
-
-                //    text1_delegt = lang == "ar" ? x.text1_ar_delegt : x.text1_en_delegt,
-                //    text2_delegt = lang == "ar" ? x.text2_ar_delegt : x.text2_en_delegt,
-                //    text3_delegt = lang == "ar" ? x.text3_ar_delegt : x.text3_en_delegt,
-                //    //  text_delegt = lang == "ar" ? x.text_ar_delegt : x.text_en_delegt,
-                //    x.twitter,
-                //    x.phone,
-                //    x.location,
-                //    x.key_map,
-                //    x.instgram,
-                //    x.facebook,
-                //    x.bank_account,
-                //    x.bank_account2,
-                //    x.bank_account_name,
-                //    x.bank_account_name2
-
-                //}).FirstOrDefault();
-
-
-                return Json(new
-                {
-                    key = 1,
-                    // data
-                });
-
-
-
-            }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    key = 0,
-                    msg = ex.Message
-                });
-            }
-
-        }
-        [HttpPost(ApiRoutes.setting.GetQAndAnswer)]
-        public ActionResult GetQAndAnswer(string lang = "ar")
-        {
-            try
-            {
-
-                //var data = (from st in db.QAndAnswer
-                //            where st.type == 1
-                //            select new
-                //            {
-                //                st.id,
-                //                question = lang == "ar" ? st.question : st.questionEn,
-                //                answer = lang == "ar" ? st.answer : st.answerEn,
-                //                opend = false
-                //            }).ToList();
-
-                return Json(new
-                {
-                    key = 1,
-                    // data
-                });
-
-
-
-            }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    key = 0,
-                    msg = ex.Message
-                });
-            }
-
-
-        }
-        //[HttpPost(ApiRoutes.setting.Addcomplaints)]
-        //public ActionResult Addcomplaints(Complaints_model complaints, string lang = "")
-        //{
-        //    try
-        //    {
-        //        Complaints complaints1 = new Complaints();
-        //        complaints1.email = complaints.email;
-        //        complaints1.name = complaints.name;
-        //        complaints1.text = complaints.text;
-        //        db.Complaints.Add(complaints1);
-        //        db.SaveChanges();
-
-        //        return Json(new { key = 1, msg = creatMessage(lang, "تم الارسال بنجاح", "Send successfully") });
-
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new
-        //        {
-        //            key = 0,
-        //            msg = ex.Message
-        //        });
-        //    }
-
-        //}
 
 
         [AllowAnonymous]
@@ -303,5 +137,167 @@ namespace HaragApp.Controllers.api
                 NumberOFDisplayedAds = d.Advertisments.Count()
             });
         }
+        //[AllowAnonymous]
+        //[HttpPost(ApiRoutes.setting.Condtions)]
+        //public ActionResult Condtions(string lang = "ar")
+        //{
+        //    try
+        //    {
+
+
+        //        //var data = db.Setting.Select(x => new
+        //        //{
+
+        //        //    text = lang == "ar" ? x.Condtions_ar_client : x.Condtions_en_client
+
+        //        //}).FirstOrDefault();
+
+
+        //        return Json(new
+        //        {
+        //            key = 1,
+        //            //  data
+        //        });
+
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new
+        //        {
+        //            key = 0,
+        //            msg = ex.Message
+        //        });
+        //    }
+
+        //}
+
+        //[AllowAnonymous]
+        //[HttpPost(ApiRoutes.setting.GetSetting)]
+        //public ActionResult GetSetting(string phone, string lang = "ar")
+        //{
+        //    try
+        //    {
+
+
+        //        //var data = db.Setting.Select(x => new
+        //        //{
+
+        //        //    aboutUs_client = lang == "ar" ? x.aboutUs_ar_client : x.aboutUs_en_client,
+        //        //    aboutUs_delegt = lang == "ar" ? x.aboutUs_ar_delegt : x.aboutUs_en_delegt,
+
+        //        //    Condtions_client = lang == "ar" ? x.Condtions_ar_client : x.Condtions_en_client,
+        //        //    Condtions_delegt = lang == "ar" ? x.Condtions_ar_delegt : x.Condtions_en_delegt,
+
+
+        //        //    text1_client = lang == "ar" ? x.text1_ar_client : x.text1_en_client,
+        //        //    text2_client = lang == "ar" ? x.text2_ar_client : x.text2_en_client,
+        //        //    text3_client = lang == "ar" ? x.text3_ar_client : x.text3_en_client,
+        //        //    // text_client = lang == "ar" ? x.text_ar_client : x.text_en_client,
+
+        //        //    text1_delegt = lang == "ar" ? x.text1_ar_delegt : x.text1_en_delegt,
+        //        //    text2_delegt = lang == "ar" ? x.text2_ar_delegt : x.text2_en_delegt,
+        //        //    text3_delegt = lang == "ar" ? x.text3_ar_delegt : x.text3_en_delegt,
+        //        //    //  text_delegt = lang == "ar" ? x.text_ar_delegt : x.text_en_delegt,
+        //        //    x.twitter,
+        //        //    x.phone,
+        //        //    x.location,
+        //        //    x.key_map,
+        //        //    x.instgram,
+        //        //    x.facebook,
+        //        //    x.bank_account,
+        //        //    x.bank_account2,
+        //        //    x.bank_account_name,
+        //        //    x.bank_account_name2
+
+        //        //}).FirstOrDefault();
+
+
+        //        return Json(new
+        //        {
+        //            key = 1,
+        //            // data
+        //        });
+
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new
+        //        {
+        //            key = 0,
+        //            msg = ex.Message
+        //        });
+        //    }
+
+        //}
+        //[HttpPost(ApiRoutes.setting.GetQAndAnswer)]
+        //public ActionResult GetQAndAnswer(string lang = "ar")
+        //{
+        //    try
+        //    {
+
+        //        //var data = (from st in db.QAndAnswer
+        //        //            where st.type == 1
+        //        //            select new
+        //        //            {
+        //        //                st.id,
+        //        //                question = lang == "ar" ? st.question : st.questionEn,
+        //        //                answer = lang == "ar" ? st.answer : st.answerEn,
+        //        //                opend = false
+        //        //            }).ToList();
+
+        //        return Json(new
+        //        {
+        //            key = 1,
+        //            // data
+        //        });
+
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new
+        //        {
+        //            key = 0,
+        //            msg = ex.Message
+        //        });
+        //    }
+
+
+        //}
+        ////[HttpPost(ApiRoutes.setting.Addcomplaints)]
+        ////public ActionResult Addcomplaints(Complaints_model complaints, string lang = "")
+        ////{
+        ////    try
+        ////    {
+        ////        Complaints complaints1 = new Complaints();
+        ////        complaints1.email = complaints.email;
+        ////        complaints1.name = complaints.name;
+        ////        complaints1.text = complaints.text;
+        ////        db.Complaints.Add(complaints1);
+        ////        db.SaveChanges();
+
+        ////        return Json(new { key = 1, msg = creatMessage(lang, "تم الارسال بنجاح", "Send successfully") });
+
+
+
+        ////    }
+        ////    catch (Exception ex)
+        ////    {
+        ////        return Json(new
+        ////        {
+        ////            key = 0,
+        ////            msg = ex.Message
+        ////        });
+        ////    }
+
+        ////}
+
+
+
     }
 }
