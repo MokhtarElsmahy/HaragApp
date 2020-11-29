@@ -90,31 +90,40 @@ namespace HaragApp.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(user, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    #region MyRegion
-                    var roles = await _userManager.GetRolesAsync(user);
-                    if (roles.Contains("admin"))
+                    if (result.Succeeded)
                     {
                         _logger.LogInformation("User logged in.");
-                        return LocalRedirect("/AnimalCategories/Create");
+                        return LocalRedirect(returnUrl);
+                    }
+                    if (result.RequiresTwoFactor)
+                    {
+                        return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                    }
+                    if (result.IsLockedOut)
+                    {
+                        _logger.LogWarning("User account locked out.");
+                        return RedirectToPage("./Lockout");
                     }
                     else
                     {
-                        _logger.LogInformation("User logged in.");
-                        return LocalRedirect("/Advertisments/Create");
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        return Page();
                     }
-                    #endregion
-
-                    //if (await _userManager.IsInRoleAsync(user, "admin"))
+                    //#region MyRegion
+                    //var roles = await _userManager.GetRolesAsync(user);
+                    //if (roles.Contains("admin"))
                     //{
-                    //    return LocalRedirect("/AnimalCategories/Create");//remember to change this to redirct to dashboard
+                    //    _logger.LogInformation("User logged in.");
+                    //    return LocalRedirect("/AnimalCategories/Create");
                     //}
-                    //else if (await _userManager.IsInRoleAsync(user, "user"))
+                    //else
                     //{
+                    //    _logger.LogInformation("User logged in.");
                     //    return LocalRedirect("/Advertisments/Create");
                     //}
+                    //#endregion
 
-                    //_logger.LogInformation("User logged in.");
-                    //return LocalRedirect(returnUrl);
+
 
 
                 }

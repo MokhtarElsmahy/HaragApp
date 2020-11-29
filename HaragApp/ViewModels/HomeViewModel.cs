@@ -12,5 +12,6 @@ namespace HaragApp.ViewModels
         public List<AnimalCategory> animalCategories { get; set; }
         public List<favoriteViewModel> advertisments { get; set; }
         public List<favoriteViewModel> TOPadvertisments { get; set; }
+        public Configs config { get; set; }
     }
 }

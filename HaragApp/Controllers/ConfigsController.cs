@@ -10,9 +10,11 @@ using HaragApp.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HaragApp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class ConfigsController : Controller
     {
         private readonly ApplicationDbContext _context;

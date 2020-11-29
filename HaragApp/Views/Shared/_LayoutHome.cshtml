@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject HaragApp.Data.ApplicationDbContext Context
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -66,7 +67,7 @@
                         <div class="top-right clearfix">
                             <ul class="social-icon-one clearfix">
                                 <li>
-                                    <a href="login.html" class="rtl-dir">تسجيل الدخول  | انشاء حساب </a>
+                                    <a href="/identity/account/login" class="rtl-dir">تسجيل الدخول  | انشاء حساب </a>
 
                                 </li>
                                 <!-- <li><a href="profile.html" class="rtl-dir"><i class="far fa-user-circle profile-icon"></i>دينا محمد</a>
@@ -95,8 +96,9 @@
                             <div class="upper-column info-box">
                                 <div class="icon-box"><span class="flaticon-home"></span></div>
                                 <ul>
-                                    <li><strong>13AH, San Francisco,</strong></li>
-                                    <li>New york, United States</li>
+                                    <li></li>
+                                    <li><strong>@Context.Configs.FirstOrDefault().address</strong></li>
+                                    @*<li>New york, United States</li>*@
                                 </ul>
 
                             </div>
@@ -105,7 +107,7 @@
                                 <div class="icon-box"><span class="flaticon-mail-1"></span></div>
                                 <ul>
                                     <li><strong>ارسل ايملك</strong></li>
-                                    <li><a href="#">info@support.com</a></li>
+                                    <li><a href="#">@Context.Configs.FirstOrDefault().Email</a></li>
                                 </ul>
                             </div>
 
@@ -114,7 +116,7 @@
                                 <div class="icon-box"><span class="flaticon-clock"></span></div>
                                 <ul>
                                     <li><strong>ساعات العمل</strong></li>
-                                    <li>Mon-Sat:9.30am to 7.00pm</li>
+                                    <li>Mon-Sat:@Context.Configs.FirstOrDefault().WorkFrom to @Context.Configs.FirstOrDefault().WorkTo pm</li>
                                 </ul>
                             </div>
                         </div>
@@ -246,14 +248,13 @@
                                     </figure>
                                 </div>
                                 <div class="widget-content">
-                                    <div class="text">لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور أنكايديديونتيوت لابوري ات دولار ماجنا أليكيوا . يوت انيم أد مينيم فينايم,كيواس نوستريد</div>
+                                    <div class="text">@Context.Configs.FirstOrDefault().about</div>
                                     <h4>تابعنا هنا :</h4>
                                     <ul class="social-icon">
-                                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-pinterest"></i></a></li>
-                                        <li><a href="#"><i class="fab fa-dribbble"></i></a></li>
+                                        <li><a href="@Context.Configs.FirstOrDefault().FaceBookLink"><i class="fab fa-facebook-f"></i></a></li>
+                                        <li><a href="@Context.Configs.FirstOrDefault().TwitterLink"><i class="fab fa-twitter"></i></a></li>
+                                        <li><a href="@Context.Configs.FirstOrDefault().Email"><i class="fab fa-google-plus-g"></i></a></li>
+                                      
                                     </ul>
                                 </div>
                             </div>
@@ -276,12 +277,12 @@
                         </div>
 
                         <!--Footer Column-->
-                        <div class="footer-column col-lg-3 col-md-6 col-sm-12">
+                        <!--<div class="footer-column col-lg-3 col-md-6 col-sm-12">-->
                             <!--Footer Column-->
-                            <div class="footer-widget gallery-widget">
-                                <h2 class="widget-title">الاعلانات</h2>
+                            <!--<div class="footer-widget gallery-widget">
+                                <h2 class="widget-title">الاعلانات</h2>-->
                                 <!--Footer Column-->
-                                <div class="widget-content">
+                                <!--<div class="widget-content">
                                     <div class="outer clearfix">
                                         <figure class="image">
                                             <a href="images/resource/feature-1.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-1.jpg" alt=""></a>
@@ -309,7 +310,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
 
 
                         <!--Footer Column-->
@@ -320,13 +321,13 @@
                                 <!--Footer Column-->
                                 <div class="widget-content">
                                     <div class="post">
-                                        <h4><a href="#">012578622117</a></h4>
+                                        <h4><a href="#">@Context.Configs.FirstOrDefault().Mobile1</a></h4>
                                     </div>
                                     <div class="post">
-                                        <h4><a href="#">012578622117</a></h4>
+                                        <h4><a href="#">@Context.Configs.FirstOrDefault().Mobile2</a></h4>
                                     </div>
                                     <div class="post">
-                                        <h4><a href="#">info@example.com</a></h4>
+                                        <h4><a href="#">@Context.Configs.FirstOrDefault().Email</a></h4>
                                     </div>
                                 </div>
                             </div>

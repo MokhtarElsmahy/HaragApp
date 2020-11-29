@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HaragApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="admin")]
     public class AnimalCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;

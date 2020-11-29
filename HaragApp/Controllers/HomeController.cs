@@ -36,6 +36,7 @@ namespace HaragApp.Controllers
             model.animalCategories = aa.GetAll();
             model.advertisments = dd.GetAdvertismentsForIndex();
             model.TOPadvertisments = dd.GetTopFiveFavs();
+            model.config = _context.Configs.FirstOrDefault();
             return View(model);
         }
 
