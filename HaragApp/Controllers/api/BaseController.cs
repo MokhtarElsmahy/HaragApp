@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using RestSharp;
 
 namespace HaragApp.Controllers.api
 {
@@ -164,9 +165,7 @@ namespace HaragApp.Controllers.api
         public static int GetFormNumber()
         {
             Random rnd = new Random();
-            int code = 1234;
-
-            return code;
+            return rnd.Next();
         }
         //valid for email
         public static bool IsValidEmail(string email)
@@ -272,7 +271,7 @@ namespace HaragApp.Controllers.api
             }
 
         }
-     
+
         //public void SendPushNotificationForDeleget(string user_id, string msg, int? type = 0, int? order_id = 0)
         //{
         //    try
@@ -360,20 +359,49 @@ namespace HaragApp.Controllers.api
 
         #region sms
 
-        public static async System.Threading.Tasks.Task<string> SendMessage(string msg, string numbers)
+        //public static async System.Threading.Tasks.Task<string> SendMessage(string msg, string numbers)
+        //{
+
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri("http://www.4jawaly.net/");
+        //        //HTTP GET
+        //        var response = await client.GetAsync($"api/sendsms.php?username=othaim&password=565656&numbers={numbers}&sender=ALOTHAIM&message={msg}&&return=string");
+        //        var responseString = await response.Content.ReadAsStringAsync();
+        //        return responseString;
+
+        //    }
+
+        //}
+
+        //public static async Task<string> SendMessage(string msg, string numbers)
+        //{
+
+
+        //    string url = "http://api.yamamah.com/SendSMSV2?Username=966532866666&Password=Ht5pTY26&Message=987654321&RecepientNumber=966532866666&Tagname=Haraajm&SendDateTime=0";
+
+        //    var client = new RestClient(url);
+        //     var data = await client.Get();
+        //    return "";
+        //}
+
+        public static async Task<string> SendMessage(string msg, string numbers)
         {
+            var client = new RestClient($"http://api.yamamah.com/SendSMS");
+            var request = new RestRequest(Method.POST);
+            request.AddJsonBody(new {
+                Username= "966532866666",
+                Password= "Ht5pTY26",
+                Tagname ="Haraajm",
+                RecepientNumber= numbers,
+                Message= msg
 
+            });
+            IRestResponse response = await client.ExecuteAsync(request);
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://www.4jawaly.net/");
-                //HTTP GET
-                var response = await client.GetAsync($"api/sendsms.php?username=othaim&password=565656&numbers={numbers}&sender=ALOTHAIM&message={msg}&&return=string");
-                var responseString = await response.Content.ReadAsStringAsync();
-
-                return responseString;
-            }
+            return "";
         }
+
         //mobily
         static public string SendMessagemobily(string msg, string numbers)
         {
@@ -540,5 +568,14 @@ namespace HaragApp.Controllers.api
             public string lng { get; set; }
             public string address { get; set; }
         }
+
+
+        //public static async Task<string> SendMessage(string msg, string numbers)
+        //{
+        //    string url = "http://api.yamamah.com/SendSMSV2?Username=966500469446&Password=123456789&Message=" + msg + "&RecepientNumber=" + numbers + "&Tagname=moodak&SendDateTime=0&EnableDR=false&SentMessageID=false";
+        //    dynamic client = new RestClient(url);
+        //    var data = await client.Get();
+        //    return "";
+        //}
     }
 }

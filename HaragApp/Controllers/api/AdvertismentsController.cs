@@ -11,6 +11,7 @@ using HaragApp.ViewModels;
 using HaragApp.Component.Interfaces;
 using HaragApp.Component.Services;
 using Microsoft.AspNetCore.Identity;
+using RestSharp;
 
 namespace HaragApp.Controllers.api
 {
@@ -40,6 +41,7 @@ namespace HaragApp.Controllers.api
         [HttpGet("{id}")]
         public ActionResult<AdsImagesVm> GetAdvertisment(int id)
         {
+           
             //var advertisment = await _context.Advertisments.FindAsync(id);
             IAdverstisment ads = new AdvertisementServices(_context);
             var advertisment = ads.Details(id);
@@ -50,8 +52,8 @@ namespace HaragApp.Controllers.api
 
             return advertisment;
         }
-
      
+
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAdvertisment(int id, Advertisment advertisment)

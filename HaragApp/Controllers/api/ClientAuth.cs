@@ -191,10 +191,10 @@ namespace HaragApp.Controllers.api
             //        key = 0,
             //        msg = creatMessage(userModel.lang, result.ToString(), result.ToString())
             //    });
-            //}
+            //}user.code.ToString()
 
             db.SaveChanges();
-            Task<string> s = SendMessage(user.code.ToString(), user.PhoneNumber);
+            Task<string> s = SendMessage(user.code.ToString(), user.PhoneNumber.ToString());
             return Json(new
             {
                 key = 1,
@@ -202,7 +202,7 @@ namespace HaragApp.Controllers.api
                 msg = creatMessage(userModel.lang, "تم التسجيل بنجاح", "successfully registered"),
                 status = false,
                 code
-            }); ;
+            }); 
         }
 
         [AllowAnonymous]
@@ -307,16 +307,16 @@ namespace HaragApp.Controllers.api
                 });
             }
 
-            if (user.IsActive == false && user.active_code == true)
-            {
-                return Json(new
-                {
-                    key = 0,
-                    data = new { },
-                    status = "blocked",
-                    msg = creatMessage("ar", "هذا الحساب مغلق من قبل الادمن", "This account is closed by the addict")
-                });
-            }
+            //if (user.IsActive == false && user.active_code == true)
+            //{
+            //    return Json(new
+            //    {
+            //        key = 0,
+            //        data = new { },
+            //        status = "blocked",
+            //        msg = creatMessage("ar", "هذا الحساب مغلق من قبل الادمن", "This account is closed by the addict")
+            //    });
+            //}
             if (user.active_code == false)
             {
                 return Json(new
@@ -440,21 +440,21 @@ namespace HaragApp.Controllers.api
             user.Email = userModel.email;
 
 
-            if (userModel.Img != null)
-            {
-                var uploads = Path.Combine(HostingEnvironment.WebRootPath, "images/User");
+            //if (userModel.Img != null)
+            //{
+            //    var uploads = Path.Combine(HostingEnvironment.WebRootPath, "images/User");
 
-                var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(userModel.Img.FileName);
-                using (var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
-                {
-                    await userModel.Img.CopyToAsync(fileStream);
-                    user.img = BaisUrlUser + fileName;
-                }
-            }
-            else
-            {
-                user.img = user.img;
-            }
+            //    var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(userModel.Img.FileName);
+            //    using (var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
+            //    {
+            //        await userModel.Img.CopyToAsync(fileStream);
+            //        user.img = BaisUrlUser + fileName;
+            //    }
+            //}
+            //else
+            //{
+            //    user.img = user.img;
+            //}
 
 
             //}
@@ -466,7 +466,7 @@ namespace HaragApp.Controllers.api
                 key = 1,
                 data = GetUserInfo(user.Id, userModel.lang),
                 msg = creatMessage(userModel.lang, "تم التعديل بنجاح", "successfully modified"),
-                status = false
+                status = true
             });
 
         }
@@ -588,7 +588,6 @@ namespace HaragApp.Controllers.api
         {
             try
             {
-
                 var codeuser = (db.Users.Where(x => x.Id == userModel.user_id).SingleOrDefault());
 
                 if (codeuser != null)
