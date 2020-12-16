@@ -594,7 +594,7 @@ namespace HaragApp.Controllers.api
                 {
                     Random rnd = new Random();
                     int code = GetFormNumber();
-                    Task<string> s = SendMessage(code.ToString(), codeuser.PhoneNumber);
+                    Task<string> s = SendMessage(code.ToString(), codeuser.Phone);
                     codeuser.code = code;
                     db.SaveChanges();
                     return Json(new

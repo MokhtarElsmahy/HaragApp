@@ -17,6 +17,7 @@ using HaragApp.ViewModels;
 using RestSharp;
 using HaragApp.Component.Interfaces;
 using HaragApp.Component.Services;
+using System.Net;
 
 namespace HaragApp.Controllers
 {
@@ -35,7 +36,37 @@ namespace HaragApp.Controllers
             _context = context;
             _userManager = userManager;
         }
+        public async Task<IActionResult> SendResendAsync(string numbers)
+        {
+            var client = new RestClient($"http://api.yamamah.com/SendSMS");
+            var request = new RestRequest(Method.POST);
+            var code = GetFormNumber().ToString();
+            request.AddJsonBody(new
+            {
+                Username = "966532866666",
+                Password = "Ht5pTY26",
+                Tagname = "Haraajm",
+                RecepientNumber = numbers,
+                Message = code
 
+            });
+            IRestResponse response = await client.ExecuteAsync(request);
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                user.code = int.Parse(code);
+                await _userManager.UpdateAsync(user);
+                return LocalRedirect("/identity/account/RegisterConfirmation");
+
+            }
+            return LocalRedirect("/identity/account/RegisterConfirmation");
+        }
+        public static int GetFormNumber()
+        {
+            Random rnd = new Random();
+            return rnd.Next();
+        }
         // GET: Advertisments
         public async Task<IActionResult> Index()
         {

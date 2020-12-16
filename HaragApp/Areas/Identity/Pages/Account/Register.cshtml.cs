@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using RestSharp;
+using System.Net;
 
 namespace HaragApp.Areas.Identity.Pages.Account
 {
@@ -39,14 +41,14 @@ namespace HaragApp.Areas.Identity.Pages.Account
             _ctx = ctx;
         }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
 
         public bool IsAdmin { get; set; } = false;
 
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        [BindProperty]
+        public InputModel Input { get; set; }
 
         public class InputModel
         {
@@ -102,20 +104,33 @@ namespace HaragApp.Areas.Identity.Pages.Account
             {
                 var user = new ApplicationDbUser { UserName = $"{Input.Phone}user.com", Email = $"{Input.Phone}user.com", Phone=Input.Phone, CityID=1,showpassword=Input.Password};
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 var Loginguser = await _userManager.GetUserAsync(User);
-                var roles = await _userManager.GetRolesAsync(Loginguser);
-                if (roles.Contains("admin") && Input.IsHelper == true)
+                if (Loginguser != null)
                 {
-                    await _userManager.AddToRoleAsync(user, "admin");
-                    _ctx.SaveChanges();
+                    var roles = await _userManager.GetRolesAsync(Loginguser);
+                    if (roles.Contains("admin") && Input.IsHelper == true)
+                    {
+                        await _userManager.AddToRoleAsync(user, "admin");
+                        _ctx.SaveChanges();
+                    }
                 }
+             
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
 
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    var code = GetFormNumber().ToString();
+                   var x = await  SendMessage(code, user.Phone);
+                    user.code =int.Parse(code);
+                    await _userManager.UpdateAsync(user);
+                    _ctx.SaveChanges();
+                    return RedirectToPage("RegisterConfirmation");
+                   
                   
-                    return LocalRedirect(returnUrl);
+                   
+
                     ////await _userManager.AddToRoleAsync(user, "admin");
 
                     ////var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -174,6 +189,29 @@ namespace HaragApp.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        public  async Task<IRestResponse> SendMessage(string msg, string numbers)
+        {
+            var client = new RestClient($"http://api.yamamah.com/SendSMS");
+            var request = new RestRequest(Method.POST);
+            request.AddJsonBody(new
+            {
+                Username = "966532866666",
+                Password = "Ht5pTY26",
+                Tagname = "Haraajm",
+                RecepientNumber = numbers,
+                Message = msg
+
+            });
+            IRestResponse response = await client.ExecuteAsync(request);
+
+            return response;
+        }
+        public static int GetFormNumber()
+        {
+            Random rnd = new Random();
+            return rnd.Next();
         }
     }
 }

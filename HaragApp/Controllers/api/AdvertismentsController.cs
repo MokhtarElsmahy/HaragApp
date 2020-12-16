@@ -12,6 +12,7 @@ using HaragApp.Component.Interfaces;
 using HaragApp.Component.Services;
 using Microsoft.AspNetCore.Identity;
 using RestSharp;
+using System.Net;
 
 namespace HaragApp.Controllers.api
 {
@@ -52,7 +53,13 @@ namespace HaragApp.Controllers.api
 
             return advertisment;
         }
-     
+
+       
+        public static int GetFormNumber()
+        {
+            Random rnd = new Random();
+            return rnd.Next();
+        }
 
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]

@@ -21,42 +21,42 @@ namespace HaragApp.Areas.Identity.Pages.Account
             _userManager = userManager;
             _sender = sender;
         }
+     
+        public string code { get; set; }
 
-        public string Email { get; set; }
+
+        [BindProperty]
+        public string PhoneNumber { get; set; }
+
+       
+
 
         public bool DisplayConfirmAccountLink { get; set; }
 
         public string EmailConfirmationUrl { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string email, string returnUrl = null)
+
+        public async Task<IActionResult> OnGetAsync(string code)
         {
-            if (email == null)
-            {
-                return RedirectToPage("/Index");
-            }
-
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with email '{email}'.");
-            }
-
-            Email = email;
-            // Once you add a real email sender, you should remove this code that lets you confirm the account
-            DisplayConfirmAccountLink = true;
-            if (DisplayConfirmAccountLink)
-            {
-                var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                EmailConfirmationUrl = Url.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                    protocol: Request.Scheme);
-            }
-
+            var user = await _userManager.GetUserAsync(User);
+            PhoneNumber = user.Phone;
             return Page();
         }
+
+        public async Task<IActionResult> OnPostAsync(string code)
+        {
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user.code == int.Parse(code))
+            {
+                user.IsActive = true;
+                await _userManager.UpdateAsync(user);
+                return LocalRedirect("/Home/Index");
+            }
+           
+            return Page();
+        }
+
+
     }
 }
