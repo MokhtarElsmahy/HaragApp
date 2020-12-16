@@ -17,9 +17,10 @@ namespace HaragApp.Areas.Identity.Pages.Account
     public class ResetPasswordModel : PageModel
     {
         private readonly UserManager<ApplicationDbUser> _userManager;
-
-        public ResetPasswordModel(UserManager<ApplicationDbUser> userManager)
+        private readonly ApplicationDbContext _context;
+        public ResetPasswordModel(UserManager<ApplicationDbUser> userManager , ApplicationDbContext context)
         {
+            _context = context;
             _userManager = userManager;
         }
 
@@ -28,41 +29,50 @@ namespace HaragApp.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            public string Password { get; set; }
+            [Display(Name = "كلمة السر الحالية")]
+            public string oldPass { get; set; }
 
+            [Required]
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
+            [Display(Name = "كلمة السر الجديدة")]
+            public string newPass { get; set; }
 
-            public string Code { get; set; }
+
         }
 
         public IActionResult OnGet(string code = null)
         {
-            if (code == null)
-            {
-                return BadRequest("A code must be supplied for password reset.");
-            }
-            else
-            {
-                Input = new InputModel
-                {
-                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
-                };
-                return Page();
-            }
+           
+               return Page();
+            
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index","Home");
+            }
+
+            if(user.showpassword == Input.oldPass)
+            {
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.oldPass, Input.newPass);
+                user.showpassword = Input.newPass;
+                await _userManager.UpdateAsync(user);
+                await _context.SaveChangesAsync();
+                
+            }
+
+
+
+            return RedirectToAction("Index", "Home");
+
+            /*
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -85,7 +95,7 @@ namespace HaragApp.Areas.Identity.Pages.Account
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
-            return Page();
+            return Page();*/
         }
     }
 }

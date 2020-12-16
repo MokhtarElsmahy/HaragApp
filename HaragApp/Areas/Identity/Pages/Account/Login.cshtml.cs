@@ -92,6 +92,15 @@ namespace HaragApp.Areas.Identity.Pages.Account
                 {
                     if (result.Succeeded)
                     {
+                        #region MyRegion
+                        var roles = await _userManager.GetRolesAsync(user);
+                        if (roles.Contains("admin"))
+                        {
+                            _logger.LogInformation("User logged in.");
+                            return LocalRedirect("/configs/index");
+                        }
+
+                        #endregion
                         _logger.LogInformation("User logged in.");
                         return LocalRedirect(returnUrl);
                     }

@@ -63,6 +63,22 @@ namespace HaragApp.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        
+        public async Task<IActionResult> ChangePasswordAsync(string oldPass , string newPass)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if(user == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, oldPass, newPass);
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToAction("Index");
+
+        }
+
+
     }
 }
