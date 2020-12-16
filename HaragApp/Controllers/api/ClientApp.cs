@@ -137,6 +137,8 @@ namespace HaragApp.Controllers.api
                 NumberOFDisplayedAds = d.Advertisments.Count()
             });
         }
+
+
         //[AllowAnonymous]
         //[HttpPost(ApiRoutes.setting.Condtions)]
         //public ActionResult Condtions(string lang = "ar")
