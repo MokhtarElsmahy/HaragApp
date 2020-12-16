@@ -693,6 +693,16 @@ namespace HaragApp.Controllers.api
         }
 
 
+        [AllowAnonymous]
+        [HttpPost(ApiRoutes.Identity.GetCities)]
+        public List<City> getAllCities()
+        {
+            var cities = db.Cities.ToList();
+
+
+            return cities;
+        }
+
         //[AllowAnonymous]
         //[HttpPost(ApiRoutes.Identity.ChangePasswordByCode)]
         //public async Task<IActionResult> ChangePasswordByCode(ConfirmPhoneModel confirmPhoneModel)

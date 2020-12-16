@@ -76,6 +76,9 @@ namespace HaragApp.PathUrl
             public const string ChangePassward = Base + "/ChangePassward";
             public const string GetDataOfUser = Base + "/GetDataOfUser";
 
+            public const string GetCities = Base + "/GetCities";
+
+
 
             // addtional services from user 
 
