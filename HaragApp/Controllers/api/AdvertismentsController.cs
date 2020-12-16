@@ -55,11 +55,7 @@ namespace HaragApp.Controllers.api
         }
 
        
-        public static int GetFormNumber()
-        {
-            Random rnd = new Random();
-            return rnd.Next();
-        }
+      
 
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]

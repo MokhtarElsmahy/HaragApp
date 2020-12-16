@@ -38,7 +38,7 @@ namespace HaragApp.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync(string code)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User); 
             PhoneNumber = user.Phone;
             return Page();
         }
@@ -47,11 +47,15 @@ namespace HaragApp.Areas.Identity.Pages.Account
         {
 
             var user = await _userManager.GetUserAsync(User);
-            if (user.code == int.Parse(code))
+            if (user.code == int.Parse(code) && user.IsActive==false)
             {
                 user.IsActive = true;
                 await _userManager.UpdateAsync(user);
                 return LocalRedirect("/Home/Index");
+            }
+            if (user.code == int.Parse(code) && user.IsActive == true)
+            {
+                return RedirectToPage("./ResetPassword");
             }
            
             return Page();

@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using RestSharp;
+using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace HaragApp.Areas.Identity.Pages.Account
 {
@@ -19,53 +22,82 @@ namespace HaragApp.Areas.Identity.Pages.Account
     {
         private readonly UserManager<ApplicationDbUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
+        private readonly SignInManager<ApplicationDbUser> _signInManager;
+        private readonly ILogger<LoginModel> _logger;
 
-        public ForgotPasswordModel(UserManager<ApplicationDbUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(ILogger<LoginModel> logger, SignInManager<ApplicationDbUser> signInManager, UserManager<ApplicationDbUser> userManager, IEmailSender emailSender , ApplicationDbContext context)
         {
             _userManager = userManager;
             _emailSender = emailSender;
+            _context = context;
+            _signInManager = signInManager;
+            _logger = logger;
+
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public class InputModel
-        {
+        public class InputModel { 
+        
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            public string Phone { get; set; }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                var user = _context.Users.FirstOrDefault(c=>c.Phone==Input.Phone);
+                if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
+                    return Page();
+                }
+                if (user.Phone != Input.Phone)
+                {
+                    return Page();
+                }
+                else
+                {
+                    var x = SendMessage(user.code.ToString(), user.Phone.ToString());
+                    var result = await _signInManager.PasswordSignInAsync(user, user.showpassword, true, lockoutOnFailure: false);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User logged in.");
+                        return RedirectToPage("./RegisterConfirmation");
+                    }
                 }
 
-                // For more information on how to enable account confirmation and password reset please 
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    pageHandler: null,
-                    values: new { area = "Identity", code },
-                    protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                return RedirectToPage("./ForgotPasswordConfirmation");
+
             }
 
             return Page();
+        }
+        public static async Task<string> SendMessage(string msg, string numbers)
+        {
+            var client = new RestClient($"http://api.yamamah.com/SendSMS");
+            var request = new RestRequest(Method.POST);
+            request.AddJsonBody(new
+            {
+                Username = "966532866666",
+                Password = "Ht5pTY26",
+                Tagname = "Haraajm",
+                RecepientNumber = numbers,
+                Message = msg
+
+            });
+            IRestResponse response = await client.ExecuteAsync(request);
+
+            return "";
+        }
+        public static int GetFormNumber()
+        {
+            Random rnd = new Random();
+            return rnd.Next();
         }
     }
 }

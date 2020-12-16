@@ -23,6 +23,9 @@ namespace HaragApp.Areas.Identity.Pages.Account
             _context = context;
             _userManager = userManager;
         }
+        [BindProperty]
+        public string oldPass { get; set; }
+
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -32,7 +35,7 @@ namespace HaragApp.Areas.Identity.Pages.Account
 
 
             [Required]
-            [DataType(DataType.Password)]
+            //[DataType(DataType.Password)]
             [Display(Name = "كلمة السر الحالية")]
             public string oldPass { get; set; }
 
@@ -44,11 +47,15 @@ namespace HaragApp.Areas.Identity.Pages.Account
 
         }
 
-        public IActionResult OnGet(string code = null)
+        public async Task<IActionResult> OnGetAsync(string code = null)
         {
-           
-               return Page();
-            
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return Page();
+
+            oldPass = user.showpassword;
+            return Page();
+
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -59,14 +66,13 @@ namespace HaragApp.Areas.Identity.Pages.Account
                 return RedirectToAction("Index","Home");
             }
 
-            if(user.showpassword == Input.oldPass)
-            {
-                var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.oldPass, Input.newPass);
-                user.showpassword = Input.newPass;
-                await _userManager.UpdateAsync(user);
-                await _context.SaveChangesAsync();
+          
+              var changePasswordResult = await _userManager.ChangePasswordAsync(user, user.showpassword, Input.newPass);
+              user.showpassword = Input.newPass;
+              await _userManager.UpdateAsync(user);
+              await _context.SaveChangesAsync();
                 
-            }
+          
 
 
 
