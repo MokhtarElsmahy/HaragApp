@@ -35,10 +35,10 @@ namespace HaragApp.Data
         public string img { get; set; } //mult part
 
 
-        [ForeignKey("Country")]
-        public int CountryID { get; set; }
+        //[ForeignKey("Country")]
+        //public int CountryID { get; set; }
 
-        public virtual Country Country { get; set; }
+        //public virtual Country Country { get; set; }
 
 
         //تم اضافته لتعامل مع السيرفس اما 

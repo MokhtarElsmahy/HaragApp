@@ -26,6 +26,8 @@ namespace HaragApp.PathUrl
             public const string AboutUs = Base + "/AboutUs";
             public const string GetAdvertsment = Base + "/GetAdvertsment";
             public const string GetSetting = Base + "/GetSetting";
+            public const string GetAllPaidAdv = Base + "/GetAllPaidAdv";
+            public const string Shop = Base + "/Shop";
             public const string Addcomplaints = Base + "/Addcomplaints";
 
             public const string GetQAndAnswerforDeleget = Base + "/GetQAndAnswerforDeleget";
@@ -34,11 +36,13 @@ namespace HaragApp.PathUrl
             public const string AboutUsforDeleget = Base + "/AboutUsforDeleget";
             public const string GetSettingforDeleget = Base + "/GetSettingforDeleget";
             public const string AddcomplaintsforDeleget = Base + "/AddcomplaintsforDeleget";
+
+
         }
-   
-  
-   
-    
+
+
+
+
         public static class Identity
         {
             // delegt
@@ -71,6 +75,9 @@ namespace HaragApp.PathUrl
             public const string reset_password = Base + "/reset_password";
             public const string ChangePassward = Base + "/ChangePassward";
             public const string GetDataOfUser = Base + "/GetDataOfUser";
+
+            public const string GetCities = Base + "/GetCities";
+
 
 
             // addtional services from user 

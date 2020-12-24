@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using HaragApp.Data;
 using HaragApp.Models;
 using RestSharp;
+using HaragApp.Commonet;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HaragApp.Controllers
 {
+    [Authorize(Roles ="admin")]
     public class AnimalCategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -60,11 +63,12 @@ namespace HaragApp.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                var client = new RestClient($"https://localhost:44396/api/AnimalCategories");
-                var request = new RestRequest(Method.POST);
-                request.AddJsonBody(animalCategory);
-                IRestResponse response = await client.ExecuteAsync(request);
+                IAnimalCategory animal = new AnimalServices(_context);
+                animal.Create(animalCategory);
+                //var client = new RestClient($"https://localhost:44396/api/AnimalCategories");
+                //var request = new RestRequest(Method.POST);
+                //request.AddJsonBody(animalCategory);
+                //IRestResponse response = await client.ExecuteAsync(request);
                 return RedirectToAction(nameof(Create));
 
             }

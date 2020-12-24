@@ -1,0 +1,31 @@
+﻿@model IEnumerable<HaragApp.ViewModels.AdsImagesVm>
+@{
+    ViewData["Title"] = "GetUserAds";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+    <div class="container">
+        <h2 class="text-right mt-3 mb-3">إعلاناتـــي</h2>
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-sm-6 mb-2">
+                    <div class="card">
+                        <div class="row card-body">
+                            <div class="col-6">
+                                <h5 class="card-title" style="text-align:right;"><a asp-action="Details" asp-controller="Advertisments" asp-route-id="@item.AdID">@item.Title</a></h5>
+                                <p class="card-text mb-2" style="text-align:right;text-overflow: ellipsis; overflow: hidden;  white-space: nowrap; width:100%;">@item.Description</p>
+
+                            </div>
+                            <img class="col-md-6 col-sm-12 img-thumbnail" style="height:200px;width:100%" src="@item.ImageUrl2" alt="sans" />
+                        </div>
+                        <div style="text-align:right;">
+                            <a class="btn btn-primary btn-block" style="text-align:center;" asp-action="userUpdateADV" asp-controller="Advertisments" asp-route-id="@item.AdID">تعديــل</a>
+                            <a class="btn btn-danger btn-block" style="text-align:center;" asp-action="userDeleteADV" asp-controller="Advertisments" asp-route-id="@item.AdID">حــذف</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+

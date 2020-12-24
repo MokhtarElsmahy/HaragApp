@@ -1,0 +1,45 @@
+﻿@model Configs
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<section class="contact-section">
+    <div class="auto-container">
+        <div class="sec-title text-center">
+            <h2>تواصل معنا</h2>
+            <div class="separator"><span class="flaticon-settings-2"></span></div>
+        </div>
+
+        <div class="contact-info">
+            <div class="row clearfix">
+                <div class="image-column col-lg-8 col-md-12 col-sm-12">
+                    <figure><img src="@Model.slider1Image" alt=""></figure>
+                </div>
+
+                <div class="info-column col-lg-4 col-md-12 col-sm-12 text-right">
+                    <h3>معلومات التواصل</h3>
+                    <ul>
+                        <li>
+                            <span class="icon flaticon-placeholder"></span>
+                            <p><strong>العنوان </strong><br>@Model.address.</p>
+                        </li>
+
+                        <li>
+                            <span class="icon flaticon-phone"></span>
+                            <p><strong>رقم الجوال  </strong>@Model.Mobile1  -  @Model.Mobile2</p>
+                            <p><span>  </span><a href="#">@Model.Email</a></p>
+                        </li>
+
+                        <li>
+                           
+                            <span class="icon flaticon-stopwatch"></span>
+                            <p><strong>وقت العمل </strong><br>من @Model.WorkFrom صباحا وحتى @Model.WorkTo مساء</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Contact Section -->

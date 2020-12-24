@@ -7,25 +7,31 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using HaragApp.Data;
+using HaragApp.Models;
 using HaragApp.PathUrl;
+using HaragApp.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+
 
 namespace HaragApp.Controllers.api
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ClientAuthController : BaseController
     {
+        
         private readonly UserManager<ApplicationDbUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly SignInManager<ApplicationDbUser> _signInManager;
         private readonly ApplicationDbContext db;
         private readonly IHostingEnvironment HostingEnvironment;
+
         public ClientAuthController(ApplicationDbContext _db, IHostingEnvironment HostingEnvironment, UserManager<ApplicationDbUser> userManager, SignInManager<ApplicationDbUser> signInManager, IConfiguration configuration)
             : base(_db, HostingEnvironment, userManager, signInManager, configuration)
         {
@@ -34,9 +40,14 @@ namespace HaragApp.Controllers.api
             _signInManager = signInManager;
             db = _db;
             this.HostingEnvironment = HostingEnvironment;
+           
         }
 
+
         #region MainInfo
+
+
+        
 
         [AllowAnonymous]
         // /register
@@ -44,7 +55,28 @@ namespace HaragApp.Controllers.api
         public async Task<ActionResult> InsertUser(RegisterViewModel userModel)
         {
 
-          
+         // string PhoneNumber=   await LoadPhoneNumberAsync();
+
+            //try
+            //{
+            //    //var verification = await VerificationResource.CreateAsync(
+            //    //    to: PhoneNumber,
+            //    //    channel: "sms",
+            //    //    pathServiceSid: _settings.VerificationServiceSID
+            //    //);
+
+            //    //if (verification.Status == "pending")
+            //    //{
+            //    //    return RedirectToPage("ConfirmPhone");
+            //    //}
+
+            //   // ModelState.AddModelError("", $"There was an error sending the verification code: {verification.Status}");
+            //}
+            //catch (Exception)
+            //{
+            //    ModelState.AddModelError("",
+            //        "There was an error sending the verification code, please check the phone number is correct and try again");
+            //}
 
             #region validation
 
@@ -56,14 +88,14 @@ namespace HaragApp.Controllers.api
                     msg = creatMessage(userModel.lang, "من فضلك ادخل اسم المستخدم", "Please enter your user name")
                 });
             }
-            if (userModel.fk_city == 0)
-            {
-                return Json(new
-                {
-                    key = 0,
-                    msg = creatMessage(userModel.lang, "من فضلك ادخل المدينه", "Please enter your city")
-                });
-            }
+            //if (userModel.fk_city == 0)
+            //{
+            //    return Json(new
+            //    {
+            //        key = 0,
+            //        msg = creatMessage(userModel.lang, "من فضلك ادخل المدينه", "Please enter your city")
+            //    });
+            //}
             if (userModel.phone == null)
             {
                 return Json(new
@@ -124,7 +156,7 @@ namespace HaragApp.Controllers.api
             var user = new ApplicationDbUser
             {
 
-               
+
 
                 Email = userModel.email ?? "",
                 UserName = userModel.phone + num + "@yahoo.com",
@@ -132,35 +164,37 @@ namespace HaragApp.Controllers.api
                 showpassword = userModel.password,
                 img = BaisUrlHoste + "/images/User/generic-user.png",
                 IsActive = true,
-              
+
                 lat = userModel.lat,
                 lng = userModel.lng,
-                address = userModel.location,
+
                 publish_date = TimeNow(),
                 code = code,
                 PhoneNumber = userModel.phone,
                 type_user = 1,
+                CityID = userModel.CityID,
                 SecurityStamp = Guid.NewGuid().ToString(),
+                Phone = userModel.phone
 
             };
 
             var result = await _userManager.CreateAsync(user, userModel.password);
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(user, "Mobile");
+            //if (result.Succeeded)
+            //{
+            //    await _userManager.AddToRoleAsync(user, "Mobile");
 
-            }
-            else
-            {
-                return Json(new
-                {
-                    key = 0,
-                    msg = creatMessage(userModel.lang, result.ToString(), result.ToString())
-                });
-            }
-     
+            //}
+            //else
+            //{
+            //    return Json(new
+            //    {
+            //        key = 0,
+            //        msg = creatMessage(userModel.lang, result.ToString(), result.ToString())
+            //    });
+            //}user.code.ToString()
+
             db.SaveChanges();
-            Task<string> s = SendMessage(user.code.ToString(), user.PhoneNumber);
+            Task<string> s = SendMessage(user.code.ToString(), user.PhoneNumber.ToString());
             return Json(new
             {
                 key = 1,
@@ -168,7 +202,7 @@ namespace HaragApp.Controllers.api
                 msg = creatMessage(userModel.lang, "تم التسجيل بنجاح", "successfully registered"),
                 status = false,
                 code
-            }); ;
+            }); 
         }
 
         [AllowAnonymous]
@@ -238,7 +272,7 @@ namespace HaragApp.Controllers.api
                 return Json(new
                 {
                     key = 0,
-                    msg = creatMessage(userModel.lang, "من فضلك ادخل من رقم الهاتف", "Please enter your phone number")
+                    msg = creatMessage("ar", "من فضلك ادخل من رقم الهاتف", "Please enter your phone number")
                 });
             }
 
@@ -247,7 +281,7 @@ namespace HaragApp.Controllers.api
                 return Json(new
                 {
                     key = 0,
-                    msg = creatMessage(userModel.lang, "من فضلك ادخل  كلمة المرور ", "Please enter your  password")
+                    msg = creatMessage("ar", "من فضلك ادخل  كلمة المرور ", "Please enter your  password")
                 });
             }
 
@@ -258,7 +292,7 @@ namespace HaragApp.Controllers.api
                 return Json(new
                 {
                     key = 0,
-                    msg = creatMessage(userModel.lang, "يرجى التاكد من البيانات", "Please check your data")
+                    msg = creatMessage("ar", "يرجى التاكد من البيانات", "Please check your data")
                 });
             }
 
@@ -269,20 +303,20 @@ namespace HaragApp.Controllers.api
                 return Json(new
                 {
                     key = 0,
-                    msg = creatMessage(userModel.lang, "من فضلك تاكد من كلمة المرور ", "Please sure your  password")
+                    msg = creatMessage("ar", "من فضلك تاكد من كلمة المرور ", "Please sure your  password")
                 });
             }
 
-            if (user.IsActive == false && user.active_code == true)
-            {
-                return Json(new
-                {
-                    key = 0,
-                    data = new { },
-                    status = "blocked",
-                    msg = creatMessage(userModel.lang, "هذا الحساب مغلق من قبل الادمن", "This account is closed by the addict")
-                });
-            }
+            //if (user.IsActive == false && user.active_code == true)
+            //{
+            //    return Json(new
+            //    {
+            //        key = 0,
+            //        data = new { },
+            //        status = "blocked",
+            //        msg = creatMessage("ar", "هذا الحساب مغلق من قبل الادمن", "This account is closed by the addict")
+            //    });
+            //}
             if (user.active_code == false)
             {
                 return Json(new
@@ -295,7 +329,7 @@ namespace HaragApp.Controllers.api
                     },
 
                     status = false,
-                    msg = creatMessage(userModel.lang, "هذا الحساب لم يفعل بعد", "This account is not active")
+                    msg = creatMessage("ar", "هذا الحساب لم يفعل بعد", "This account is not active")
                 });
             }
             #endregion
@@ -320,18 +354,18 @@ namespace HaragApp.Controllers.api
                   signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
                 );
 
-              
-                    return Json(new
-                    {
-                        key = 1,
-                        data = GetUserInfo(user.Id, userModel.lang),
-                        token = new JwtSecurityTokenHandler().WriteToken(token),
-                        expiration = token.ValidTo,
-                        status = true,
-                        msg = creatMessage(userModel.lang, "تم تسجيل الدخول بنجاح", "Logged in successfully")
-                    });
 
-              
+                return Json(new
+                {
+                    key = 1,
+                    data = GetUserInfo(user.Id, "ar"),
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    expiration = token.ValidTo,
+                    status = true,
+                    msg = creatMessage("ar", "تم تسجيل الدخول بنجاح", "Logged in successfully")
+                });
+
+
 
 
             }
@@ -402,25 +436,25 @@ namespace HaragApp.Controllers.api
             user.lat = userModel.lat ?? user.lat;
             user.user_name = userModel.user_name ?? user.user_name;
             user.PhoneNumber = userModel.phone ?? user.PhoneNumber;
-         
+
             user.Email = userModel.email;
-           
 
-            if (userModel.Img != null)
-            {
-                var uploads = Path.Combine(HostingEnvironment.WebRootPath, "images/User");
 
-                var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(userModel.Img.FileName);
-                using (var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
-                {
-                    await userModel.Img.CopyToAsync(fileStream);
-                    user.img = BaisUrlUser + fileName;
-                }
-            }
-            else
-            {
-                user.img = user.img;
-            }
+            //if (userModel.Img != null)
+            //{
+            //    var uploads = Path.Combine(HostingEnvironment.WebRootPath, "images/User");
+
+            //    var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(userModel.Img.FileName);
+            //    using (var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
+            //    {
+            //        await userModel.Img.CopyToAsync(fileStream);
+            //        user.img = BaisUrlUser + fileName;
+            //    }
+            //}
+            //else
+            //{
+            //    user.img = user.img;
+            //}
 
 
             //}
@@ -432,7 +466,7 @@ namespace HaragApp.Controllers.api
                 key = 1,
                 data = GetUserInfo(user.Id, userModel.lang),
                 msg = creatMessage(userModel.lang, "تم التعديل بنجاح", "successfully modified"),
-                status = false
+                status = true
             });
 
         }
@@ -554,14 +588,13 @@ namespace HaragApp.Controllers.api
         {
             try
             {
-
                 var codeuser = (db.Users.Where(x => x.Id == userModel.user_id).SingleOrDefault());
 
                 if (codeuser != null)
                 {
                     Random rnd = new Random();
                     int code = GetFormNumber();
-                    Task<string> s = SendMessage(code.ToString(), codeuser.PhoneNumber);
+                    Task<string> s = SendMessage(code.ToString(), codeuser.Phone);
                     codeuser.code = code;
                     db.SaveChanges();
                     return Json(new
@@ -660,15 +693,67 @@ namespace HaragApp.Controllers.api
         }
 
 
+        [AllowAnonymous]
+        [HttpPost(ApiRoutes.Identity.GetCities)]
+        public List<City> getAllCities()
+        {
+            var cities = db.Cities.ToList();
+
+
+            return cities;
+        }
+
+        //[AllowAnonymous]
+        //[HttpPost(ApiRoutes.Identity.ChangePasswordByCode)]
+        //public async Task<IActionResult> ChangePasswordByCode(ConfirmPhoneModel confirmPhoneModel)
+        //{
+        //    //string PhoneNumber=await LoadPhoneNumberAsync();
+
+        //    //try
+        //    //{
+        //    //    var verification = await VerificationCheckResource.CreateAsync(
+        //    //        to: PhoneNumber,
+        //    //        code: confirmPhoneModel.VerificationCode,
+        //    //        pathServiceSid: _settings.VerificationServiceSID
+        //    //    );
+        //    //    if (verification.Status == "approved")
+        //    //    {
+        //    //        var identityUser = await _userManager.GetUserAsync(User);
+        //    //        identityUser.PhoneNumberConfirmed = true;
+        //    //        identityUser.active_code = true;
+        //    //        var updateResult = await _userManager.UpdateAsync(identityUser);
+
+        //    //        if (updateResult.Succeeded)
+        //    //        {
+        //    //            return RedirectToAction("Index","Home");
+        //    //        }
+        //    //        else
+        //    //        {
+        //    //            ModelState.AddModelError("", "There was an error confirming the verification code, please try again");
+        //    //        }
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        ModelState.AddModelError("", $"There was an error confirming the verification code: {verification.Status}");
+        //    //    }
+        //    //}
+        //    //catch (Exception)
+        //    //{
+        //    //    ModelState.AddModelError("",
+        //    //        "There was an error confirming the code, please check the verification code is correct and try again");
+        //    //}
+        //    return RedirectToAction("Create", "Advertisments");
+
+        //}
 
 
 
-
-
-
-
-        
-        #endregion
 
     }
+
+
+
+        #endregion
+
+    
 }

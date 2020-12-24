@@ -13,8 +13,8 @@ namespace HaragApp.Controllers.api
         public string phone { get; set; }
         [Required(ErrorMessage = "من فضلك ادخل كلمة المرور")]
         public string password { get; set; }
-        public string lang { get; set; }
+        //public string lang { get; set; }
 
-        public string device_id { get; set; }
+        //public string device_id { get; set; }
     }
 }

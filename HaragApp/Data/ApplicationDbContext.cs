@@ -25,7 +25,8 @@ namespace HaragApp.Data
         public virtual DbSet<Advertisment> Advertisments { get; set; }
         public virtual DbSet<AnimalCategory> AnimalCategories { get; set; }
         public virtual DbSet<City> Cities { get; set; }
-        public virtual DbSet<Country> Countries { get; set; }
+       // public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<Favorite> Favorites { get; set; }
+        public virtual DbSet<Configs> Configs { get; set; }
     }
 }

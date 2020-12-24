@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HaragApp.Data;
 using HaragApp.Models;
+using HaragApp.Commonet;
 
 namespace HaragApp.Controllers.api
 {
@@ -23,24 +24,13 @@ namespace HaragApp.Controllers.api
 
         // GET: api/AnimalCategories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AnimalCategory>>> GetAnimalCategories()
+        public ActionResult<IEnumerable<AnimalCategory>> GetAnimalCategories()
         {
-            return await _context.AnimalCategories.ToListAsync();
+            IAnimalCategory aa = new AnimalServices(_context);
+            var categories = aa.GetAll();
+            return categories;
         }
 
-        // GET: api/AnimalCategories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AnimalCategory>> GetAnimalCategory(int id)
-        {
-            var animalCategory = await _context.AnimalCategories.FindAsync(id);
-
-            if (animalCategory == null)
-            {
-                return NotFound();
-            }
-
-            return animalCategory;
-        }
 
         // PUT: api/AnimalCategories/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -70,28 +60,13 @@ namespace HaragApp.Controllers.api
         [HttpPost]
         public async Task<ActionResult<AnimalCategory>> PostAnimalCategory(AnimalCategory animalCategory)
         {
-            _context.AnimalCategories.Add(animalCategory);
-            await _context.SaveChangesAsync();
+            IAnimalCategory animal = new AnimalServices(_context);
+            animal.Create(animalCategory);
 
             return CreatedAtAction("GetAnimalCategory", new { id = animalCategory.CategoryID }, animalCategory);
         }
 
-        // DELETE: api/AnimalCategories/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<AnimalCategory>> DeleteAnimalCategory(int id)
-        {
-            var animalCategory = await _context.AnimalCategories.FindAsync(id);
-            if (animalCategory == null)
-            {
-                return NotFound();
-            }
-
-            _context.AnimalCategories.Remove(animalCategory);
-            await _context.SaveChangesAsync();
-
-            return animalCategory;
-        }
-
+      
         private bool AnimalCategoryExists(int id)
         {
             return _context.AnimalCategories.Any(e => e.CategoryID == id);

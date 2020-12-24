@@ -1,50 +1,334 @@
-﻿@model HaragApp.Models.Advertisment
-
+﻿@model HaragApp.ViewModels.AdsImagesVm
 @{
-    ViewData["Title"] = "Create";
+	Layout = "~/Views/Shared/_LayoutHome.cshtml";
+	<style>
+		input[type="file"] {
+			color: transparent;
+		}
+
+	</style>
 }
 
-<h1>Create</h1>
 
-<h4>Advertisment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsPact" /> @Html.DisplayNameFor(model => model.IsPact)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CityID" class="control-label"></label>
-                <select asp-for="CityID" class ="form-control" asp-items="ViewBag.CityID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryID" class="control-label"></label>
-                <select asp-for="CategoryID" class ="form-control" asp-items="ViewBag.CategoryID"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<!--Page Title-->
+<section class="page-title" style="background-image:url(/Home/images/background/8.jpg);">
+	<div class="auto-container">
+		<div class="inner-container clearfix">
+			<h1>إضافة إعلان </h1>
+			<ul class="bread-crumb clearfix">
+				<li><a href="index.html">الرئيسيه</a></li>
+				<li>إضافة إعلان </li>
+			</ul>
+		</div>
+	</div>
+</section>
+<!--End Page Title-->
+<!--Login Section-->
+
+<section class="login-section">
+	<div class="auto-container">
+		<div class="row clearfix rtl-dir">
+		 
+			<div class="column col-lg-12 col-md-12 col-sm-12 ">
+				<!-- Login Form -->
+				<h2>إضافه اعلان عادي </h2>
+				<div class="login-form text-right">
+					<!--Login Form-->
+					<form asp-action="Create" method="post">
+						<div class="form-group">
+							<label>الاسم   </label>
+							<input  class="form-control" asp-for="Title" placeholder="الاسم" required>
+						</div>
+
+						<div class="form-group">
+							<label>المدينه</label>
+							<select class="form-control h-25" asp-items="@ViewBag.CityID as SelectList" asp-for="CityID" required>
+								<option value="-1">اختر مدينه</option>
+							</select>
+
+						</div>
+						<div class="form-group">
+							<label>الصنف</label>
+							<select class="form-control h-25" asp-items="@ViewBag.CategoryID as SelectList" asp-for="CategoryID" required>
+								<option value="-1">اختر صنف</option>
+							</select>
+
+						</div>
+						<div class="form-group">
+							<label for="exampleFormControlTextarea1">التفاصيل</label>
+							<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" type="text" asp-for="Description" required></textarea>
+						</div>
+						<div class="form-group">
+
+							<input type="checkbox" id="vehicle1" asp-for="IsPact" required>
+							<input type="checkbox" id="vehicle1" asp-for="IsPaid" style="display:none">
+							<label for="vehicle1">اتعهد بدفع 15ريال فى كل راس يتم بيعه عن طريق الموقع</label><br>
+
+						</div>
+
+						<div class="row justify-content-center">
+							<div class="col-lg-2 col-md-6 col-sm-12">
+								<label>الصورة الاولى</label>
+								<input type="file" required id="files1" name="files" class="btn btn-block">
+								<img id="SelectedImage1" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+							</div>
+
+							<div class="col-lg-2 col-md-6 col-sm-12">
+								<label>الصورة الثانيه</label>
+								<input type="file" id="files2" name="files" required class="btn btn-block">
+								<img id="SelectedImage2" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+							</div>
+							<div class="col-lg-2 col-md-6 col-sm-12">
+								<label>الصورة الثالثه</label>
+								<input type="file" id="files3" name="files" required class="btn btn-block">
+								<img id="SelectedImage3" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+							</div>
+							<div class="col-lg-2 col-md-6 col-sm-12">
+								<label>الصورة الرابعه</label>
+								<input type="file" id="files4" name="files" required class="btn btn-block">
+								<img id="SelectedImage4" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+							</div>
+							<div class="col-lg-2 col-md-6 col-sm-12">
+								<label>الصورةالخامسه</label>
+								<input type="file" id="files5" name="files" required class="btn btn-block">
+								<img id="SelectedImage5" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+							</div>
+						</div>
+
+
+						<br />
+						<br />
+						<br />
+
+						<div class="clearfix">
+							<div class="pull-left">
+								<div class="form-group text-right">
+									<button class="theme-btn btn-style-one" type="submit" name="submit-form">تأكيد </button>
+								</div>
+							</div>
+
+						</div>
+						<input id="ImageUrl1" name="ImageUrl1" type="hidden" />
+						<input id="ImageUrl2" name="ImageUrl2" type="hidden" />
+						<input id="ImageUrl3" name="ImageUrl3" type="hidden" />
+						<input id="ImageUrl4" name="ImageUrl4" type="hidden" />
+						<input id="ImageUrl5" name="ImageUrl5" type="hidden" />
+					</form>
+				</div>
+				<!--End Login Form -->
+			</div>
+
+
+		</div>
+	</div>
+</section>
+<!--End Login  Section-->
+<!-- count Section -->
+<section class="subscribe-section">
+	<div class="auto-container">
+		<div class="inner-container clearfix">
+			<h3>يمكنك القيام بحساب المموله من هنا </h3>
+			<a href="#" class="call-btn">ابدا الان</a>
+		</div>
+	</div>
+</section>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+	<script>
+	 $("#files1").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#ImageUrl1").val(response.image);
+					   $("#SelectedImage1").attr("src", response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+				//.done(function (response) {
+
+				//        alert(response.ImageURL)
+				//       // $("#ImageUrl").val(response.ImageURL);
+				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+
+				// })
+				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				//    	alert("FAIL");
+				//});
+	 });
+	 $("#files2").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#ImageUrl2").val(response.image);
+					   $("#SelectedImage2").attr("src", response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+				//.done(function (response) {
+
+				//        alert(response.ImageURL)
+				//       // $("#ImageUrl").val(response.ImageURL);
+				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+
+				// })
+				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				//    	alert("FAIL");
+				//});
+	 });
+	 $("#files3").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#ImageUrl3").val(response.image);
+					   $("#SelectedImage3").attr("src", response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+				//.done(function (response) {
+
+				//        alert(response.ImageURL)
+				//       // $("#ImageUrl").val(response.ImageURL);
+				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+
+				// })
+				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				//    	alert("FAIL");
+				//});
+	});
+	 $("#files4").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#ImageUrl4").val(response.image);
+					   $("#SelectedImage4").attr("src", response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+				//.done(function (response) {
+
+				//        alert(response.ImageURL)
+				//       // $("#ImageUrl").val(response.ImageURL);
+				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+
+				// })
+				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				//    	alert("FAIL");
+				//});
+	});
+	 $("#files5").change(function () {
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#ImageUrl5").val(response.image);
+					   $("#SelectedImage5").attr("src", response.image);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+				//.done(function (response) {
+
+				//        alert(response.ImageURL)
+				//       // $("#ImageUrl").val(response.ImageURL);
+				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+
+				// })
+				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+				//    	alert("FAIL");
+				//});
+		});
+
+	</script>
 }

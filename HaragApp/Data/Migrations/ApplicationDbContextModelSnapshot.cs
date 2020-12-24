@@ -15,7 +15,7 @@ namespace HaragApp.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -33,9 +33,6 @@ namespace HaragApp.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CountryID")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(256)")
@@ -123,8 +120,6 @@ namespace HaragApp.Data.Migrations
 
                     b.HasIndex("CityID");
 
-                    b.HasIndex("CountryID");
-
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -169,7 +164,13 @@ namespace HaragApp.Data.Migrations
                     b.Property<int>("CityID")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsPact")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")
@@ -197,6 +198,7 @@ namespace HaragApp.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CategoryName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CategoryID");
@@ -214,29 +216,78 @@ namespace HaragApp.Data.Migrations
                     b.Property<string>("CityName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CountryID")
-                        .HasColumnType("int");
+                    b.Property<string>("Langtude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Lantitude")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CityID");
-
-                    b.HasIndex("CountryID");
 
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("HaragApp.Models.Country", b =>
+            modelBuilder.Entity("HaragApp.Models.Configs", b =>
                 {
-                    b.Property<int>("CountryID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CountryName")
+                    b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CountryID");
+                    b.Property<string>("FaceBookLink")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Countries");
+                    b.Property<string>("Mobile1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mobile2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OurHistory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OurMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TwitterLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WorkFrom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WorkTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("about")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider1Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider1Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider2Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider2Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider3Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("slider3Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Configs");
                 });
 
             modelBuilder.Entity("HaragApp.Models.Favorite", b =>
@@ -396,12 +447,6 @@ namespace HaragApp.Data.Migrations
                         .HasForeignKey("CityID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("HaragApp.Models.Country", "Country")
-                        .WithMany("Users")
-                        .HasForeignKey("CountryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("HaragApp.Models.AdImage", b =>
@@ -430,15 +475,6 @@ namespace HaragApp.Data.Migrations
                     b.HasOne("HaragApp.Data.ApplicationDbUser", "User")
                         .WithMany("Advertisments")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("HaragApp.Models.City", b =>
-                {
-                    b.HasOne("HaragApp.Models.Country", "Country")
-                        .WithMany("Cities")
-                        .HasForeignKey("CountryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("HaragApp.Models.Favorite", b =>

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace HaragApp.Models
 {
@@ -13,6 +12,7 @@ namespace HaragApp.Models
         [Key]
         public int AdID { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
 
         public bool IsPact { get; set; }
 
@@ -26,6 +26,12 @@ namespace HaragApp.Models
 
         [ForeignKey("AnimalCategory")]
         public int CategoryID { get; set; }
+
+
+        public bool IsPaid { get; set; }
+        //public string IsPaidDescription { get; set; }
+
+
         public virtual AnimalCategory AnimalCategory { get; set; }
 
         public virtual ICollection<AdImage> AdImages { get; set; }

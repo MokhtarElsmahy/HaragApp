@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using RestSharp;
 
 namespace HaragApp.Controllers.api
 {
@@ -39,7 +40,14 @@ namespace HaragApp.Controllers.api
         {
             var UserDB = db.Users.Where(x => x.Id == userId).Select(x => new UserInfoViewModel
             {
-
+                id=x.Id,
+                user_name = x.user_name,
+                CityID = x.CityID,
+                email = x.Email,
+                phone = x.Phone,
+                lang=x.lang,
+                lat=x.lat,
+               
                
             }).FirstOrDefault();
 
@@ -47,16 +55,15 @@ namespace HaragApp.Controllers.api
         }
         public class UserInfoViewModel
         {
-            public int type_user { get; set; }
+          
             public string id { get; set; }
             public string user_name { get; set; } = "";
-            public int fk_city { get; set; } = 0;
-            public string city_name { get; set; } = "";
             public string email { get; set; } = "";
-            public string img { get; set; } = "";
+            public int CityID { get; set; } = 1;
+           
             public string phone { get; set; } = "";
-            public string region { get; set; } = "";
-            public bool notify { get; set; }
+         
+         
             public string lat { get; set; }
             public string lng { get; set; }
             public string address { get; set; }
@@ -158,9 +165,7 @@ namespace HaragApp.Controllers.api
         public static int GetFormNumber()
         {
             Random rnd = new Random();
-            int code = 1234;
-
-            return code;
+            return rnd.Next();
         }
         //valid for email
         public static bool IsValidEmail(string email)
@@ -266,7 +271,7 @@ namespace HaragApp.Controllers.api
             }
 
         }
-     
+
         //public void SendPushNotificationForDeleget(string user_id, string msg, int? type = 0, int? order_id = 0)
         //{
         //    try
@@ -354,20 +359,78 @@ namespace HaragApp.Controllers.api
 
         #region sms
 
-        public static async System.Threading.Tasks.Task<string> SendMessage(string msg, string numbers)
+        //public static async System.Threading.Tasks.Task<string> SendMessage(string msg, string numbers)
+        //{
+
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri("http://www.4jawaly.net/");
+        //        //HTTP GET
+        //        var response = await client.GetAsync($"api/sendsms.php?username=othaim&password=565656&numbers={numbers}&sender=ALOTHAIM&message={msg}&&return=string");
+        //        var responseString = await response.Content.ReadAsStringAsync();
+        //        return responseString;
+
+        //    }
+
+        //}
+
+        //public static async Task<string> SendMessage(string msg, string numbers)
+        //{
+
+
+        //    string url = "http://api.yamamah.com/SendSMSV2?Username=966532866666&Password=Ht5pTY26&Message=987654321&RecepientNumber=966532866666&Tagname=Haraajm&SendDateTime=0";
+
+        //    var client = new RestClient(url);
+        //     var data = await client.Get();
+        //    return "";
+        //}
+
+        public static async Task<string> SendMessage(string msg, string numbers)
         {
-
-
-            using (var client = new HttpClient())
+            var client = new RestClient($"http://api.yamamah.com/SendSMS");
+            var request = new RestRequest(Method.POST);
+            request.AddJsonBody(new
             {
-                client.BaseAddress = new Uri("http://www.4jawaly.net/");
-                //HTTP GET
-                var response = await client.GetAsync($"api/sendsms.php?username=othaim&password=565656&numbers={numbers}&sender=ALOTHAIM&message={msg}&&return=string");
-                var responseString = await response.Content.ReadAsStringAsync();
+                Username = "966532866666",
+                Password = "Ht5pTY26",
+                Tagname = "Haraajm",
+                RecepientNumber = numbers,
+                Message = msg
 
-                return responseString;
-            }
+            });
+            IRestResponse response = await client.ExecuteAsync(request);
+
+            return "";
         }
+
+
+        //public async Task<IActionResult> SendMessageSendResendAsync(string numbers)
+        //{
+        //    var client = new RestClient($"http://api.yamamah.com/SendSMS");
+        //    var request = new RestRequest(Method.POST);
+        //    var code = GetFormNumber().ToString();
+        //    request.AddJsonBody(new
+        //    {
+        //        Username = "966532866666",
+        //        Password = "Ht5pTY26",
+        //        Tagname = "Haraajm",
+        //        RecepientNumber = numbers,
+        //        Message = code
+
+        //    });
+        //    IRestResponse response = await client.ExecuteAsync(request);
+
+        //    if (response.StatusCode == HttpStatusCode.OK)
+        //    {
+        //        var user = await _userManager.GetUserAsync(User);
+        //        user.code = int.Parse(code);
+        //        await _userManager.UpdateAsync(user);
+        //        return Json(new { message = "ok" ,code = code });
+
+        //    }
+        //    return Json(new { message = "Not ok", code =""});
+        //}
+
         //mobily
         static public string SendMessagemobily(string msg, string numbers)
         {
@@ -454,20 +517,19 @@ namespace HaragApp.Controllers.api
         }
         #endregion
 
-        
+
         //public Tuple<List<dataorder>, List<dataorder>> GetAllNearestFamousPlaces(double currentLatitude, double currentLongitude,
         //  int km, List<dataorder> data)
         //{
 
-        //    List<dataorder> normal_provider = new List<dataorder>();
-        //    List<dataorder> org_provider = new List<dataorder>();
+        //    List<dataorder> advertsment = new List<dataorder>();
         //    var query = (from c in data
 
         //                 select c).ToList();
         //    foreach (var place in query)
         //    {
         //        double distance = Distance(currentLatitude, currentLongitude, Convert.ToDouble(place.lat), Convert.ToDouble(place.lng));
-        //        if (distance <= km && place.type_deleget == (int)User_Type.deleget)         //nearbyplaces which are within 25 kms  50 w 70
+        //        if (distance <= km)         //nearbyplaces which are within 25 kms  50 w 70
         //        {
         //            dataorder dist = new dataorder();
         //            dist.img = place.img;
@@ -479,23 +541,10 @@ namespace HaragApp.Controllers.api
         //            dist.lat = place.lat;
         //            dist.lng = place.lng;
         //            dist.address = place.address;
-        //            normal_provider.Add(dist);
+        //            advertsment.Add(dist);
 
         //        }
-        //        if (distance <= km && place.type_deleget == (int)User_Type.org_delget)         //nearbyplaces which are within 25 kms  50 w 70
-        //        {
-        //            dataorder dist2 = new dataorder();
-        //            dist2.img = place.img;
-        //            dist2.km = distance / 1000;
-        //            dist2.user_name = place.user_name;
-        //            dist2.rate = place.rate ?? "0";
-        //            dist2.deleget_id = place.deleget_id;
-        //            dist2.type_deleget = place.type_deleget;
-        //            dist2.lat = place.lat;
-        //            dist2.lng = place.lng;
-        //            dist2.address = place.address;
-        //            org_provider.Add(dist2);
-        //        }
+
         //    }
 
 
@@ -538,8 +587,8 @@ namespace HaragApp.Controllers.api
         public class dataorder
         {
 
-            public string deleget_id { get; set; }
-            public string user_name { get; set; }
+            public string id { get; set; }
+            public string titke { get; set; }
             public string img { get; set; }
             public string rate { get; set; }
             public double km { get; set; }
@@ -548,5 +597,14 @@ namespace HaragApp.Controllers.api
             public string lng { get; set; }
             public string address { get; set; }
         }
+
+
+        //public static async Task<string> SendMessage(string msg, string numbers)
+        //{
+        //    string url = "http://api.yamamah.com/SendSMSV2?Username=966500469446&Password=123456789&Message=" + msg + "&RecepientNumber=" + numbers + "&Tagname=moodak&SendDateTime=0&EnableDR=false&SentMessageID=false";
+        //    dynamic client = new RestClient(url);
+        //    var data = await client.Get();
+        //    return "";
+        //}
     }
 }

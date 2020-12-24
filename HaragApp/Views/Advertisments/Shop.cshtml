@@ -1,0 +1,178 @@
+﻿@model HaragApp.ViewModels.ShopViewModel
+@{
+    ViewData["Title"] = "Shop";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+
+    var categories = ViewBag.categories as List<AnimalCategory>;
+    var Cities = ViewBag.Cities as List<City>;
+
+    var pagesCounter = Math.Ceiling(Model.AllAdsCount / 6d);
+    var pageNumber = Model.PageNo;
+    var pageNumberNext = pageNumber + 1;
+    var pageNumberPrev = pageNumber - 1;
+
+
+}
+
+
+<section class="page-title" style="background-image:url(/Home/images/background/8.jpg);">
+    <div class="auto-container">
+        <div class="inner-container clearfix">
+            <h1>كل الاعلانات</h1>
+            <ul class="bread-crumb clearfix">
+                <li><a href="/Home/Index">الرئيسيه</a></li>
+                <li>كل الاعلانات</li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!--End Page Title-->
+
+<div class="sidebar-page-container">
+    <div class="auto-container">
+        <div class="row clearfix rtl-dir">
+
+            <!--content side-->
+            <div class="content-side col-lg-9 col-md-12 col-sm-12">
+                <div class="shop-upper-box clearfix">
+                    <div class="items-label pull-left">showing @Model.Advertisments.Count() of @Model.AllAdsCount</div>
+                    <form asp-action="Shop" id="myform" > 
+
+                        <div class="sort-by pull-right">
+                            <input type="number" value="@Model.Km" class="btn btn-light-dark" style="border:solid;" min="0" name="Km"  />
+                            <button  class="btn btn-primary mr-2" >بحــث</button>
+                            <button  class="btn btn-success mr-2"asp-action="Create" asp-controller="Advertisments" >أضف اعلانك من هنا</button>
+                            <input value="@Model.CategoryId" name="CategoryId" type="hidden" />
+                            <input value="@Model.CityId" name="CityId" type="hidden" />
+                            <input value="" id="Lang" name="Lang" hidden  />
+                            <input value="" id="Lat" name="Lat" hidden />
+           
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row clearfix rtl-dir">
+
+                    @foreach (var item in Model.Advertisments)
+                    {
+                        <div class="shop-item col-lg-4 col-md-6 col-sm-12">
+                            <div class="inner-box">
+                                <div class="image">
+                                    <img src="@item.ImageUrl1" class="img-thumbnail" style="width:100%;height:270px" alt="">
+                                    @*<div class="overlay-box">
+                                            <div class="icon-box">
+                                                <a href="cart.html" class="cart-btn"><i class="fa fa-heart"></i> أضف الي المفضله</a>
+                                            </div>
+                                        </div>*@
+                                </div>
+                                <div class="lower-content">
+                                    <h3><a asp-action="Details" asp-controller="Advertisments" asp-route-id="@item.AdID">@item.Title</a></h3>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <!-- Shop item -->
+
+
+
+
+                </div>
+
+                <!-- Styled Pagination -->
+                <div class="styled-pagination text-center clearfix">
+                    <ul class="clearfix">
+                     
+                        @*<li><a class="next" href="#"><span class="fa fa-angle-right"></span></a></li>*@
+
+                        @for (int i = 1; i <= pagesCounter; i++)
+                        { 
+                                <li><a asp-action="Shop" asp-route-CityId="@Model.CityId" asp-route-PageNo="@i" asp-route-Lang="@Model.Lang" asp-route-Lat="@Model.Lat" asp-route-CategoryId="@Model.CategoryId" asp-route-search="@Model.search">@i</a></li>
+                        }
+                        </ul>
+                </div>
+            </div>
+
+            <!--Sidebar Side-->
+            <div class="sidebar-side col-lg-3 col-md-4 col-sm-12">
+                <aside class="sidebar default-sidebar">
+
+                    <!--search box-->
+                    <div class="sidebar-widget search-box">
+                        <form asp-action="Shop">
+                            <div class="form-group">
+                                <input type="search" value="@Model.search" name="search" placeholder="ابحث هنا" required="">
+                                <input value="@Model.CategoryId" name="CategoryId" type="hidden" />
+
+                                <button type="submit"><span class="icon fa fa-search"></span></button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="sidebar-widget categories">
+
+                        <div class="sidebar-title text-right"><h2>الاصناف</h2></div>
+                        <a asp-action="Shop" class="btn btn-block btn-outline-primary">عرض الكــل</a>
+
+                        <ul class="category-list">
+                            @foreach (var item in Model.Categories)
+                            {
+
+                                <li><a asp-action="Shop" asp-route-CategoryId="@item.CategoryID" asp-route-search="@Model.search">@item.CategoryName</a></li>
+                            }
+
+
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-widget categories">
+                        <div class="sidebar-title text-right"><h2>المدن</h2></div>
+                        <ul class="category-list">
+                            @foreach (var item in Model.Cities)
+                            {
+
+                                <li><a asp-action="Shop" asp-route-CityId="@item.CityID" asp-route-search="@Model.search">@item.CityName</a></li>
+                            }
+
+
+                        </ul>
+                    </div>
+
+                    
+
+
+
+
+                </aside>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+
+            function showPosition(position) {
+
+                $("#Lat").val(position.coords.latitude);
+                $("#Lang").val(position.coords.longitude);
+
+            }
+
+            getLocation();
+
+
+        })
+   
+    </script>
+}

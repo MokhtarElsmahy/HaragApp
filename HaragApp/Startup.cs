@@ -17,6 +17,9 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
+using HaragApp.Models;
+using Newtonsoft.Json;
+
 namespace HaragApp
 {
     public class Startup
@@ -31,9 +34,11 @@ namespace HaragApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+    
             #region identiy
             services.AddDefaultIdentity<ApplicationDbUser>(options =>
             {
@@ -113,8 +118,15 @@ namespace HaragApp
             });
             #endregion
 
+            // services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllersWithViews();
+           // services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddRazorPages();
+
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -156,7 +168,7 @@ namespace HaragApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Advertisments}/{action=Shop}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

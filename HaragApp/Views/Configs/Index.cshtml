@@ -1,0 +1,126 @@
+﻿@model HaragApp.Models.Configs
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+
+    <link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css" />
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&amp;display=swap" rel="stylesheet">
+<style>
+    *{
+        font-family:Bahnschrift;
+    }
+    th{
+        font-size:50px;
+    }
+</style>
+
+}
+
+
+<div class="container">
+    <br />
+    <h1 style="text-align:center">الرئيسية</h1>
+
+    <p>
+        <a asp-action="create" class="btn btn-warning">تعديـل / اضافة</a>
+    </p>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    العنصــر
+                </th>
+                <th style="text-align:center">
+                    المحتـــــــــوى
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>حــول</td>
+                <td>@Html.DisplayFor(modelItem => Model.about)</td>
+            </tr>
+
+            <tr>
+                <td>تاريخنا</td>
+                <td>@Html.DisplayFor(modelItem => Model.OurHistory)</td>
+            </tr>
+
+            <tr>
+                <td>رسالتنا</td>
+                <td>@Html.DisplayFor(modelItem => Model.OurMessage)</td>
+            </tr>
+
+            <tr>
+                <td>العنوان</td>
+                <td>@Html.DisplayFor(modelItem => Model.address)</td>
+            </tr>
+
+            <tr>
+                <td>الايميل</td>
+                <td>@Html.DisplayFor(modelItem => Model.Email)</td>
+            </tr>
+
+            <tr>
+                <td>لينك الفيسبوك</td>
+                <td>@Html.DisplayFor(modelItem => Model.FaceBookLink)</td>
+            </tr>
+
+            <tr>
+                <td>لينك التويتر</td>
+                <td>@Html.DisplayFor(modelItem => Model.TwitterLink)</td>
+            </tr>
+
+            <tr>
+                <td>رقم الهاتف 1</td>
+                <td>@Html.DisplayFor(modelItem => Model.Mobile1)</td>
+            </tr>
+            <tr>
+                <td>رقم الهاتف 2</td>
+                <td>@Html.DisplayFor(modelItem => Model.Mobile2)</td>
+            </tr>
+
+
+            <tr>
+                <td>الصورة الأولى</td>
+                <td>@Html.DisplayFor(modelItem => Model.slider1Image)</td>
+            </tr>
+            <tr>
+                <td>نص الصورة الأولى</td>
+                <td>@Html.DisplayFor(modelItem => Model.slider1Text)</td>
+            </tr>
+            <tr>
+                <td>الصورة الثانية</td>
+                <td>@Html.DisplayFor(modelItem => Model.slider2Image)</td>
+            </tr>
+            <tr>
+                <td>نص الصورة الثانية</td>
+                <td>@Html.DisplayFor(modelItem => Model.slider2Text)</td>
+            </tr>
+            <tr>
+                <td>الصورة الثالثة</td>
+                <td>@Html.DisplayFor(modelItem => Model.slider3Image)</td>
+            </tr>
+            <tr>
+                <td>نص الصورة الثالثة</td>
+                <td>@Html.DisplayFor(modelItem => Model.slider3Text)</td>
+            </tr>
+
+            <tr>
+                <td>ساعات العمل من</td>
+                <td>@Html.DisplayFor(modelItem => Model.WorkFrom)</td>
+            </tr>
+            <tr>
+                <td>ساعات العمل إلى</td>
+                <td>@Html.DisplayFor(modelItem => Model.WorkTo)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
