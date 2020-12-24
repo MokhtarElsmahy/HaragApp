@@ -37,7 +37,7 @@ namespace HaragApp
             
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("ServerConnection")));
     
             #region identiy
             services.AddDefaultIdentity<ApplicationDbUser>(options =>
@@ -168,7 +168,7 @@ namespace HaragApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Advertisments}/{action=Shop}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
