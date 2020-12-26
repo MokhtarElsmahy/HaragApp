@@ -37,7 +37,7 @@ namespace HaragApp
             
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("ServerConnection")));
     
             #region identiy
             services.AddDefaultIdentity<ApplicationDbUser>(options =>
