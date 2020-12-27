@@ -90,7 +90,20 @@ namespace HaragApp.Controllers
             return View(addedADV);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetUserAds()
+        {
+            var user = await _userManager.GetUserAsync(User);
 
+            IAdverstisment ads = new AdvertisementServices(_context);
+            var advList = ads.GetUserAdvertisementsAsync(user.Id);
+
+            return View(advList);
+        }
+        // POST: Advertisments/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [Authorize]
         // GET: Advertisments/Create
         public IActionResult Create()
@@ -106,23 +119,8 @@ namespace HaragApp.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetUserAds()
-        {
-            var user = await _userManager.GetUserAsync(User);
-
-            IAdverstisment ads = new AdvertisementServices(_context);
-            var advList = ads.GetUserAdvertisementsAsync(user.Id);
-
-            return View(advList);
-        }
-        // POST: Advertisments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateAsync(AdsImagesVm advertisment)
+        public async Task<IActionResult> Create(AdsImagesVm advertisment)
         {
             /*_context.Roles.Add(new IdentityRole { Name = "admin" });
             _context.Roles.Add(new IdentityRole { Name = "user" });
@@ -328,8 +326,6 @@ namespace HaragApp.Controllers
             //_context.Roles.Add(new IdentityRole() { Name = "admin" });
             //_context.Roles.Add(new IdentityRole() { Name = "user" });
             //_context.SaveChanges();
-            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName");
-            ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName");
 
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
@@ -355,7 +351,8 @@ namespace HaragApp.Controllers
                 _context.SaveChanges();
 
 
-                return RedirectToAction("Details", new { id = addedADV.AdID });
+                return RedirectToAction("IndexPaidAdv");
+
             }
             ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", advertisment.CategoryID);
             ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName", advertisment.CityID);
@@ -369,9 +366,6 @@ namespace HaragApp.Controllers
 
             IAdverstisment ads = new AdvertisementServices(_context);
             var model = ads.GetPaidAdv(id);
-
-            ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName", model.CityID);
-            ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", model.CategoryID);
 
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View(model);

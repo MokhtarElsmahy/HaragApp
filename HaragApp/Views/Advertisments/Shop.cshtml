@@ -56,22 +56,26 @@
 
                     @foreach (var item in Model.Advertisments)
                     {
-                        <div class="shop-item col-lg-4 col-md-6 col-sm-12">
-                            <div class="inner-box">
-                                <div class="image">
-                                    <img src="@item.ImageUrl1" class="img-thumbnail" style="width:100%;height:270px" alt="">
-                                    @*<div class="overlay-box">
-                                            <div class="icon-box">
-                                                <a href="cart.html" class="cart-btn"><i class="fa fa-heart"></i> أضف الي المفضله</a>
-                                            </div>
-                                        </div>*@
+                        if (item.IsPaid != true)
+                        {
+                            <div class="shop-item col-lg-4 col-md-6 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <img src="@item.ImageUrl1" class="img-thumbnail" style="width:100%;height:270px" alt="">
+                                        @*<div class="overlay-box">
+                                <div class="icon-box">
+                                    <a href="cart.html" class="cart-btn"><i class="fa fa-heart"></i> أضف الي المفضله</a>
                                 </div>
-                                <div class="lower-content">
-                                    <h3><a asp-action="Details" asp-controller="Advertisments" asp-route-id="@item.AdID">@item.Title</a></h3>
+                            </div>*@
+                                    </div>
+                                    <div class="lower-content">
+                                        <h3><a asp-action="Details" asp-controller="Advertisments" asp-route-id="@item.AdID">@item.Title</a></h3>
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        }
+
                     }
                     <!-- Shop item -->
 

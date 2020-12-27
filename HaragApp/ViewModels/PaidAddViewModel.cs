@@ -10,5 +10,6 @@ namespace HaragApp.ViewModels
         public int AdID { get; set; }
         public string Title { get; set; }
         public string ImageUrl1 { get; set; }
+        public string URL { get; set; }
     }
 }

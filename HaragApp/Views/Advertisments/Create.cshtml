@@ -35,7 +35,7 @@
 				<h2>إضافه اعلان عادي </h2>
 				<div class="login-form text-right">
 					<!--Login Form-->
-					<form asp-action="Create" method="post">
+					<form asp-action="Create" asp-controller="Advertisments" method="post" id="ay7aga">
 						<div class="form-group">
 							<label>الاسم   </label>
 							<input  class="form-control" asp-for="Title" placeholder="الاسم" required>
@@ -70,7 +70,7 @@
 						<div class="row justify-content-center">
 							<div class="col-lg-2 col-md-6 col-sm-12">
 								<label>الصورة الاولى</label>
-								<input type="file" required id="files1" name="files" class="btn btn-block">
+								<input type="file" required id="files1" name="files" class="btn btn-block" >
 								<img id="SelectedImage1" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
 							</div>
 
@@ -104,7 +104,7 @@
 						<div class="clearfix">
 							<div class="pull-left">
 								<div class="form-group text-right">
-									<button class="theme-btn btn-style-one" type="submit" name="submit-form">تأكيد </button>
+									<button class="theme-btn btn-style-one" type="submit" name="submit-form">تأكيــد </button>
 								</div>
 							</div>
 
@@ -116,15 +116,12 @@
 						<input id="ImageUrl5" name="ImageUrl5" type="hidden" />
 					</form>
 				</div>
-				<!--End Login Form -->
 			</div>
 
 
 		</div>
 	</div>
 </section>
-<!--End Login  Section-->
-<!-- count Section -->
 
 
 

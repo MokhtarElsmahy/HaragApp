@@ -27,17 +27,32 @@ namespace HaragApp.Component.Services
 
         public AdsImagesVm CreateAsync(AdsImagesVm advertisment)
         {
-           
-            Advertisment ad = new Advertisment()
+            Advertisment ad;
+            if (advertisment.CategoryID == 0)
             {
-                CategoryID = advertisment.CategoryID,
-                CityID = advertisment.CityID,
-                IsPaid= advertisment.IsPaid,
-                IsPact = advertisment.IsPact,
-                Title = advertisment.Title,
-                Description = advertisment.Description,
-              
-            };
+                ad = new Advertisment()
+                {
+                    CategoryID = 1,
+                    CityID = 1,
+                    IsPaid = true,
+                    Title = advertisment.Title,
+                    Description = advertisment.Description,
+
+                };
+            }else
+            {
+                ad = new Advertisment()
+                {
+                    CategoryID = advertisment.CategoryID,
+                    CityID = advertisment.CityID,
+                    IsPaid = advertisment.IsPaid,
+                    IsPact = advertisment.IsPact,
+                    Title = advertisment.Title,
+                    Description = advertisment.Description,
+
+                };
+            }
+            
             _context.Add(ad);
             _context.SaveChanges();
 
@@ -105,12 +120,14 @@ namespace HaragApp.Component.Services
             var adImages = adv.AdImages.ToList();
          
             adsVM.ImageUrl1 = adImages[0].img ;
-            adsVM.ImageUrl2 = adImages[1].img ;
-            adsVM.ImageUrl3 = adImages[2].img ;
-            adsVM.ImageUrl4 = adImages[3].img ;
-            adsVM.ImageUrl5 = adImages[4].img;
-            
-        
+            if(adv.IsPaid == false)
+            {
+                adsVM.ImageUrl2 = adImages[1].img;
+                adsVM.ImageUrl3 = adImages[2].img;
+                adsVM.ImageUrl4 = adImages[3].img;
+                adsVM.ImageUrl5 = adImages[4].img;
+            }
+
             
             if (adv == null)
             {
@@ -122,7 +139,7 @@ namespace HaragApp.Component.Services
 
         public List<AdsImagesVm> GetUserAdvertisementsAsync(string id)
         {
-            var Advs = _context.Advertisments.Include(xx => xx.AdImages).Include(xx=>xx.AnimalCategory).Include(xx=>xx.City).Where(xx => xx.UserId == id).ToList();
+            var Advs = _context.Advertisments.Include(xx => xx.AdImages).Include(xx=>xx.AnimalCategory).Include(xx=>xx.City).Where(xx => xx.UserId == id).Where(xx=>xx.IsPaid == false).ToList();
             List<AdsImagesVm> adsImagesVms = new List<AdsImagesVm>();
             foreach (var item in Advs)
             {
@@ -151,7 +168,7 @@ namespace HaragApp.Component.Services
         {
             
             return _context.Advertisments.Include(x=>x.AdImages).ToList().Where(c => c.IsPaid == true)
-                .Select(x=>new PaidAddViewModel { Title=x.Title , AdID=x.AdID ,ImageUrl1=x.AdImages.ToList()[0].img}).ToList();
+                .Select(x=>new PaidAddViewModel { Title=x.Title , AdID=x.AdID ,ImageUrl1=x.AdImages.ToList()[0].img , URL=x.Description}).ToList();
         }
 
         public void DeletePaidAdd(int id)
@@ -167,16 +184,11 @@ namespace HaragApp.Component.Services
             AdsImagesVm model = new AdsImagesVm()
             {
                 AdID = ad.AdID,
-                CategoryID = ad.CategoryID,
-                CityID = ad.CityID,
                 Description = ad.Description,
                 Title = ad.Title,
                 UserId = ad.UserId,
                 ImageUrl1 = ad.AdImages.ToList()[0].img,
-                ImageUrl2 = ad.AdImages.ToList()[1].img,
-                ImageUrl3 = ad.AdImages.ToList()[2].img,
-                ImageUrl4 = ad.AdImages.ToList()[3].img,
-                ImageUrl5 = ad.AdImages.ToList()[4].img
+
 
             };
             return model;
@@ -185,8 +197,6 @@ namespace HaragApp.Component.Services
         public void EditPaidAdv(AdsImagesVm advertisment)
         {
             var ad = _context.Advertisments.Find(advertisment.AdID);
-            ad.CityID = advertisment.CityID;
-            ad.CategoryID = advertisment.CategoryID;
             ad.Description = advertisment.Description;
             ad.IsPact = advertisment.IsPact;
             ad.IsPaid = advertisment.IsPaid;
@@ -195,10 +205,7 @@ namespace HaragApp.Component.Services
 
             var AdImages = _context.AdImages.Where(c => c.AdID == advertisment.AdID).ToList();
             AdImages[0].img = advertisment.ImageUrl1;
-            AdImages[1].img = advertisment.ImageUrl2;
-            AdImages[2].img = advertisment.ImageUrl3;
-            AdImages[3].img = advertisment.ImageUrl4;
-            AdImages[4].img = advertisment.ImageUrl5;
+
 
             _context.SaveChanges();
         }
@@ -242,21 +249,33 @@ namespace HaragApp.Component.Services
 
         public ShopViewModel Shop(ShopViewModel model)
         {
-
-            model.Advertisments = _context.Advertisments.Include(c => c.AdImages).Include(c=>c.AnimalCategory).Include(c=>c.City)
-                .Select(x=>new AdsImagesVm  { AdID=x.AdID, Title=x.Title ,CategoryID=x.CategoryID,CityID=x.CityID, CategoryName = x.AnimalCategory.CategoryName, CityName=x.City.CityName ,Lang=Convert.ToDouble(x.City.Langtude),
-                  Lat=  Convert.ToDouble(x.City.Lantitude)
-                , ImageUrl1=x.AdImages.ToList()[0].img,
-                    ImageUrl2= x.AdImages.ToList()[1].img
+            if(model != null)
+            {
+                model.Advertisments = _context.Advertisments.Where(c=>c.IsPaid == false).Include(c => c.AdImages).Include(c => c.AnimalCategory).Include(c => c.City)
+                .Select(x => new AdsImagesVm
+                {
+                    AdID = x.AdID,
+                    Title = x.Title,
+                    CategoryID = x.CategoryID,
+                    CityID = x.CityID,
+                    CategoryName = x.AnimalCategory.CategoryName,
+                    CityName = x.City.CityName,
+                    Lang = Convert.ToDouble(x.City.Langtude),
+                    Lat = Convert.ToDouble(x.City.Lantitude)
+                ,
+                    ImageUrl1 = x.AdImages.ToList()[0].img,
+                    ImageUrl2 = x.AdImages.ToList()[1].img
                 ,
                     ImageUrl3 = x.AdImages.ToList()[2].img
                 ,
                     ImageUrl4 = x.AdImages.ToList()[3].img
                 ,
                     ImageUrl5 = x.AdImages.ToList()[4].img
-             
-                 
+
+
                 }).ToList();
+            }
+            
             model.Cities = _context.Cities.ToList();
             model.Categories = _context.AnimalCategories.ToList();
             model.PageNo = model.PageNo;
@@ -455,7 +474,7 @@ namespace HaragApp.Component.Services
 
             int pageNo = 1;
             int pageSize = 6;
-            var advs = _context.Advertisments.OrderBy(p => p.AdID).Skip((pageNo - 1) * pageSize).Take(pageSize).Include(p => p.AnimalCategory).Include(xx=>xx.AdImages)
+            var advs = _context.Advertisments.OrderBy(p => p.AdID).Skip((pageNo - 1) * pageSize).Take(pageSize).Include(p => p.AnimalCategory).Include(xx=>xx.AdImages).Where(x=>x.IsPaid != true)
                 .Select(xx => new favoriteViewModel
             {
                 CategoryName = xx.AnimalCategory.CategoryName,

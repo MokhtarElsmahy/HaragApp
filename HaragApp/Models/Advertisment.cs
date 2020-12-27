@@ -14,7 +14,7 @@ namespace HaragApp.Models
         public string Title { get; set; }
         public string Description { get; set; }
 
-        public bool IsPact { get; set; }
+        public bool IsPact { get; set; } = true;
 
         [ForeignKey("ApplicationDbUser")]
         public string UserId { get; set; }
@@ -28,7 +28,7 @@ namespace HaragApp.Models
         public int CategoryID { get; set; }
 
 
-        public bool IsPaid { get; set; }
+        public bool IsPaid { get; set; } = false;
         //public string IsPaidDescription { get; set; }
 
 
