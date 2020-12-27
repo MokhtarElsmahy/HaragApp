@@ -28,13 +28,12 @@
 							<div class="form-group" style="display:none">
 								<input type="checkbox" id="vehicle1" asp-for="IsPaid" checked="checked">
 								<input type="checkbox" id="vehicle1" asp-for="IsPact" checked="checked">
-
 							</div>
 
 							<div class="row">
 								<label>صورة الإعــلان</label>
 								<input type="file" required id="files1" name="files" class="btn btn-block w-50 mb-2 m-auto">
-								<img id="SelectedImage1" class="img-thumbnail align-content-center m-auto" style="height:auto;" />
+								<img id="SelectedImage1" src="@Model.ImageUrl1" class="img-thumbnail align-content-center m-auto" style="height:auto;" />
 							</div>
 							<br />
 							<br />
@@ -49,6 +48,7 @@
 
 							</div>
 							<input id="ImageUrl1" name="ImageUrl1" value="@Model.ImageUrl1" type="hidden" />
+							
 						</form>
 					</div>
 					<!--End Login Form -->

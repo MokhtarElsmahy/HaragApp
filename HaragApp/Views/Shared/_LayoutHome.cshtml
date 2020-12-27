@@ -98,18 +98,28 @@
                                 @if (SignInManager.IsSignedIn(User))
                                 {
                                 <form id="form1" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="~/Home/index">
+                                    @{
+                                        var user = await UserManager.GetUserAsync(User);
+                                        var roles = await UserManager.GetRolesAsync(user);
+                                        if (roles.Contains("admin"))
+                                        {
+                                            <li>
+                                                <a href="/configs/index" class="rtl-dir btn btn-warning p-1" target="_blank">إدارة الموقــع</a>
+                                            </li>
+                                        }
+                                    }
                                     <li>
                                         <a href="/Advertisments/GetUserAds" class="rtl-dir btn btn-info p-1"> ادارة اعلاناتــي</a>
                                     </li>
                                     <li>
                                         <a href="/identity/account/ResetPassword" class="rtl-dir btn btn-primary p-1">تغيير كلمة المرور</a>
                                     </li>
-
                                     <li>
                                         <a href="#" onclick="document.getElementById('form1').submit();" class="rtl-dir btn btn-danger p-1"> تسجيل الخروج</a>
                                     </li>
+
                                 </form>
-                                    
+
                                 }
                                 else
                                 {
@@ -124,13 +134,13 @@
 
                                 <!-- <li><a href="profile.html" class="rtl-dir"><i class="far fa-user-circle profile-icon"></i>دينا محمد</a>
 
-    </li> in case of logged in remove comment-->
+                                </li> in case of logged in remove comment-->
 
                             </ul>
 
                             @*<div class="call-btn">
-                                <a href="count-sponser.html"> حساب الممولة</a>
-                            </div>*@
+                                    <a href="count-sponser.html"> حساب الممولة</a>
+                                </div>*@
                         </div>
                     </div>
                 </div>
@@ -271,94 +281,94 @@
                     <div class="row clearfix">
                         <!--Footer Column-->
                         @*<div class="footer-column col-lg-3 col-md-6 col-sm-12">
-                            <div class="footer-widget about-widget">
-                                <div class="footer-logo">
-                                    <figure>
-                                        <a href="index.html"><img src="~/Home/images/footer-logo.png" alt=""></a>
-                                    </figure>
-                                </div>
-                                <div class="widget-content">
-                                    <div class="text">@Context.Configs.FirstOrDefault().about</div>
-                                    <h4>تابعنا هنا :</h4>
-                                    <ul class="social-icon">
-                                        <li><a href="@Context.Configs.FirstOrDefault().FaceBookLink"><i class="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="@Context.Configs.FirstOrDefault().TwitterLink"><i class="fab fa-twitter"></i></a></li>
-                                        <li><a href="@Context.Configs.FirstOrDefault().Email"><i class="fab fa-google-plus-g"></i></a></li>
+                                <div class="footer-widget about-widget">
+                                    <div class="footer-logo">
+                                        <figure>
+                                            <a href="index.html"><img src="~/Home/images/footer-logo.png" alt=""></a>
+                                        </figure>
+                                    </div>
+                                    <div class="widget-content">
+                                        <div class="text">@Context.Configs.FirstOrDefault().about</div>
+                                        <h4>تابعنا هنا :</h4>
+                                        <ul class="social-icon">
+                                            <li><a href="@Context.Configs.FirstOrDefault().FaceBookLink"><i class="fab fa-facebook-f"></i></a></li>
+                                            <li><a href="@Context.Configs.FirstOrDefault().TwitterLink"><i class="fab fa-twitter"></i></a></li>
+                                            <li><a href="@Context.Configs.FirstOrDefault().Email"><i class="fab fa-google-plus-g"></i></a></li>
 
-                                    </ul>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>*@
+                            </div>*@
 
                         <!--Footer Column-->
                         <!--<div class="footer-column col-lg-3 col-md-6 col-sm-12">
-                    <div class="footer-widget services-widget">
-                        <h2 class="widget-title">رابط سريعه</h2>
-                        <div class="widget-content">
-                            <ul class="services-list">
+                        <div class="footer-widget services-widget">
+                            <h2 class="widget-title">رابط سريعه</h2>
+                            <div class="widget-content">
+                                <ul class="services-list">
 
-                                <li><a href="contact.html">تواصل معنا</a></li>
-                                <li><a href="conditions.html">الشروط والاحكام</a></li>-->
+                                    <li><a href="contact.html">تواصل معنا</a></li>
+                                    <li><a href="conditions.html">الشروط والاحكام</a></li>-->
                         @*<li><a href="faq.html">الاسئله الشائعه</a></li>
-                        <li><a href="privacy.html">سياسه الخصوصيه</a></li>*@
+                            <li><a href="privacy.html">سياسه الخصوصيه</a></li>*@
                         <!--</ul>
+                                </div>
                             </div>
-                        </div>
-                    </div>-->
+                        </div>-->
                         <!--Footer Column-->
                         <!--<div class="footer-column col-lg-3 col-md-6 col-sm-12">-->
                         <!--Footer Column-->
                         <!--<div class="footer-widget gallery-widget">
-                    <h2 class="widget-title">الاعلانات</h2>-->
+                        <h2 class="widget-title">الاعلانات</h2>-->
                         <!--Footer Column-->
                         @*<div class="widget-content">
-                                    <div class="outer clearfix">
-                                        <figure class="image">
-                                            <a href="images/resource/feature-1.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-1.jpg" alt=""></a>
-                                        </figure>
+                                        <div class="outer clearfix">
+                                            <figure class="image">
+                                                <a href="images/resource/feature-1.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-1.jpg" alt=""></a>
+                                            </figure>
 
-                                        <figure class="image">
-                                            <a href="images/resource/feature-2.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-2.jpg" alt=""></a>
-                                        </figure>
+                                            <figure class="image">
+                                                <a href="images/resource/feature-2.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-2.jpg" alt=""></a>
+                                            </figure>
 
-                                        <figure class="image">
-                                            <a href="images/resource/feature-3.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-3.jpg" alt=""></a>
-                                        </figure>
+                                            <figure class="image">
+                                                <a href="images/resource/feature-3.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-3.jpg" alt=""></a>
+                                            </figure>
 
-                                        <figure class="image">
-                                            <a href="images/resource/feature-4.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-4.jpg" alt=""></a>
-                                        </figure>
+                                            <figure class="image">
+                                                <a href="images/resource/feature-4.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-4.jpg" alt=""></a>
+                                            </figure>
 
-                                        <figure class="image">
-                                            <a href="images/resource/news-1.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-5.jpg" alt=""></a>
-                                        </figure>
+                                            <figure class="image">
+                                                <a href="images/resource/news-1.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-5.jpg" alt=""></a>
+                                            </figure>
 
-                                        <figure class="image">
-                                            <a href="images/resource/news-2.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-6.jpg" alt=""></a>
-                                        </figure>
+                                            <figure class="image">
+                                                <a href="images/resource/news-2.jpg" class="lightbox-image" title="Image Title Here"><img src="~/Home/images/resource/insta-6.jpg" alt=""></a>
+                                            </figure>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>*@
+                            </div>*@
                         <!--Footer Column-->
                         <!--<div class="footer-column col-lg-3 col-md-6 col-sm-12">-->
                         <!--Footer Column-->
                         <!--<div class="footer-widget news-widget">
-                    <h2 class="widget-title">تواصل معنا</h2>-->
+                        <h2 class="widget-title">تواصل معنا</h2>-->
                         <!--Footer Column-->
                         <!--<div class="widget-content">
-                                <div class="post">
-                                    <h4><a href="#"></a></h4>
-                                </div>
-                                <div class="post">
-                                    <h4><a href="#"></a></h4>
-                                </div>
-                                <div class="post">
-                                    <h4><a href="#"></a></h4>
+                                    <div class="post">
+                                        <h4><a href="#"></a></h4>
+                                    </div>
+                                    <div class="post">
+                                        <h4><a href="#"></a></h4>
+                                    </div>
+                                    <div class="post">
+                                        <h4><a href="#"></a></h4>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>-->
+                        </div>-->
                     </div>
                 </div>
             </div>
