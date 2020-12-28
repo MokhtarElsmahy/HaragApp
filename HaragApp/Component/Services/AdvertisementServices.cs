@@ -261,15 +261,11 @@ namespace HaragApp.Component.Services
                     CategoryName = x.AnimalCategory.CategoryName,
                     CityName = x.City.CityName,
                     Lang = Convert.ToDouble(x.City.Langtude),
-                    Lat = Convert.ToDouble(x.City.Lantitude)
-                ,
+                    Lat = Convert.ToDouble(x.City.Lantitude),
                     ImageUrl1 = x.AdImages.ToList()[0].img,
-                    ImageUrl2 = x.AdImages.ToList()[1].img
-                ,
-                    ImageUrl3 = x.AdImages.ToList()[2].img
-                ,
-                    ImageUrl4 = x.AdImages.ToList()[3].img
-                ,
+                    ImageUrl2 = x.AdImages.ToList()[1].img,
+                    ImageUrl3 = x.AdImages.ToList()[2].img,
+                    ImageUrl4 = x.AdImages.ToList()[3].img,
                     ImageUrl5 = x.AdImages.ToList()[4].img
 
 

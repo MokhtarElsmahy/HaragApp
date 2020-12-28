@@ -14,7 +14,7 @@
 					<h2>تعديل اعلان ممول </h2>
 					<div class="login-form text-right">
 						<!--Login Form-->
-						<form asp-action="EditPaidAdd" method="post">
+						<form asp-action="EditPaidAdd" method="post" id="EditForm">
 							<div class="form-group">
 								<input type="hidden" asp-for="AdID">
 								<input type="hidden" asp-for="UserId">
@@ -32,7 +32,7 @@
 
 							<div class="row">
 								<label>صورة الإعــلان</label>
-								<input type="file" required id="files1" name="files" class="btn btn-block w-50 mb-2 m-auto">
+								<input type="file" required id="files1" name="files" class="btn btn-block w-50 mb-2 m-auto"><img id="loader1" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 								<img id="SelectedImage1" src="@Model.ImageUrl1" class="img-thumbnail align-content-center m-auto" style="height:auto;" />
 							</div>
 							<br />
@@ -42,7 +42,7 @@
 							<div class="clearfix">
 								<div class="pull-right">
 									<div class="form-group text-right">
-										<button class="btn btn-primary btn-block w-50 m-auto" type="submit">تأكيـــد </button><br /><br />
+										<button class="btn btn-primary btn-block w-50 m-auto" type="button" id="save">تأكيـــد </button><br /><br />
 									</div>
 								</div>
 
@@ -64,7 +64,9 @@
 	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 	<script>
-	 $("#files1").change(function () {
+        $("#files1").change(function () {
+            $("#loader1").show();
+			 $("#save").prop('disabled', true);
 			  var element = this;
 
 			  var formData = new FormData();
@@ -85,7 +87,9 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl1").val(response.image);
-					   $("#SelectedImage1").attr("src", response.image);
+                        $("#SelectedImage1").attr("src", response.image);
+						$("#loader1").hide();
+						$("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
@@ -102,7 +106,15 @@
 				//    	alert("FAIL");
 				//});
 	 });
+		$("#save").click(function () {
+            if ($('#loader1').css('display') != 'none') {
+                alert("Please wait files are still UPLOADING !!")
+               
+            } else {
+				 $("#EditForm").submit();
+            }
 
+			});
 	</script>
 
 	}

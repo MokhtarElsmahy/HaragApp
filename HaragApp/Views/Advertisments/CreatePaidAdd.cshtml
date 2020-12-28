@@ -14,7 +14,7 @@
 					<h2>إضافه اعلان ممول </h2>
 					<div class="login-form text-right">
 						<!--Login Form-->
-						<form asp-action="CreatePaidAdd" method="post">
+						<form asp-action="CreatePaidAdd" method="post" id="createform">
 							<div class="form-group">
 
 								<input class="form-control" asp-for="Title" placeholder="الاسم  " required>
@@ -32,7 +32,7 @@
 							<div class="row">
 								<label>صورة الإعــلان</label>
 									<input type="file" required id="files1" name="files" class="btn btn-block w-50 mb-2 m-auto">
-									<img id="SelectedImage1" class="img-thumbnail align-content-center m-auto" style="height:auto;"  />
+									<img id="SelectedImage1" class="img-thumbnail align-content-center m-auto" style="height:auto;"  /> <img id="loader1" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 							</div>
 
 
@@ -43,12 +43,12 @@
 							<div class="clearfix">
 								<div class="pull-left">
 									<div class="form-group text-right">
-										<button class="btn btn-primary btn-block w-50 m-auto" type="submit">تأكيـــد </button><br /><br />
+										<button class="btn btn-primary" type="button" name="submit-form" id="save">تأكيــد </button>
 									</div>
 								</div>
 
 							</div>
-							<input id="ImageUrl1" name="ImageUrl1" type="hidden" />
+							<input id="ImageUrl1" name="ImageUrl1" type="hidden" value="" />
 						</form>
 					</div>
 					<!--End Login Form -->
@@ -64,7 +64,8 @@
 	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 	<script>
-	 $("#files1").change(function () {
+        $("#files1").change(function () {
+		 $("#loader1").show();
 			  var element = this;
 
 			  var formData = new FormData();
@@ -85,22 +86,19 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl1").val(response.image);
-					   $("#SelectedImage1").attr("src", response.image);
+                        $("#SelectedImage1").attr("src", response.image);
+						$("#loader1").hide();
 					},
 					error: function () {
 						alert("FAIL");
 					}
 				})
-				//.done(function (response) {
+        });
 
-				//        alert(response.ImageURL)
-				//       // $("#ImageUrl").val(response.ImageURL);
-				//      //  $("#SelectedImage").attr("src", response.ImageURL);
+		$("#save").click(function () {            if ($("#ImageUrl1").val() != "") {                $("#createform").submit();
+            } else {                alert("Please wait files are still UPLOADING !!")
+            }        });
 
-				// })
-				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
-				//    	alert("FAIL");
-				//});
-		});
+
 	</script>
 }

@@ -33,7 +33,7 @@
 				<h2>إضافه اعلان عادي </h2>
 				<div class="login-form text-right">
 					<!--Login Form-->
-					<form asp-action="userUpdateADV" method="post">
+					<form asp-action="userUpdateADV" method="post" id="EditForm">
 						<div class="form-group">
 							<label>الاسم   </label>
 							<input type="text" asp-for="Title" placeholder="الاسم  " value="@Model.Title" required>
@@ -65,29 +65,29 @@
 						<div class="row justify-content-center">
 							<div class="col-lg-2 col-md-6 col-sm-12">
 								<label>الصورة الاولى</label>
-								<input type="file"  id="files1" name="files" class="btn btn-block" value="@Model.ImageUrl1">
-								<img id="SelectedImage1" src="@Model.ImageUrl1" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+								<input type="file" id="files1" name="files" class="btn btn-block" value="@Model.ImageUrl1">
+								<img id="SelectedImage1" src="@Model.ImageUrl1" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader1" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 							</div>
 
 							<div class="col-lg-2 col-md-6 col-sm-12">
 								<label>الصورة الثانيه</label>
-								<input type="file" id="files2" name="files"  class="btn btn-block" value="@Model.ImageUrl2">
-								<img id="SelectedImage2" src="@Model.ImageUrl2" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+								<input type="file" id="files2" name="files" class="btn btn-block" value="@Model.ImageUrl2">
+								<img id="SelectedImage2" src="@Model.ImageUrl2" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader2" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 							</div>
 							<div class="col-lg-2 col-md-6 col-sm-12">
 								<label>الصورة الثالثه</label>
-								<input type="file" id="files3" name="files"  class="btn btn-block" value="@Model.ImageUrl3">
-								<img id="SelectedImage3" src="@Model.ImageUrl3" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+								<input type="file" id="files3" name="files" class="btn btn-block" value="@Model.ImageUrl3">
+								<img id="SelectedImage3" src="@Model.ImageUrl3" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader3" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 							</div>
 							<div class="col-lg-2 col-md-6 col-sm-12">
 								<label>الصورة الرابعه</label>
-								<input type="file" id="files4" name="files"  class="btn btn-block" value="@Model.ImageUrl4">
-								<img id="SelectedImage4" src="@Model.ImageUrl4" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+								<input type="file" id="files4" name="files" class="btn btn-block" value="@Model.ImageUrl4">
+								<img id="SelectedImage4" src="@Model.ImageUrl4" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader4" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 							</div>
 							<div class="col-lg-2 col-md-6 col-sm-12">
 								<label>الصورةالخامسه</label>
-								<input type="file" id="files5" name="files"  class="btn btn-block" value="@Model.ImageUrl5">
-								<img id="SelectedImage5" src="@Model.ImageUrl5" class="img-thumbnail align-content-center" style="width:100px;height:100px;" />
+								<input type="file" id="files5" name="files" class="btn btn-block" value="@Model.ImageUrl5">
+								<img id="SelectedImage5" src="@Model.ImageUrl5" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader5" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 							</div>
 						</div>
 
@@ -99,17 +99,17 @@
 						<div class="clearfix">
 							<div class="pull-left">
 								<div class="form-group text-right">
-									<button class="theme-btn btn-style-one" type="submit" name="submit-form">تعديــل </button>
+									<button class="theme-btn btn-style-one" type="button" name="submit-form" id="save">تعديــل </button>
 								</div>
 							</div>
 
 						</div>
-						<input id="ImageUrl1" name="ImageUrl1" type="hidden" value="@Model.ImageUrl1"/>
-						<input id="ImageUrl2" name="ImageUrl2" type="hidden" value="@Model.ImageUrl2"/>
-						<input id="ImageUrl3" name="ImageUrl3" type="hidden" value="@Model.ImageUrl3"/>
-						<input id="ImageUrl4" name="ImageUrl4" type="hidden" value="@Model.ImageUrl4"/>
-						<input id="ImageUrl5" name="ImageUrl5" type="hidden" value="@Model.ImageUrl5"/>
-						<input id="AdID" name="AdID" type="hidden" value="@Model.AdID"/>
+						<input id="ImageUrl1" name="ImageUrl1" type="hidden" value="@Model.ImageUrl1" />
+						<input id="ImageUrl2" name="ImageUrl2" type="hidden" value="@Model.ImageUrl2" />
+						<input id="ImageUrl3" name="ImageUrl3" type="hidden" value="@Model.ImageUrl3" />
+						<input id="ImageUrl4" name="ImageUrl4" type="hidden" value="@Model.ImageUrl4" />
+						<input id="ImageUrl5" name="ImageUrl5" type="hidden" value="@Model.ImageUrl5" />
+						<input id="AdID" name="AdID" type="hidden" value="@Model.AdID" />
 					</form>
 				</div>
 				<!--End Login Form -->
@@ -119,23 +119,18 @@
 		</div>
 	</div>
 </section>
-<!--End Login  Section-->
-<!-- count Section -->
-<section class="subscribe-section">
-	<div class="auto-container">
-		<div class="inner-container clearfix">
-			<h3>يمكنك القيام بحساب المموله من هنا </h3>
-			<a href="#" class="call-btn">ابدا الان</a>
-		</div>
-	</div>
-</section>
+
 
 
 @section Scripts {
 	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 	<script>
-	 $("#files1").change(function () {
+        $("#files1").change(function () {
+            $("#loader1").show();
+
+            $("#save").prop('disabled', true);
+
 			  var element = this;
 
 			  var formData = new FormData();
@@ -156,7 +151,9 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl1").val(response.image);
-					   $("#SelectedImage1").attr("src", response.image);
+                        $("#SelectedImage1").attr("src", response.image);
+                        $("#loader1").hide();
+						$("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
@@ -173,7 +170,9 @@
 				//    	alert("FAIL");
 				//});
 	 });
-	 $("#files2").change(function () {
+        $("#files2").change(function () {
+		 $("#save").prop('disabled', true);
+		 $("#loader2").show();
 			  var element = this;
 
 			  var formData = new FormData();
@@ -194,7 +193,9 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl2").val(response.image);
-					   $("#SelectedImage2").attr("src", response.image);
+                        $("#SelectedImage2").attr("src", response.image);
+                        $("#loader2").hide();
+                        $("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
@@ -211,7 +212,9 @@
 				//    	alert("FAIL");
 				//});
 	 });
-	 $("#files3").change(function () {
+        $("#files3").change(function () {
+			$("#save").prop('disabled', true);
+		 $("#loader3").show();
 			  var element = this;
 
 			  var formData = new FormData();
@@ -232,7 +235,9 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl3").val(response.image);
-					   $("#SelectedImage3").attr("src", response.image);
+                        $("#SelectedImage3").attr("src", response.image);
+                        $("#loader3").hide();
+						$("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
@@ -249,7 +254,9 @@
 				//    	alert("FAIL");
 				//});
 	});
-	 $("#files4").change(function () {
+        $("#files4").change(function () {
+			$("#save").prop('disabled', true);
+		 $("#loader4").show();
 			  var element = this;
 
 			  var formData = new FormData();
@@ -270,7 +277,9 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl4").val(response.image);
-					   $("#SelectedImage4").attr("src", response.image);
+                        $("#SelectedImage4").attr("src", response.image);
+                        $("#loader4").hide();
+                        $("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
@@ -287,7 +296,9 @@
 				//    	alert("FAIL");
 				//});
 	});
-	 $("#files5").change(function () {
+        $("#files5").change(function () {
+			$("#save").prop('disabled', true);
+		 $("#loader5").show();
 			  var element = this;
 
 			  var formData = new FormData();
@@ -308,7 +319,9 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl5").val(response.image);
-					   $("#SelectedImage5").attr("src", response.image);
+                        $("#SelectedImage5").attr("src", response.image);
+                        $("#loader5").hide();
+                        $("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
@@ -324,7 +337,19 @@
 				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
 				//    	alert("FAIL");
 				//});
-		});
+     });
+
+
+		$("#save").click(function () {
+			//$("#ImageUrl1").val() != "" && $("#ImageUrl2").val() != "" && $("#ImageUrl3").val() != "" && $("#ImageUrl4").val() != "" && $("#ImageUrl5").val() != ""
+            if ($('#loader1').css('display') != 'none' || $('#loader2').css('display') != 'none' || $('#loader3').css('display') != 'none' || $('#loader4').css('display') != 'none' || $('#loader5').css('display') != 'none') {
+                alert("Please wait files are still UPLOADING !!")
+               
+            } else {
+				 $("#EditForm").submit();
+            }
+
+			});
 
 	</script>
 }

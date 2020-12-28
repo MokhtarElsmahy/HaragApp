@@ -23,7 +23,7 @@
 
 	<hr />
 	<div>
-		<form asp-action="Create">
+		<form asp-action="Create" id="createform">
 			<div class="row">
 				<div class="col-12">
 					<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
@@ -135,6 +135,7 @@
 					<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 					<div class="form-group">
 						<label asp-for="slider1Image" class="control-label"> صورة السلايدر الاولى</label>
+						<img id="loader1" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 						<input type="file" name="files" id="files1" class="btn btn-block form-control">
 						<span asp-validation-for="slider1Image" class="text-danger"> </span>
 					</div>
@@ -154,6 +155,7 @@
 					<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 					<div class="form-group">
 						<label asp-for="slider2Image" class="control-label"> صورة السلايدر الثانية</label>
+						<img id="loader2" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 						<input type="file" name="files" id="files2" class="btn btn-block form-control">
 						<span asp-validation-for="slider2Image" class="text-danger"> </span>
 					</div>
@@ -173,6 +175,7 @@
 					<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 					<div class="form-group">
 						<label asp-for="slider3Image" class="control-label"> صورة السلايدر الثالثة</label>
+						<img id="loader3" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 						<input type="file" name="files" id="files3" class="btn btn-block form-control">
 						<span asp-validation-for="slider3Image" class="text-danger"> </span>
 					</div>
@@ -190,13 +193,13 @@
 			</div>
 
 			<div class="form-group">
-				<input type="submit" value="Create" class="btn btn-primary btn-block w-50 m-auto" />
+				<input type="button" value="Create" class="btn btn-primary btn-block w-50 m-auto" id="save" />
 			</div>
 
 
-			<input id="slider1Image" name="slider1Image" type="hidden" />
-			<input id="slider2Image" name="slider2Image" type="hidden" />
-			<input id="slider3Image" name="slider3Image" type="hidden" />
+			<input id="slider1Image" name="slider1Image" type="hidden" value=""/>
+			<input id="slider2Image" name="slider2Image" type="hidden" value=""/>
+			<input id="slider3Image" name="slider3Image" type="hidden" value=""/>
 
 
 
@@ -215,7 +218,7 @@
 	<script>
 	 $("#files1").change(function () {
 			  var element = this;
-
+		  $("#loader1").show();
 			  var formData = new FormData();
 
 		 var totalFiles = element.files.length;
@@ -233,7 +236,8 @@
 					contentType: false,
 					processData: false,
 					success: function (response) {
-						$("#slider1Image").val(response.image);
+                        $("#slider1Image").val(response.image);
+                        $("#loader1").hide();
 					},
 					error: function () {
 						alert("FAIL");
@@ -251,7 +255,8 @@
 				//});
 	 });
 	 $("#files2").change(function () {
-			  var element = this;
+         var element = this;
+		  $("#loader2").show();
 
 			  var formData = new FormData();
 
@@ -270,7 +275,8 @@
 					contentType: false,
 					processData: false,
 					success: function (response) {
-						$("#slider2Image").val(response.image);
+                        $("#slider2Image").val(response.image);
+                        $("#loader2").hide();
 					},
 					error: function () {
 						alert("FAIL");
@@ -289,7 +295,7 @@
 	 });
 	 $("#files3").change(function () {
 			  var element = this;
-
+		  $("#loader3").show();
 			  var formData = new FormData();
 
 		 var totalFiles = element.files.length;
@@ -307,7 +313,8 @@
 					contentType: false,
 					processData: false,
 					success: function (response) {
-						$("#slider3Image").val(response.image);
+                        $("#slider3Image").val(response.image);
+						 $("#loader3").hide();
 					},
 					error: function () {
 						alert("FAIL");
@@ -315,7 +322,9 @@
 				})
 
 	});
-
+		$("#save").click(function () {            if ($("#slider1Image").val() != "" && $("#slider2Image").val() != "" && $("#slider3Image").val() != "") {                $("#createform").submit();
+            } else {                alert("Please wait files are still UPLOADING !!")
+            }			});
 
 	</script>
 }

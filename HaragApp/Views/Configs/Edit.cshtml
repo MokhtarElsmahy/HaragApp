@@ -20,7 +20,7 @@
 	<h1>تعديــل</h1>
 
 	<hr />
-	<form asp-action="Edit">
+	<form asp-action="Edit" id="EditForm">
 		<div class="row">
 			<div class="col-12">
 				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
@@ -131,7 +131,7 @@
 			<div class="col-6">
 				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 				<div class="form-group">
-					<label asp-for="slider1Image" class="control-label"> صورة السلايدر الاولى</label>
+					<label asp-for="slider1Image" class="control-label"> صورة السلايدر الاولى</label> <img id="loader1" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 					<input type="file" name="files" id="files1" class="btn btn-block form-control" value="@Model.slider1Image">
 					<span asp-validation-for="slider1Image" class="text-danger"> </span>
 				</div>
@@ -150,7 +150,7 @@
 			<div class="col-6">
 				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 				<div class="form-group">
-					<label asp-for="slider2Image" class="control-label"> صورة السلايدر الثانية</label>
+					<label asp-for="slider2Image" class="control-label"> صورة السلايدر الثانية</label> <img id="loader2" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 					<input type="file" name="files" id="files2" class="btn btn-block form-control" value="@Model.slider2Image">
 					<span asp-validation-for="slider2Image" class="text-danger"> </span>
 				</div>
@@ -169,7 +169,7 @@
 			<div class="col-6">
 				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 				<div class="form-group">
-					<label asp-for="slider3Image" class="control-label"> صورة السلايدر الثالثة</label>
+					<label asp-for="slider3Image" class="control-label"> صورة السلايدر الثالثة</label> <img id="loader3" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 					<input type="file" name="files" id="files3" class="btn btn-block form-control" value="@Model.slider3Image">
 					<span asp-validation-for="slider3Image" class="text-danger"> </span>
 				</div>
@@ -191,7 +191,7 @@
 		<input id="slider3Image" name="slider3Image" type="hidden" value="@Model.slider3Image" />
 		<input id="ID" name="ID" type="hidden" value="@Model.ID" />
 		<div class="form-group">
-			<input type="submit" value="Save" class="btn btn-primary btn-block w-50 m-auto" />
+			<input type="button" value="Save" class="btn btn-primary btn-block w-50 m-auto" id="save" />
 
 		</div>
 
@@ -208,7 +208,10 @@
 
 @section Scripts {
 	<script>
-	 $("#files1").change(function () {
+        $("#files1").change(function () {
+		 $("#loader1").show();
+
+            $("#save").prop('disabled', true);
 			  var element = this;
 
 			  var formData = new FormData();
@@ -228,7 +231,10 @@
 					contentType: false,
 					processData: false,
 					success: function (response) {
-						$("#slider1Image").val(response.image);
+                        $("#slider1Image").val(response.image);
+                        $("#loader1").hide();
+
+            $("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
@@ -245,7 +251,10 @@
 				//    	alert("FAIL");
 				//});
 	 });
-	 $("#files2").change(function () {
+        $("#files2").change(function () {
+		 $("#loader2").show();
+
+            $("#save").prop('disabled', true);
 			  var element = this;
 
 			  var formData = new FormData();
@@ -265,7 +274,10 @@
 					contentType: false,
 					processData: false,
 					success: function (response) {
-						$("#slider2Image").val(response.image);
+                        $("#slider2Image").val(response.image);
+                        $("#loader2").hide();
+
+					$("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
@@ -282,7 +294,10 @@
 				//    	alert("FAIL");
 				//});
 	 });
-	 $("#files3").change(function () {
+        $("#files3").change(function () {
+		 $("#loader3").show();
+
+            $("#save").prop('disabled', true);
 			  var element = this;
 
 			  var formData = new FormData();
@@ -302,14 +317,27 @@
 					contentType: false,
 					processData: false,
 					success: function (response) {
-						$("#slider3Image").val(response.image);
+                        $("#slider3Image").val(response.image);
+                        $("#loader3").hide();
+
+						$("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
 					}
 				})
 
-	});
+        });
+		$("#save").click(function () {
+
+            if ($('#loader1').css('display') != 'none' || $('#loader2').css('display') != 'none' || $('#loader3').css('display') != 'none') {
+                alert("Please wait files are still UPLOADING !!")
+               
+            } else {
+				 $("#EditForm").submit();
+            }
+
+			});
 
 
 	</script>
