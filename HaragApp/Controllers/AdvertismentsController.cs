@@ -290,7 +290,7 @@ namespace HaragApp.Controllers
 
         public IActionResult UploadImage()
         {
-            System.Threading.Thread.Sleep(10000);
+            //System.Threading.Thread.Sleep(10000);
             string result = "defaultRecImage.png";
 
             try
