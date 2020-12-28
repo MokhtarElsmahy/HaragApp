@@ -290,7 +290,7 @@ namespace HaragApp.Controllers
 
         public IActionResult UploadImage()
         {
-            //System.Threading.Thread.Sleep(10000);
+            System.Threading.Thread.Sleep(6000);
             string result = "defaultRecImage.png";
 
             try
@@ -319,6 +319,7 @@ namespace HaragApp.Controllers
             IAdverstisment dd = new AdvertisementServices(_context);
             return View(dd.GetAllPaidAdv());
         }
+
         [Authorize(Roles = "admin")]
         public IActionResult CreatePaidAdd()
         {

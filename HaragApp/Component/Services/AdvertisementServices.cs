@@ -32,8 +32,8 @@ namespace HaragApp.Component.Services
             {
                 ad = new Advertisment()
                 {
-                    CategoryID = 1,
-                    CityID = 1,
+                    CategoryID =_context.AnimalCategories.ToList().Where(x=>x.CategoryID >= 1).FirstOrDefault().CategoryID,
+                    CityID = _context.Cities.ToList().Where(x => x.CityID >= 1).FirstOrDefault().CityID,
                     IsPaid = true,
                     Title = advertisment.Title,
                     Description = advertisment.Description,
