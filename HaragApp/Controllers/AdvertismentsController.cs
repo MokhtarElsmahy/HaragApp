@@ -290,7 +290,6 @@ namespace HaragApp.Controllers
 
         public IActionResult UploadImage()
         {
-            System.Threading.Thread.Sleep(6000);
             string result = "defaultRecImage.png";
 
             try
@@ -303,6 +302,7 @@ namespace HaragApp.Controllers
                 file[0].CopyTo(new FileStream(fullPath, FileMode.Create));
 
 
+                System.Threading.Thread.Sleep(5000);
                 return Json(new { image = $"/uploads/{newFileName}" });
             }
             catch (Exception ex)
