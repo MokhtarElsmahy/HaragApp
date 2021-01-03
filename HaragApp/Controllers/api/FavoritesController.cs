@@ -30,13 +30,23 @@ namespace HaragApp.Controllers.api
 
         // GET: api/Favorites
         [HttpGet]
-        public async Task<ActionResult<List<favoriteViewModel>>> GetFavorites()
+        public async Task<ActionResult<List<favoriteViewModel>>> GetFavorites(string userID)
         {
             var user = await _userManager.GetUserAsync(User);
             IAdverstisment adverstisment = new AdvertisementServices(_context);
-            var adVMs = adverstisment.GetUserFavorites(user.Id.ToString());
+            if (string.IsNullOrEmpty(userID) == true)
+            {
+                var adVMs = adverstisment.GetUserFavorites(user.Id.ToString());
 
-            return adVMs;
+                return adVMs;
+            }
+            else
+            {
+                var adVMs = adverstisment.GetUserFavorites(userID);
+
+                return adVMs;
+            }
+          
         }
 
         
@@ -47,23 +57,45 @@ namespace HaragApp.Controllers.api
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<bool> PostFavorite(int adID)
+        public async Task<bool> PostFavorite(int adID, string userID)
         {
             IAdverstisment adverstisment = new AdvertisementServices(_context);
-            var user = await _userManager.GetUserAsync(User);
-            var check = adverstisment.AddToFav(adID, user.Id );
-            return check;
+          
+            if (string.IsNullOrEmpty(userID) == true)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var check = adverstisment.AddToFav(adID, user.Id);
+                return check;
+            }
+            else
+            {
+                var user = await _userManager.GetUserAsync(User);
+                var check = adverstisment.AddToFav(adID, userID);
+                return check;
+            }
+          
+           
         }
 
         // DELETE: api/Favorites/5
         [HttpDelete("{id}")]
-        public async Task<bool> DeleteFavorite(int id)
+        public async Task<bool> DeleteFavorite(int id ,string userID)
         {
-            var user = await _userManager.GetUserAsync(User);
-            IAdverstisment adverstisment = new AdvertisementServices(_context);
-            var check = adverstisment.DeleteFav(user.Id, id);
+            if (string.IsNullOrEmpty(userID)==true)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                IAdverstisment adverstisment = new AdvertisementServices(_context);
+                var check = adverstisment.DeleteFav(user.Id, id); return check;
+            }
+            else
+            {
+                
+                IAdverstisment adverstisment = new AdvertisementServices(_context);
+                var check = adverstisment.DeleteFav(userID, id); return check;
+            }
+          
 
-            return check;
+            
         }
 
         

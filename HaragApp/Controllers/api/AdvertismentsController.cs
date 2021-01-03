@@ -30,13 +30,13 @@ namespace HaragApp.Controllers.api
         }
 
         // GET: api/Advertisments
-        [HttpGet]
-        public  ActionResult<List<AdsImagesVm>> GetAdvertisments()
-        {
-            IAdverstisment ads = new AdvertisementServices(_context);
-            
-            return ads.GetAllAdvertisemtsData(); ;
-        }
+        //[HttpGet]
+        //public  ActionResult<List<AdsImagesVm>> GetAdvertisments(string userID)
+        //{
+        //    IAdverstisment ads = new AdvertisementServices(_context);
+           
+        //    return ads.GetAllAdvertisemtsData(userID) ;
+        //}
 
         // GET: api/Advertisments/5
         [HttpGet("{id}")]
@@ -58,15 +58,12 @@ namespace HaragApp.Controllers.api
       
 
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAdvertisment(int id, Advertisment advertisment)
+        [HttpPut]
+        public async Task<IActionResult> PutAdvertisment(AdsImagesVm advertisment)
         {
-            if (id != advertisment.AdID)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(advertisment).State = EntityState.Modified;
+          
+            IAdverstisment ads = new AdvertisementServices(_context);
+            ads.UpdateAsync(advertisment);
 
             try
             {
@@ -74,14 +71,7 @@ namespace HaragApp.Controllers.api
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AdvertismentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                
             }
 
             return NoContent();

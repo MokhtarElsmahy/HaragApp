@@ -13,16 +13,16 @@ using System.Threading.Tasks;
 
 namespace HaragApp.Component.Services
 {
-   
+
     public class AdvertisementServices : IAdverstisment
     {
         private readonly ApplicationDbContext _context;
-      
+
 
         public AdvertisementServices(ApplicationDbContext context)
         {
             _context = context;
-         
+
         }
 
         public AdsImagesVm CreateAsync(AdsImagesVm advertisment)
@@ -32,14 +32,15 @@ namespace HaragApp.Component.Services
             {
                 ad = new Advertisment()
                 {
-                    CategoryID =_context.AnimalCategories.ToList().Where(x=>x.CategoryID >= 1).FirstOrDefault().CategoryID,
+                    CategoryID = _context.AnimalCategories.ToList().Where(x => x.CategoryID >= 1).FirstOrDefault().CategoryID,
                     CityID = _context.Cities.ToList().Where(x => x.CityID >= 1).FirstOrDefault().CityID,
                     IsPaid = true,
                     Title = advertisment.Title,
                     Description = advertisment.Description,
-
+                    UserId = advertisment.UserId
                 };
-            }else
+            }
+            else
             {
                 ad = new Advertisment()
                 {
@@ -49,10 +50,11 @@ namespace HaragApp.Component.Services
                     IsPact = advertisment.IsPact,
                     Title = advertisment.Title,
                     Description = advertisment.Description,
+                    UserId = advertisment.UserId
 
                 };
             }
-            
+
             _context.Add(ad);
             _context.SaveChanges();
 
@@ -94,6 +96,86 @@ namespace HaragApp.Component.Services
             return advertisment;
         }
 
+        public AdsImagesVm UpdateAsync(AdsImagesVm advertisment)
+        {
+            Advertisment ad = _context.Advertisments.Include(c=>c.AdImages).FirstOrDefault(c=>c.AdID==advertisment.AdID);
+            if (advertisment.CategoryID == 0)
+            {
+
+                ad.CategoryID = _context.AnimalCategories.ToList().Where(x => x.CategoryID >= 1).FirstOrDefault().CategoryID;
+                ad.CityID = _context.Cities.ToList().Where(x => x.CityID >= 1).FirstOrDefault().CityID;
+                ad.IsPaid = true;
+                ad.Title = advertisment.Title;
+                ad.Description = advertisment.Description;
+                ad.UserId = advertisment.UserId;
+                ad.AdImages.ToList()[0].img = advertisment.ImageUrl1;
+                //ad.AdImages.ToList()[1].img = advertisment.ImageUrl2;
+                //ad.AdImages.ToList()[2].img = advertisment.ImageUrl3;
+                //ad.AdImages.ToList()[3].img = advertisment.ImageUrl4;
+                //ad.AdImages.ToList()[4].img = advertisment.ImageUrl5;
+
+            }
+            else
+            {
+
+                ad.CategoryID = advertisment.CategoryID;
+                ad.CityID = advertisment.CityID;
+                ad.IsPact = true;
+                ad.Title = advertisment.Title;
+                ad.Description = advertisment.Description;
+                ad.UserId = advertisment.UserId;
+                ad.AdImages.ToList()[0].img = advertisment.ImageUrl1;
+                ad.AdImages.ToList()[1].img = advertisment.ImageUrl2;
+                ad.AdImages.ToList()[2].img = advertisment.ImageUrl3;
+                ad.AdImages.ToList()[3].img = advertisment.ImageUrl4;
+                ad.AdImages.ToList()[4].img = advertisment.ImageUrl5;
+
+            }
+
+
+            _context.SaveChanges();
+
+            //if (advertisment.ImageUrl1 != null)
+            //{
+            //    AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl1 };
+            //    _context.Add(img);
+            //    _context.SaveChanges();
+
+            //}
+            //if (advertisment.ImageUrl2 != null)
+            //{
+            //    AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl2 };
+            //    _context.Add(img);
+            //    _context.SaveChanges();
+
+            //}
+            //if (advertisment.ImageUrl3 != null)
+            //{
+            //    AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl3 };
+            //    _context.Add(img);
+            //    _context.SaveChanges();
+
+            //}
+            //if (advertisment.ImageUrl4 != null)
+            //{
+            //    AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl4 };
+            //    _context.Add(img);
+            //    _context.SaveChanges();
+
+            //}
+            //if (advertisment.ImageUrl5 != null)
+            //{
+            //    AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl5 };
+            //    _context.Add(img);
+            //    _context.SaveChanges();
+            //}
+            //advertisment.AdID = ad.AdID;
+            return advertisment;
+        }
+
+
+
+
 
         public AdsImagesVm Details(int? id)
         {
@@ -118,9 +200,9 @@ namespace HaragApp.Component.Services
             adsVM.Description = adv.Description;
             adsVM.userPhone = adv.User.Phone;
             var adImages = adv.AdImages.ToList();
-         
-            adsVM.ImageUrl1 = adImages[0].img ;
-            if(adv.IsPaid == false)
+
+            adsVM.ImageUrl1 = adImages[0].img;
+            if (adv.IsPaid == false)
             {
                 adsVM.ImageUrl2 = adImages[1].img;
                 adsVM.ImageUrl3 = adImages[2].img;
@@ -128,7 +210,7 @@ namespace HaragApp.Component.Services
                 adsVM.ImageUrl5 = adImages[4].img;
             }
 
-            
+
             if (adv == null)
             {
                 return null;
@@ -139,7 +221,7 @@ namespace HaragApp.Component.Services
 
         public List<AdsImagesVm> GetUserAdvertisementsAsync(string id)
         {
-            var Advs = _context.Advertisments.Include(xx => xx.AdImages).Include(xx=>xx.AnimalCategory).Include(xx=>xx.City).Where(xx => xx.UserId == id).Where(xx=>xx.IsPaid == false).ToList();
+            var Advs = _context.Advertisments.Include(xx => xx.AdImages).Include(xx => xx.AnimalCategory).Include(xx => xx.City).Where(xx => xx.UserId == id).Where(xx => xx.IsPaid == false).ToList();
             List<AdsImagesVm> adsImagesVms = new List<AdsImagesVm>();
             foreach (var item in Advs)
             {
@@ -166,9 +248,9 @@ namespace HaragApp.Component.Services
         }
         public List<PaidAddViewModel> GetAllPaidAdv()
         {
-            
-            return _context.Advertisments.Include(x=>x.AdImages).ToList().Where(c => c.IsPaid == true)
-                .Select(x=>new PaidAddViewModel { Title=x.Title , AdID=x.AdID ,ImageUrl1=x.AdImages.ToList()[0].img , URL=x.Description}).ToList();
+
+            return _context.Advertisments.Include(x => x.AdImages).ToList().Where(c => c.IsPaid == true)
+                .Select(x => new PaidAddViewModel { Title = x.Title, AdID = x.AdID, ImageUrl1 = x.AdImages.ToList()[0].img, URL = x.Description }).ToList();
         }
 
         public void DeletePaidAdd(int id)
@@ -218,13 +300,14 @@ namespace HaragApp.Component.Services
             if (advertismentCheck == null)
             {
                 return true;
-            }else
+            }
+            else
             {
                 return false;
             }
         }
 
-        public AdsImagesVm userUpdateADV(int id , AdsImagesVm newADV)
+        public AdsImagesVm userUpdateADV(int id, AdsImagesVm newADV)
         {
             var oldADV = _context.Advertisments
                    .Include(xx => xx.AdImages)
@@ -249,29 +332,59 @@ namespace HaragApp.Component.Services
 
         public ShopViewModel Shop(ShopViewModel model)
         {
-            if(model != null)
+            if (model != null)
             {
-                model.Advertisments = _context.Advertisments.Where(c=>c.IsPaid == false).Include(c => c.AdImages).Include(c => c.AnimalCategory).Include(c => c.City)
-                .Select(x => new AdsImagesVm
+                if (string.IsNullOrEmpty(model.userID) == false)
                 {
-                    AdID = x.AdID,
-                    Title = x.Title,
-                    CategoryID = x.CategoryID,
-                    CityID = x.CityID,
-                    CategoryName = x.AnimalCategory.CategoryName,
-                    CityName = x.City.CityName,
-                    Lang = Convert.ToDouble(x.City.Langtude),
-                    Lat = Convert.ToDouble(x.City.Lantitude),
-                    ImageUrl1 = x.AdImages.ToList()[0].img,
-                    ImageUrl2 = x.AdImages.ToList()[1].img,
-                    ImageUrl3 = x.AdImages.ToList()[2].img,
-                    ImageUrl4 = x.AdImages.ToList()[3].img,
-                    ImageUrl5 = x.AdImages.ToList()[4].img
+                    model.Advertisments = _context.Advertisments.Where(c => c.IsPaid == false).Include(c => c.AdImages).Include(c => c.AnimalCategory).Include(c => c.City)
+                   .Select(x => new AdsImagesVm
+                   {
+                       AdID = x.AdID,
+                       Title = x.Title,
+                       CategoryID = x.CategoryID,
+                       CityID = x.CityID,
+                       CategoryName = x.AnimalCategory.CategoryName,
+                       CityName = x.City.CityName,
+                       Lang = Convert.ToDouble(x.City.Langtude),
+                       Lat = Convert.ToDouble(x.City.Lantitude),
+                       ImageUrl1 = x.AdImages.ToList()[0].img,
+                       ImageUrl2 = x.AdImages.ToList()[1].img,
+                       ImageUrl3 = x.AdImages.ToList()[2].img,
+                       ImageUrl4 = x.AdImages.ToList()[3].img,
+                       ImageUrl5 = x.AdImages.ToList()[4].img,
+                       IsFav = _context.Favorites.Where(c => c.AdID == x.AdID && c.UserId == x.UserId).FirstOrDefault() == null ? false : true
 
 
-                }).ToList();
+
+                   }).ToList();
+                }
+                else
+                {
+                    model.Advertisments = _context.Advertisments.Where(c => c.IsPaid == false).Include(c => c.AdImages).Include(c => c.AnimalCategory).Include(c => c.City)
+                  .Select(x => new AdsImagesVm
+                  {
+                      AdID = x.AdID,
+                      Title = x.Title,
+                      CategoryID = x.CategoryID,
+                      CityID = x.CityID,
+                      CategoryName = x.AnimalCategory.CategoryName,
+                      CityName = x.City.CityName,
+                      Lang = Convert.ToDouble(x.City.Langtude),
+                      Lat = Convert.ToDouble(x.City.Lantitude),
+                      ImageUrl1 = x.AdImages.ToList()[0].img,
+                      ImageUrl2 = x.AdImages.ToList()[1].img,
+                      ImageUrl3 = x.AdImages.ToList()[2].img,
+                      ImageUrl4 = x.AdImages.ToList()[3].img,
+                      ImageUrl5 = x.AdImages.ToList()[4].img,
+                      IsFav = false
+
+
+
+                  }).ToList();
+                }
+
             }
-            
+
             model.Cities = _context.Cities.ToList();
             model.Categories = _context.AnimalCategories.ToList();
             model.PageNo = model.PageNo;
@@ -361,7 +474,7 @@ namespace HaragApp.Component.Services
                 if (distance <= km)         //nearbyplaces which are within 25 kms  50 w 70
                 {
                     AdsImagesVm dist = new AdsImagesVm();
-                   
+
                     dist.Title = ad.Title;
                     dist.CityID = ad.CityID;
                     dist.CityName = ad.CityName;
@@ -406,14 +519,14 @@ namespace HaragApp.Component.Services
         }
 
 
-        public bool AddToFav(int AdID , String userID)
+        public bool AddToFav(int AdID, String userID)
         {
             var fav = _context.Favorites.SingleOrDefault(x => x.AdID == AdID && x.UserId == userID);
             Favorite favADv = new Favorite();
             if (fav == null)
             {
                 favADv.AdID = AdID;
-                favADv.UserId = userID ;
+                favADv.UserId = userID;
                 _context.Favorites.Add(favADv);
                 _context.SaveChanges();
             }
@@ -423,7 +536,7 @@ namespace HaragApp.Component.Services
             {
                 return false;
             }
-            
+
 
             return true;
 
@@ -450,7 +563,7 @@ namespace HaragApp.Component.Services
             return (adVMs);
         }
 
-        public bool DeleteFav(string userID , int ADVid)
+        public bool DeleteFav(string userID, int ADVid)
         {
             var favAD = _context.Favorites.FirstOrDefault(x => x.AdID == ADVid && x.UserId == userID);
             _context.Favorites.Remove(favAD);
@@ -470,43 +583,71 @@ namespace HaragApp.Component.Services
 
             int pageNo = 1;
             int pageSize = 6;
-            var advs = _context.Advertisments.OrderBy(p => p.AdID).Skip((pageNo - 1) * pageSize).Take(pageSize).Include(p => p.AnimalCategory).Include(xx=>xx.AdImages).Where(x=>x.IsPaid != true)
+            var advs = _context.Advertisments.OrderBy(p => p.AdID).Skip((pageNo - 1) * pageSize).Take(pageSize).Include(p => p.AnimalCategory).Include(xx => xx.AdImages).Where(x => x.IsPaid != true)
                 .Select(xx => new favoriteViewModel
-            {
-                CategoryName = xx.AnimalCategory.CategoryName,
-                Title = xx.Title,
-                ImageUrl1 = xx.AdImages.ToList()[0].img
-            }).ToList();
+                {
+                    CategoryName = xx.AnimalCategory.CategoryName,
+                    Title = xx.Title,
+                    ImageUrl1 = xx.AdImages.ToList()[0].img
+                }).ToList();
             return advs;
 
         }
 
-        public List<AdsImagesVm> GetAllAdvertisemtsData()
+        public List<AdsImagesVm> GetAllAdvertisemtsData(string userID)
         {
-            var ads = _context.Advertisments.Include(xx => xx.AdImages).Include(xx => xx.City).Include(xx => xx.AnimalCategory).Include(xx=>xx.User).ToList();
+            var ads = _context.Advertisments.Include(xx => xx.AdImages).Include(xx => xx.City).Include(xx => xx.AnimalCategory).Include(xx => xx.User).ToList();
             List<AdsImagesVm> adsImagesVms = new List<AdsImagesVm>();
 
-            foreach (var item in ads)
+            if (string.IsNullOrEmpty(userID) == false)
             {
-                adsImagesVms.Add(new AdsImagesVm()
+                foreach (var item in ads)
                 {
-                    AdID = item.AdID,
-                    CategoryID = item.CategoryID,
-                    CityName = item.City.CityName,
-                    Description = item.Description,
-                    CategoryName = item.AnimalCategory.CategoryName,
-                    CityID = item.CityID,
-                    ImageUrl1 = item.AdImages.ToList()[0].img,
-                    ImageUrl2 = item.AdImages.ToList()[1].img,
-                    ImageUrl3 = item.AdImages.ToList()[2].img,
-                    ImageUrl4 = item.AdImages.ToList()[3].img,
-                    ImageUrl5 = item.AdImages.ToList()[4].img,
-                    Title = item.Title,
-                    UserId = item.UserId,
-                    userPhone = item.User.Phone
+                    adsImagesVms.Add(new AdsImagesVm()
+                    {
+                        AdID = item.AdID,
+                        CategoryID = item.CategoryID,
+                        CityName = item.City.CityName,
+                        Description = item.Description,
+                        CategoryName = item.AnimalCategory.CategoryName,
+                        CityID = item.CityID,
+                        ImageUrl1 = item.AdImages.ToList()[0].img,
+                        ImageUrl2 = item.AdImages.ToList()[1].img,
+                        ImageUrl3 = item.AdImages.ToList()[2].img,
+                        ImageUrl4 = item.AdImages.ToList()[3].img,
+                        ImageUrl5 = item.AdImages.ToList()[4].img,
+                        Title = item.Title,
+                        UserId = item.UserId,
+                        userPhone = item.User.Phone
 
-                });
+                    });
+                }
             }
+            else
+            {
+                foreach (var item in ads)
+                {
+                    adsImagesVms.Add(new AdsImagesVm()
+                    {
+                        AdID = item.AdID,
+                        CategoryID = item.CategoryID,
+                        CityName = item.City.CityName,
+                        Description = item.Description,
+                        CategoryName = item.AnimalCategory.CategoryName,
+                        CityID = item.CityID,
+                        ImageUrl1 = item.AdImages.ToList()[0].img,
+                        ImageUrl2 = item.AdImages.ToList()[1].img,
+                        ImageUrl3 = item.AdImages.ToList()[2].img,
+                        ImageUrl4 = item.AdImages.ToList()[3].img,
+                        ImageUrl5 = item.AdImages.ToList()[4].img,
+                        Title = item.Title,
+                        UserId = item.UserId,
+                        userPhone = item.User.Phone
+
+                    });
+                }
+            }
+
 
 
             return adsImagesVms;
@@ -514,7 +655,7 @@ namespace HaragApp.Component.Services
 
         public favoriteViewModel GetAdvertisementByID(int ADid)
         {
-            var ad = _context.Advertisments.Include(c => c.AdImages).Include(xx=>xx.City).Include(xx=>xx.AnimalCategory).FirstOrDefault(c => c.AdID == ADid);
+            var ad = _context.Advertisments.Include(c => c.AdImages).Include(xx => xx.City).Include(xx => xx.AnimalCategory).FirstOrDefault(c => c.AdID == ADid);
             favoriteViewModel model = new favoriteViewModel()
             {
                 AdID = ad.AdID,
@@ -523,8 +664,8 @@ namespace HaragApp.Component.Services
                 Title = ad.Title,
 
                 ImageUrl1 = ad.AdImages.ToList()[0].img,
-               CategoryName = ad.AnimalCategory.CategoryName,
-               CityName = ad.City.CityName
+                CategoryName = ad.AnimalCategory.CategoryName,
+                CityName = ad.City.CityName
 
             };
             return model;

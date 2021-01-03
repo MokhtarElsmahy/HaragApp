@@ -29,68 +29,75 @@ namespace HaragApp.Controllers.api
 
         // GET: api/UserAdvertisments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AdsImagesVm>>> GetAdvertisments()
+        public async Task<ActionResult<IEnumerable<AdsImagesVm>>> GetAdvertisments(string userID)
         {
-            var user = await _userManager.GetUserAsync(User);
+          
+            if (string.IsNullOrEmpty(userID))
+            {
+                var user = await _userManager.GetUserAsync(User);
+                IAdverstisment ads = new AdvertisementServices(_context);
+                var advList = ads.GetUserAdvertisementsAsync(user.Id);
 
-            IAdverstisment ads = new AdvertisementServices(_context);
-            var advList = ads.GetUserAdvertisementsAsync(user.Id);
+                return advList;
+            }
+            else
+            {
+               
+                IAdverstisment ads = new AdvertisementServices(_context);
+                var advList = ads.GetUserAdvertisementsAsync(userID);
 
-            return advList;
+                return advList;
+            }
+           
         }
 
         // GET: api/UserAdvertisments/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Advertisment>> GetAdvertisment(int id)
-        {
-            var advertisment = await _context.Advertisments.FindAsync(id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Advertisment>> GetAdvertisment(int id)
+        //{
+        //    var advertisment = await _context.Advertisments.FindAsync(id);
 
-            if (advertisment == null)
-            {
-                return NotFound();
-            }
+        //    if (advertisment == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return advertisment;
-        }
+        //    return advertisment;
+        //}
 
         // PUT: api/UserAdvertisments/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public AdsImagesVm PutAdvertisment(int id, AdsImagesVm advertisment)
-        {
-            if (id != advertisment.AdID)
-            {
-                return null;
-            }
-            IAdverstisment adverstisment = new AdvertisementServices(_context);
-            var adv = adverstisment.userUpdateADV(id, advertisment);
+        //[HttpPut]
+        //public AdsImagesVm PutAdvertisment(AdsImagesVm advertisment)
+        //{
+           
+        //    IAdverstisment adverstisment = new AdvertisementServices(_context);
+        //    var adv = adverstisment.userUpdateADV(advertisment.AdID, advertisment);
 
 
-            return adv;
-        }
+        //    return adv;
+        //}
 
-        // POST: api/UserAdvertisments
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Advertisment>> PostAdvertisment(Advertisment advertisment)
-        {
-            _context.Advertisments.Add(advertisment);
-            await _context.SaveChangesAsync();
+  
+        //[HttpPost]
+        //public async Task<ActionResult<Advertisment>> PostAdvertisment(Advertisment advertisment)
+        //{
+        //    _context.Advertisments.Add(advertisment);
+        //    await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdvertisment", new { id = advertisment.AdID }, advertisment);
-        }
+        //    return CreatedAtAction("GetAdvertisment", new { id = advertisment.AdID }, advertisment);
+        //}
 
         // DELETE: api/UserAdvertisments/5
-        [HttpDelete("{id}")]
-        public bool DeleteAdvertisment(int id)
-        {
-            IAdverstisment ads = new AdvertisementServices(_context);
-            var boolCheck = ads.userDeleteADV(id);
+        //[HttpDelete("{id}")]
+        //public bool DeleteAdvertisment(int id)
+        //{
+        //    IAdverstisment ads = new AdvertisementServices(_context);
+        //    var boolCheck = ads.userDeleteADV(id);
 
-            return boolCheck;
-        }
+        //    return boolCheck;
+        //}
    
         private bool AdvertismentExists(int id)
         {

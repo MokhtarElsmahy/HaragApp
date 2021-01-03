@@ -30,8 +30,10 @@ namespace HaragApp.Component.Interfaces
         public bool DeleteFav(string userID, int ADVid);
 
         public List<favoriteViewModel> GetAdvertismentsForIndex();
-        public List<AdsImagesVm> GetAllAdvertisemtsData();
+        public List<AdsImagesVm> GetAllAdvertisemtsData(string userID);
         public favoriteViewModel GetAdvertisementByID(int ADid);
         public List<favoriteViewModel> GetTopFiveFavs();
+
+        public AdsImagesVm UpdateAsync(AdsImagesVm advertisment);
     }
 }

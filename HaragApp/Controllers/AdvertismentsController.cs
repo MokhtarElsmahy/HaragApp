@@ -179,6 +179,7 @@ namespace HaragApp.Controllers
             {
                 try
                 {
+
                     _context.Update(advertisment);
                     await _context.SaveChangesAsync();
                 }
@@ -415,6 +416,7 @@ namespace HaragApp.Controllers
             model.Lat = shop.Lat;
             model.CityId = shop.CityId;
             model.CategoryId = shop.CategoryId;
+            
             return View(model);
         }
 

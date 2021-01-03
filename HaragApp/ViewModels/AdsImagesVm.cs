@@ -26,6 +26,8 @@ namespace HaragApp.ViewModels
         public int Km { get; set; }
         public int PageNo { get; set; }
 
+        public bool IsFav { get; set; }
+
         public string search { get; set; }
         public string ImageUrl1 { get; set; }
         public string ImageUrl2 { get; set; }
