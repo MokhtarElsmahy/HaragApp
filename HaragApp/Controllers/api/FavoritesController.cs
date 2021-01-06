@@ -69,7 +69,7 @@ namespace HaragApp.Controllers.api
             }
             else
             {
-                var user = await _userManager.GetUserAsync(User);
+               
                 var check = adverstisment.AddToFav(adID, userID);
                 return check;
             }
@@ -85,13 +85,15 @@ namespace HaragApp.Controllers.api
             {
                 var user = await _userManager.GetUserAsync(User);
                 IAdverstisment adverstisment = new AdvertisementServices(_context);
-                var check = adverstisment.DeleteFav(user.Id, id); return check;
+                var check = adverstisment.DeleteFav(user.Id, id);
+                return check;
             }
             else
             {
                 
                 IAdverstisment adverstisment = new AdvertisementServices(_context);
-                var check = adverstisment.DeleteFav(userID, id); return check;
+                var check = adverstisment.DeleteFav(userID, id);
+                return check;
             }
           
 

@@ -9,7 +9,7 @@ namespace HaragApp.Controllers.api
     public class ChangePasswordViewModel
     {
 
-
+        public string user_id { get; set; }
         [Required(ErrorMessage = "من فضلك ادخل كلمة المرور القديمة")]
         public string old_password { get; set; }
 

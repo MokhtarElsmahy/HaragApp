@@ -41,13 +41,8 @@ namespace HaragApp.Controllers.api
             var UserDB = db.Users.Where(x => x.Id == userId).Select(x => new UserInfoViewModel
             {
                 id=x.Id,
-                user_name = x.user_name,
-                CityID = x.CityID,
-                email = x.Email,
                 phone = x.Phone,
-                lang=x.lang,
-                lat=x.lat,
-               
+             
                
             }).FirstOrDefault();
 

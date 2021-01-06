@@ -7,8 +7,8 @@ namespace HaragApp.Controllers.api
 {
     public class GetUserDataViewModel
     {
-        //public string user_id { get; set; }
-        public string lang { get; set; } = "ar";
-        public string device_id { get; set; } = "";
+        public string user_id { get; set; }
+       // public string lang { get; set; } = "ar";
+       // public string device_id { get; set; } = "";
     }
 }

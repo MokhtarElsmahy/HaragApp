@@ -421,8 +421,9 @@ namespace HaragApp.Controllers
         }
 
 
-        public async Task<IActionResult> AddToFav(int adID)
+        public async Task<IActionResult> AddToFav(int adID,string userID)
         {
+          
             var user = await _userManager.GetUserAsync(User);
             if(user == null)
             {

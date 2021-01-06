@@ -285,7 +285,7 @@ namespace HaragApp.Controllers.api
                 });
             }
 
-            var user = (db.Users.Where(x => x.PhoneNumber == userModel.phone).SingleOrDefault());
+            var user = (db.Users.Where(x => x.Phone == userModel.phone).SingleOrDefault());
 
             if (user == null)
             {
@@ -374,18 +374,18 @@ namespace HaragApp.Controllers.api
 
 
 
-
+        [AllowAnonymous]
         [HttpPost(ApiRoutes.Identity.GetDataOfUser)]
         public async Task<IActionResult> GetDataOfUser(GetUserDataViewModel userModel)
         {
             try
             {
-                string user_id = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
-                var user = await _userManager.FindByIdAsync(user_id);
+              //  string user_id = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
+                var user = await _userManager.FindByIdAsync(userModel.user_id);
                 return Json(new
                 {
                     key = 1,
-                    data = GetUserInfo(user.Id, userModel.lang),
+                    data = GetUserInfo(user.Id),
                 });
             }
             catch (Exception ex)
@@ -399,85 +399,87 @@ namespace HaragApp.Controllers.api
         }
 
 
+        #region MyRegion
 
-        [HttpPost(ApiRoutes.Identity.UpdateDataUser)]
-        public async Task<ActionResult> UpdateDataUser(UpdateDataUserViewModel userModel)
-        {
-            string user_id = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
-            var user = await _userManager.FindByIdAsync(user_id);
-            if (userModel.phone != null)
-            {
-                var phonechek = (db.Users.Where(x => x.PhoneNumber == userModel.phone && x.Id != user_id).SingleOrDefault());
+        //[HttpPost(ApiRoutes.Identity.UpdateDataUser)]
+        //public async Task<ActionResult> UpdateDataUser(UpdateDataUserViewModel userModel)
+        //{
+        //    string user_id = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
+        //    var user = await _userManager.FindByIdAsync(user_id);
+        //    if (userModel.phone != null)
+        //    {
+        //        var phonechek = (db.Users.Where(x => x.PhoneNumber == userModel.phone && x.Id != user_id).SingleOrDefault());
 
-                if (phonechek != null)
-                {
-                    return Json(new
-                    {
-                        key = 0,
-                        msg = creatMessage(userModel.lang, "هذا الرقم موجود من قبل", "This number already exists")
-                    });
-                }
-            }
-            if (userModel.email != null)
-            {
-                var emailchek = (db.Users.Where(x => x.Email == userModel.email && x.Id != user_id).SingleOrDefault());
+        //        if (phonechek != null)
+        //        {
+        //            return Json(new
+        //            {
+        //                key = 0,
+        //                msg = creatMessage(userModel.lang, "هذا الرقم موجود من قبل", "This number already exists")
+        //            });
+        //        }
+        //    }
+        //    if (userModel.email != null)
+        //    {
+        //        var emailchek = (db.Users.Where(x => x.Email == userModel.email && x.Id != user_id).SingleOrDefault());
 
-                if (emailchek != null)
-                {
-                    return Json(new
-                    {
-                        key = 0,
-                        msg = creatMessage(userModel.lang, "هذا البريد موجود من قبل", "This email already exists")
-                    });
-                }
-            }
-            user.address = userModel.address ?? user.address;
-            user.lng = userModel.lng ?? user.lng;
-            user.lat = userModel.lat ?? user.lat;
-            user.user_name = userModel.user_name ?? user.user_name;
-            user.PhoneNumber = userModel.phone ?? user.PhoneNumber;
+        //        if (emailchek != null)
+        //        {
+        //            return Json(new
+        //            {
+        //                key = 0,
+        //                msg = creatMessage(userModel.lang, "هذا البريد موجود من قبل", "This email already exists")
+        //            });
+        //        }
+        //    }
+        //    user.address = userModel.address ?? user.address;
+        //    user.lng = userModel.lng ?? user.lng;
+        //    user.lat = userModel.lat ?? user.lat;
+        //    user.user_name = userModel.user_name ?? user.user_name;
+        //    user.PhoneNumber = userModel.phone ?? user.PhoneNumber;
 
-            user.Email = userModel.email;
-
-
-            //if (userModel.Img != null)
-            //{
-            //    var uploads = Path.Combine(HostingEnvironment.WebRootPath, "images/User");
-
-            //    var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(userModel.Img.FileName);
-            //    using (var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
-            //    {
-            //        await userModel.Img.CopyToAsync(fileStream);
-            //        user.img = BaisUrlUser + fileName;
-            //    }
-            //}
-            //else
-            //{
-            //    user.img = user.img;
-            //}
+        //    user.Email = userModel.email;
 
 
-            //}
-            db.SaveChanges();
+        //    //if (userModel.Img != null)
+        //    //{
+        //    //    var uploads = Path.Combine(HostingEnvironment.WebRootPath, "images/User");
+
+        //    //    var fileName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(userModel.Img.FileName);
+        //    //    using (var fileStream = new FileStream(Path.Combine(uploads, fileName), FileMode.Create))
+        //    //    {
+        //    //        await userModel.Img.CopyToAsync(fileStream);
+        //    //        user.img = BaisUrlUser + fileName;
+        //    //    }
+        //    //}
+        //    //else
+        //    //{
+        //    //    user.img = user.img;
+        //    //}
 
 
-            return Json(new
-            {
-                key = 1,
-                data = GetUserInfo(user.Id, userModel.lang),
-                msg = creatMessage(userModel.lang, "تم التعديل بنجاح", "successfully modified"),
-                status = true
-            });
-
-        }
+        //    //}
+        //    db.SaveChanges();
 
 
+        //    return Json(new
+        //    {
+        //        key = 1,
+        //        data = GetUserInfo(user.Id, userModel.lang),
+        //        msg = creatMessage(userModel.lang, "تم التعديل بنجاح", "successfully modified"),
+        //        status = true
+        //    });
 
+        //} 
+        #endregion
+
+
+        [AllowAnonymous]
         [HttpPost(ApiRoutes.Identity.ChangePassward)]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel userModel)
         {
-            string user_id = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
-            var user = await _userManager.FindByIdAsync(user_id);
+           // string user_id = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
+            var user = await _userManager.FindByIdAsync(userModel.user_id);
             if (user == null)
             {
                 return Json(new
@@ -623,75 +625,77 @@ namespace HaragApp.Controllers.api
 
 
 
+        #region MyRegion
 
-        [AllowAnonymous]
-        [HttpPost(ApiRoutes.Identity.ChangePasswordByCode)]
-        public async Task<IActionResult> ChangePasswordByCode(ChangePasswordByCodeViewModel userModel)
-        {
-            try
-            {
+        //[AllowAnonymous]
+        //[HttpPost(ApiRoutes.Identity.ChangePasswordByCode)]
+        //public async Task<IActionResult> ChangePasswordByCode(ChangePasswordByCodeViewModel userModel)
+        //{
+        //    try
+        //    {
 
-                if (userModel.code == 0)
-                {
-                    return Json(new
-                    {
-                        key = 0,
-                        msg = creatMessage(userModel.lang, "من فضلك ادخل كود التحقق", "Please enter your verification code")
-                    });
-                }
-                if (userModel.new_password == "")
-                {
-                    return Json(new
-                    {
-                        key = 0,
-                        msg = creatMessage(userModel.lang, "من فضلك ادخل كلمة المرور الجديدة ", "Please enter your new password")
-                    });
-                }
-                try
-                {
+        //        if (userModel.code == 0)
+        //        {
+        //            return Json(new
+        //            {
+        //                key = 0,
+        //                msg = creatMessage(userModel.lang, "من فضلك ادخل كود التحقق", "Please enter your verification code")
+        //            });
+        //        }
+        //        if (userModel.new_password == "")
+        //        {
+        //            return Json(new
+        //            {
+        //                key = 0,
+        //                msg = creatMessage(userModel.lang, "من فضلك ادخل كلمة المرور الجديدة ", "Please enter your new password")
+        //            });
+        //        }
+        //        try
+        //        {
 
-                    var codeuser = (db.Users.Where(x => x.Id == userModel.user_id).SingleOrDefault());
-                    if (codeuser != null)
-                    {
-                        if (userModel.code != codeuser.code)
-                        {
-                            return Json(new
-                            {
-                                key = 0,
-                                msg = creatMessage(userModel.lang, "يرجى التحقق من الكود  ", "Please check the code")
-                            });
-                        }
-                        var changePasswordResult = await _userManager.ChangePasswordAsync(codeuser, codeuser.showpassword, userModel.new_password);
-                        if (!changePasswordResult.Succeeded)
-                        {
-                            return Json(new { key = 0, msg = creatMessage(userModel.lang, changePasswordResult.ToString(), "Something went wrong") });
-                        }
-                        codeuser.showpassword = userModel.new_password;
-                        db.SaveChanges();
+        //            var codeuser = (db.Users.Where(x => x.Id == userModel.user_id).SingleOrDefault());
+        //            if (codeuser != null)
+        //            {
+        //                if (userModel.code != codeuser.code)
+        //                {
+        //                    return Json(new
+        //                    {
+        //                        key = 0,
+        //                        msg = creatMessage(userModel.lang, "يرجى التحقق من الكود  ", "Please check the code")
+        //                    });
+        //                }
+        //                var changePasswordResult = await _userManager.ChangePasswordAsync(codeuser, codeuser.showpassword, userModel.new_password);
+        //                if (!changePasswordResult.Succeeded)
+        //                {
+        //                    return Json(new { key = 0, msg = creatMessage(userModel.lang, changePasswordResult.ToString(), "Something went wrong") });
+        //                }
+        //                codeuser.showpassword = userModel.new_password;
+        //                db.SaveChanges();
 
 
-                        return Json(new { key = 1, msg = creatMessage(userModel.lang, "تم تغيير الباسورد بنجاح", "Password changed successfully") });
-                    }
-                    else
-                    {
-                        return Json(new { key = 0, msg = creatMessage(userModel.lang, " كود التحقق غير صحيح", "  Invalid verification code") });
-                    }
-                }
-                catch (Exception)
-                {
-                    return Json(new { key = 0, msg = creatMessage(userModel.lang, "حدث خطا ما", "Something went wrong") });
-                }
-            }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    key = 0,
-                    msg = ex.Message
-                });
-            }
-        }
+        //                return Json(new { key = 1, msg = creatMessage(userModel.lang, "تم تغيير الباسورد بنجاح", "Password changed successfully") });
+        //            }
+        //            else
+        //            {
+        //                return Json(new { key = 0, msg = creatMessage(userModel.lang, " كود التحقق غير صحيح", "  Invalid verification code") });
+        //            }
+        //        }
+        //        catch (Exception)
+        //        {
+        //            return Json(new { key = 0, msg = creatMessage(userModel.lang, "حدث خطا ما", "Something went wrong") });
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new
+        //        {
+        //            key = 0,
+        //            msg = ex.Message
+        //        });
+        //    }
+        //}
 
+        #endregion
 
         [AllowAnonymous]
         [HttpPost(ApiRoutes.Identity.GetCities)]
@@ -703,6 +707,7 @@ namespace HaragApp.Controllers.api
             return cities;
         }
 
+        #region MyRegion
         //[AllowAnonymous]
         //[HttpPost(ApiRoutes.Identity.ChangePasswordByCode)]
         //public async Task<IActionResult> ChangePasswordByCode(ConfirmPhoneModel confirmPhoneModel)
@@ -744,7 +749,8 @@ namespace HaragApp.Controllers.api
         //    //}
         //    return RedirectToAction("Create", "Advertisments");
 
-        //}
+        //} 
+        #endregion
 
 
 

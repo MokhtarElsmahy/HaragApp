@@ -519,7 +519,7 @@ namespace HaragApp.Component.Services
         }
 
 
-        public bool AddToFav(int AdID, String userID)
+        public bool AddToFav(int AdID, string userID)
         {
             var fav = _context.Favorites.SingleOrDefault(x => x.AdID == AdID && x.UserId == userID);
             Favorite favADv = new Favorite();
