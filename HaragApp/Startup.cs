@@ -19,6 +19,7 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 
 using HaragApp.Models;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace HaragApp
 {
@@ -34,11 +35,15 @@ namespace HaragApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            //DefaultConnection  ServerConnection
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("ServerConnection")));
-    
+                    Configuration.GetConnectionString("DefaultConnection")));
+            //services.Configure<FormOptions>(o => {
+            //    o.ValueLengthLimit = int.MaxValue;
+            //    o.MultipartBodyLengthLimit = int.MaxValue;
+            //    o.MemoryBufferThreshold = int.MaxValue;
+            //});
             #region identiy
             services.AddDefaultIdentity<ApplicationDbUser>(options =>
             {

@@ -39,7 +39,14 @@ namespace HaragApp.Controllers.api
         {
             return View();
         }
+        //[AllowAnonymous]
+        //[HttpPost(ApiRoutes.setting.PostAdvertisment)]
+        //public async Task<ActionResult<AdsImagesVm>> PostAdvertisment(AdsImagesVm advertisment)
+        //{
+         
 
+        //    return CreatedAtAction("GetAdvertisment", new { id = 0 }, advertisment);
+        //}
         [AllowAnonymous]
         [HttpPost(ApiRoutes.setting.ContactUs)]
         public ActionResult ContactUs()
@@ -110,7 +117,7 @@ namespace HaragApp.Controllers.api
         [HttpPost(ApiRoutes.setting.GetAllPaidAdv)]
         public IActionResult GetAllPaidAdv()
         {
-            IAdverstisment dd = new AdvertisementServices(db);
+            IAdverstisment dd = new AdvertisementServices(db, HostingEnvironment);
             var d = dd.GetAllPaidAdv();
             return Json(new { data = d });
         }
@@ -119,7 +126,7 @@ namespace HaragApp.Controllers.api
         [HttpPost(ApiRoutes.setting.Shop)]
         public IActionResult Shop(ShopViewModel model)
         {
-            IAdverstisment dd = new AdvertisementServices(db);
+            IAdverstisment dd = new AdvertisementServices(db, HostingEnvironment);
             var d = dd.Shop(model);
             return Json(new
             {

@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace HaragApp.ViewModels
 {
-    public class AdsImagesVm
+    public class AdsImagesVM2
     {
+
         public int AdID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -36,10 +35,5 @@ namespace HaragApp.ViewModels
         public string ImageUrl3 { get; set; }
         public string ImageUrl4 { get; set; }
         public string ImageUrl5 { get; set; }
-        public List<IFormFile> Files { get; set; }//for api post
-        public List<bool> IsImageChanged { get; set; } = new List<bool>() { false, false, false, false, false};
-
-
-
     }
 }

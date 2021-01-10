@@ -81,7 +81,7 @@ namespace HaragApp.Controllers
             {
                 return NotFound();
             }
-            IAdverstisment ads = new AdvertisementServices(_context);
+            IAdverstisment ads = new AdvertisementServices(_context,_hosting);
             var addedADV = ads.Details(id);
 
             ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName", addedADV.CityID);
@@ -95,7 +95,7 @@ namespace HaragApp.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            IAdverstisment ads = new AdvertisementServices(_context);
+            IAdverstisment ads = new AdvertisementServices(_context, _hosting);
             var advList = ads.GetUserAdvertisementsAsync(user.Id);
 
             return View(advList);
@@ -127,7 +127,7 @@ namespace HaragApp.Controllers
             _context.SaveChanges();*/
             if (ModelState.IsValid)
             {
-                IAdverstisment ads = new AdvertisementServices(_context);
+                IAdverstisment ads = new AdvertisementServices(_context, _hosting);
                 var user = await _userManager.GetUserAsync(User);
 
                 var addedADV = ads.CreateAsync(advertisment);
@@ -237,7 +237,7 @@ namespace HaragApp.Controllers
         
         public IActionResult userDeleteADV(int id)
         {
-            IAdverstisment ads = new AdvertisementServices(_context);
+            IAdverstisment ads = new AdvertisementServices(_context, _hosting);
             ads.userDeleteADV(id);
             return RedirectToAction("GetUserAds", "Advertisments");
         }
@@ -276,7 +276,7 @@ namespace HaragApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                IAdverstisment adverstisment = new AdvertisementServices(_context);
+                IAdverstisment adverstisment = new AdvertisementServices(_context, _hosting);
                 adverstisment.userUpdateADV(newADV.AdID , newADV);
 
             }
@@ -317,7 +317,7 @@ namespace HaragApp.Controllers
 
         public IActionResult IndexPaidAdv()
         {
-            IAdverstisment dd = new AdvertisementServices(_context);
+            IAdverstisment dd = new AdvertisementServices(_context, _hosting);
             return View(dd.GetAllPaidAdv());
         }
 
@@ -344,7 +344,7 @@ namespace HaragApp.Controllers
             _context.SaveChanges();*/
             if (ModelState.IsValid)
             {
-                IAdverstisment ads = new AdvertisementServices(_context);
+                IAdverstisment ads = new AdvertisementServices(_context, _hosting);
                 var user = await _userManager.GetUserAsync(User);
 
                 var addedADV = ads.CreateAsync(advertisment);
@@ -366,7 +366,7 @@ namespace HaragApp.Controllers
         public IActionResult EditPaidAdd(int id)
         {
 
-            IAdverstisment ads = new AdvertisementServices(_context);
+            IAdverstisment ads = new AdvertisementServices(_context, _hosting);
             var model = ads.GetPaidAdv(id);
 
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
@@ -379,7 +379,7 @@ namespace HaragApp.Controllers
             if (ModelState.IsValid)
             {
 
-                IAdverstisment ads = new AdvertisementServices(_context);
+                IAdverstisment ads = new AdvertisementServices(_context, _hosting);
                 ads.EditPaidAdv(advertisment);
                 return RedirectToAction("IndexPaidAdv");
             }
@@ -395,7 +395,7 @@ namespace HaragApp.Controllers
         //[ValidateAntiForgeryToken]
         public IActionResult DeletePaidAdd(int Id)
         {
-            IAdverstisment dd = new AdvertisementServices(_context);
+            IAdverstisment dd = new AdvertisementServices(_context, _hosting);
             dd.DeletePaidAdd(Id);
             return RedirectToAction(nameof(IndexPaidAdv));
         }
@@ -403,7 +403,7 @@ namespace HaragApp.Controllers
 
         public IActionResult Shop(ShopViewModel model)
         {
-            IAdverstisment ss = new AdvertisementServices(_context);
+            IAdverstisment ss = new AdvertisementServices(_context, _hosting);
             var shop = ss.Shop(model);
             model.Advertisments = shop.Advertisments;
             model.Cities = shop.Cities;
@@ -430,7 +430,7 @@ namespace HaragApp.Controllers
                 return Json(new { message = "Please Login First" });
 
             }
-            IAdverstisment adv = new AdvertisementServices(_context);
+            IAdverstisment adv = new AdvertisementServices(_context, _hosting);
 
             var check = adv.AddToFav(adID, user.Id.ToString());
             if (check)
@@ -448,7 +448,7 @@ namespace HaragApp.Controllers
         public async Task<IActionResult> ShowFavouriteAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            IAdverstisment adverstisment = new AdvertisementServices(_context);
+            IAdverstisment adverstisment = new AdvertisementServices(_context, _hosting);
             var adVMs = adverstisment.GetUserFavorites(user.Id.ToString());
             return View(adVMs);
         }
@@ -457,7 +457,7 @@ namespace HaragApp.Controllers
         public async Task<IActionResult> DeleteFavAsync(int id)
         {
             var user = await _userManager.GetUserAsync(User);
-            IAdverstisment adverstisment = new AdvertisementServices(_context);
+            IAdverstisment adverstisment = new AdvertisementServices(_context, _hosting);
             adverstisment.DeleteFav(user.Id, id);
 
             return RedirectToAction("ShowFavourite", "Advertisments");

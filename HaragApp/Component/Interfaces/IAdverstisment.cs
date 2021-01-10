@@ -11,7 +11,7 @@ namespace HaragApp.Component.Interfaces
     interface IAdverstisment
     {
         AdsImagesVm CreateAsync(AdsImagesVm advertisment);
-        AdsImagesVm Details(int? id);
+        AdsImagesVM2 Details(int? id);
         List<AdsImagesVm> GetUserAdvertisementsAsync(string id);
 
         List<PaidAddViewModel> GetAllPaidAdv();

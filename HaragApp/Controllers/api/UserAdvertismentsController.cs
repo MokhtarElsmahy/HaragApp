@@ -11,6 +11,7 @@ using HaragApp.Component.Interfaces;
 using HaragApp.Component.Services;
 using HaragApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Hosting;
 
 namespace HaragApp.Controllers.api
 {
@@ -20,9 +21,10 @@ namespace HaragApp.Controllers.api
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationDbUser> _userManager;
-
-        public UserAdvertismentsController(ApplicationDbContext context, UserManager<ApplicationDbUser> userManager)
+        private IHostingEnvironment _hosting { get; set; }
+        public UserAdvertismentsController(ApplicationDbContext context, IHostingEnvironment hosting, UserManager<ApplicationDbUser> userManager)
         {
+            _hosting = hosting;
             _context = context;
             _userManager = userManager;
         }
@@ -35,7 +37,7 @@ namespace HaragApp.Controllers.api
             if (string.IsNullOrEmpty(userID))
             {
                 var user = await _userManager.GetUserAsync(User);
-                IAdverstisment ads = new AdvertisementServices(_context);
+                IAdverstisment ads = new AdvertisementServices(_context, _hosting);
                 var advList = ads.GetUserAdvertisementsAsync(user.Id);
 
                 return advList;
@@ -43,7 +45,7 @@ namespace HaragApp.Controllers.api
             else
             {
                
-                IAdverstisment ads = new AdvertisementServices(_context);
+                IAdverstisment ads = new AdvertisementServices(_context, _hosting);
                 var advList = ads.GetUserAdvertisementsAsync(userID);
 
                 return advList;

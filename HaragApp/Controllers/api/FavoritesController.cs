@@ -11,6 +11,7 @@ using HaragApp.Component.Interfaces;
 using HaragApp.Component.Services;
 using Microsoft.AspNetCore.Identity;
 using HaragApp.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 
 namespace HaragApp.Controllers.api
 {
@@ -20,11 +21,11 @@ namespace HaragApp.Controllers.api
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationDbUser> _userManager;
-
-        public FavoritesController(ApplicationDbContext context, UserManager<ApplicationDbUser> userManager)
+        private IHostingEnvironment _hosting { get; set; }
+        public FavoritesController(ApplicationDbContext context, IHostingEnvironment hosting, UserManager<ApplicationDbUser> userManager)
         {
             _context = context;
-            _userManager = userManager;
+            _userManager = userManager; _hosting = hosting;
 
         }
 
@@ -33,7 +34,7 @@ namespace HaragApp.Controllers.api
         public async Task<ActionResult<List<favoriteViewModel>>> GetFavorites(string userID)
         {
             var user = await _userManager.GetUserAsync(User);
-            IAdverstisment adverstisment = new AdvertisementServices(_context);
+            IAdverstisment adverstisment = new AdvertisementServices(_context, _hosting);
             if (string.IsNullOrEmpty(userID) == true)
             {
                 var adVMs = adverstisment.GetUserFavorites(user.Id.ToString());
@@ -59,7 +60,7 @@ namespace HaragApp.Controllers.api
         [HttpPost]
         public async Task<bool> PostFavorite(int adID, string userID)
         {
-            IAdverstisment adverstisment = new AdvertisementServices(_context);
+            IAdverstisment adverstisment = new AdvertisementServices(_context, _hosting);
           
             if (string.IsNullOrEmpty(userID) == true)
             {
@@ -84,14 +85,14 @@ namespace HaragApp.Controllers.api
             if (string.IsNullOrEmpty(userID)==true)
             {
                 var user = await _userManager.GetUserAsync(User);
-                IAdverstisment adverstisment = new AdvertisementServices(_context);
+                IAdverstisment adverstisment = new AdvertisementServices(_context, _hosting);
                 var check = adverstisment.DeleteFav(user.Id, id);
                 return check;
             }
             else
             {
                 
-                IAdverstisment adverstisment = new AdvertisementServices(_context);
+                IAdverstisment adverstisment = new AdvertisementServices(_context, _hosting);
                 var check = adverstisment.DeleteFav(userID, id);
                 return check;
             }

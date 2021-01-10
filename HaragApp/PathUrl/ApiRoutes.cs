@@ -16,7 +16,8 @@ namespace HaragApp.PathUrl
      
         public static class setting
         {
-
+            
+ public const string PostAdvertisment = Base + "/PostAdvertisment";
             public const string GetOffersDashbord = Base + "/GetOffersDashbord";
             public const string GetQAndAnswer = Base + "/GetQAndAnswer";
             public const string CondtionsForDelegt = Base + "/CondtionsForDelegt";

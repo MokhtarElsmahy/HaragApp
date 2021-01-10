@@ -13,20 +13,29 @@ using HaragApp.Component.Services;
 using Microsoft.AspNetCore.Identity;
 using RestSharp;
 using System.Net;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.FileProviders;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace HaragApp.Controllers.api
 {
+   
     [Route("api/[controller]")]
-    [ApiController]
+    //[ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AdvertismentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationDbUser> _userManager;
-
-        public AdvertismentsController(ApplicationDbContext context, UserManager<ApplicationDbUser> userManager)
+        private IHostingEnvironment _hosting { get; set; }
+        public AdvertismentsController(ApplicationDbContext context, IHostingEnvironment hosting, UserManager<ApplicationDbUser> userManager)
         {
             _context = context;
             _userManager = userManager;
+            _hosting = hosting;
         }
 
         // GET: api/Advertisments
@@ -34,17 +43,18 @@ namespace HaragApp.Controllers.api
         //public  ActionResult<List<AdsImagesVm>> GetAdvertisments(string userID)
         //{
         //    IAdverstisment ads = new AdvertisementServices(_context);
-           
+
         //    return ads.GetAllAdvertisemtsData(userID) ;
         //}
 
         // GET: api/Advertisments/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
-        public ActionResult<AdsImagesVm> GetAdvertisment(int id)
+        public ActionResult<AdsImagesVM2> GetAdvertisment(int id)
         {
            
             //var advertisment = await _context.Advertisments.FindAsync(id);
-            IAdverstisment ads = new AdvertisementServices(_context);
+            IAdverstisment ads = new AdvertisementServices(_context, _hosting);
             var advertisment = ads.Details(id);
             if (advertisment == null)
             {
@@ -54,15 +64,16 @@ namespace HaragApp.Controllers.api
             return advertisment;
         }
 
-       
-      
 
+
+        [AllowAnonymous]
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut]
         public async Task<IActionResult> PutAdvertisment(AdsImagesVm advertisment)
         {
-          
-            IAdverstisment ads = new AdvertisementServices(_context);
+           
+
+            IAdverstisment ads = new AdvertisementServices(_context, _hosting);
             ads.UpdateAsync(advertisment);
 
             try
@@ -73,22 +84,105 @@ namespace HaragApp.Controllers.api
             {
                 
             }
+            AdsImagesVM2 model = new AdsImagesVM2()
+            {
+                AdID = advertisment.AdID,
+                CategoryID = advertisment.CategoryID,
+                Title = advertisment.Title,
+                CityID = advertisment.CityID,
+                IsPaid = advertisment.IsPaid,
+                IsPact = advertisment.IsPact,
+                IsFav = advertisment.IsFav,
+                UserId = advertisment.UserId,
+                Description = advertisment.Description,
+                ImageUrl1 = advertisment.ImageUrl1,
+                ImageUrl2 = advertisment.ImageUrl2,
+                ImageUrl3 = advertisment.ImageUrl3,
+                ImageUrl4 = advertisment.ImageUrl4,
+                ImageUrl5 = advertisment.ImageUrl5
+            };
 
-            return NoContent();
+            return CreatedAtAction("GetAdvertisment", new { id = advertisment.AdID }, model);
+           // return NoContent();
         }
 
     
-        [HttpPost]
-        public async Task<ActionResult<Advertisment>> PostAdvertisment(AdsImagesVm advertisment)
+        [AllowAnonymous]
+        [HttpPost, DisableRequestSizeLimit]
+        public async Task<ActionResult<AdsImagesVm>> PostAdvertisment(AdsImagesVm advertisment)
         {
-            IAdverstisment ads = new AdvertisementServices(_context);
+            if (advertisment.Files != null)
+            {
+                for (int i = 0; i < advertisment.Files.Count; i++)
+                {
+                    //string result = "defaultRecImage.png";
+
+                    try
+                    {
+
+                        string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
+                        var filename = ContentDispositionHeaderValue.Parse(advertisment.Files[i].ContentDisposition).FileName.Trim('"');
+                        var newFileName = Guid.NewGuid() + filename;
+                        string fullPath = Path.Combine(uploads, newFileName);
+                        advertisment.Files[i].CopyTo(new FileStream(fullPath, FileMode.Create));
+                        if (i==0)
+                        {
+                            advertisment.ImageUrl1 = $"/uploads/{newFileName}";
+                        }
+                        if (i == 1)
+                        {
+                            advertisment.ImageUrl2 = $"/uploads/{newFileName}";
+                        }
+                        if (i == 2)
+                        {
+                            advertisment.ImageUrl3 = $"/uploads/{newFileName}";
+                        }
+                        if (i == 3)
+                        {
+                            advertisment.ImageUrl4 = $"/uploads/{newFileName}";
+                        }
+                        if (i == 4)
+                        {
+                            advertisment.ImageUrl5 = $"/uploads/{newFileName}";
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                       
+
+                    }
+                }
+              
+            }
+           
+
+            IAdverstisment ads = new AdvertisementServices(_context, _hosting);
             ads.CreateAsync(advertisment);
-            
-            return CreatedAtAction("GetAdvertisment", new { id = advertisment.AdID }, advertisment);
+            AdsImagesVM2 model = new AdsImagesVM2()
+            {
+                AdID = advertisment.AdID,
+                CategoryID = advertisment.CategoryID,
+                Title = advertisment.Title,
+                CityID = advertisment.CityID,
+                IsPaid = advertisment.IsPaid,
+                IsPact = advertisment.IsPact,
+                IsFav = advertisment.IsFav,
+                Description = advertisment.Description,
+                ImageUrl1 = advertisment.ImageUrl1,
+                ImageUrl2 = advertisment.ImageUrl2,
+                ImageUrl3 = advertisment.ImageUrl3,
+                ImageUrl4 = advertisment.ImageUrl4,
+                ImageUrl5 = advertisment.ImageUrl5, 
+                UserId=advertisment.UserId
+            };
+          
+            return CreatedAtAction("GetAdvertisment", new { id = advertisment.AdID }, model);
         }
 
         // DELETE: api/Advertisments/5
         [HttpDelete("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<Advertisment>> DeleteAdvertisment(int id)
         {
             var advertisment = await _context.Advertisments.FindAsync(id);

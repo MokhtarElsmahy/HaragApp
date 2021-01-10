@@ -12,6 +12,7 @@ using HaragApp.Data;
 using HaragApp.Component.Interfaces;
 using HaragApp.Component.Services;
 using HaragApp.Commonet;
+using Microsoft.AspNetCore.Hosting;
 
 namespace HaragApp.Controllers
 {
@@ -20,17 +21,18 @@ namespace HaragApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<ApplicationDbUser> _userManager;
         private readonly ApplicationDbContext _context;
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context,UserManager<ApplicationDbUser> userManager)
+        private IHostingEnvironment _hosting { get; set; }
+        public HomeController(ILogger<HomeController> logger, IHostingEnvironment hosting, ApplicationDbContext context,UserManager<ApplicationDbUser> userManager)
         {
             _logger = logger;
             _context = context;
-            _userManager = userManager;
+            _userManager = userManager; _hosting = hosting;
         }
 
         public IActionResult Index()
         {
             HomeViewModel model = new HomeViewModel();
-            IAdverstisment dd = new AdvertisementServices(_context);
+            IAdverstisment dd = new AdvertisementServices(_context, _hosting);
             IAnimalCategory aa = new AnimalServices(_context);
             model.PaidAdvs = dd.GetAllPaidAdv();
             model.animalCategories = aa.GetAll();

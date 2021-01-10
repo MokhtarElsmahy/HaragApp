@@ -3,12 +3,15 @@ using HaragApp.Data;
 using HaragApp.Models;
 using HaragApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace HaragApp.Component.Services
@@ -17,11 +20,11 @@ namespace HaragApp.Component.Services
     public class AdvertisementServices : IAdverstisment
     {
         private readonly ApplicationDbContext _context;
+        private IHostingEnvironment _hosting { get; set; }
 
-
-        public AdvertisementServices(ApplicationDbContext context)
+        public AdvertisementServices(ApplicationDbContext context, IHostingEnvironment hosting)
         {
-            _context = context;
+            _context = context; _hosting = hosting;
 
         }
 
@@ -124,52 +127,33 @@ namespace HaragApp.Component.Services
                 ad.Title = advertisment.Title;
                 ad.Description = advertisment.Description;
                 ad.UserId = advertisment.UserId;
-                ad.AdImages.ToList()[0].img = advertisment.ImageUrl1;
-                ad.AdImages.ToList()[1].img = advertisment.ImageUrl2;
-                ad.AdImages.ToList()[2].img = advertisment.ImageUrl3;
-                ad.AdImages.ToList()[3].img = advertisment.ImageUrl4;
-                ad.AdImages.ToList()[4].img = advertisment.ImageUrl5;
+                int j = 0;
+                for (int i = 0; i < advertisment.IsImageChanged.Count; i++)
+                {
+                  
+                    if (advertisment.IsImageChanged[i]==true)
+                    {
+                        string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
+                        var filename = ContentDispositionHeaderValue.Parse(advertisment.Files[j].ContentDisposition).FileName.Trim('"');
+                        var newFileName = Guid.NewGuid() + filename;
+                        string fullPath = Path.Combine(uploads, newFileName);
+                        ad.AdImages.ToList()[i].img = $"/uploads/{newFileName}";
+                        advertisment.Files[j].CopyTo(new FileStream(fullPath, FileMode.Create));
+                        j++;
+                    }
+                }
+              
 
             }
 
 
             _context.SaveChanges();
-
-            //if (advertisment.ImageUrl1 != null)
-            //{
-            //    AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl1 };
-            //    _context.Add(img);
-            //    _context.SaveChanges();
-
-            //}
-            //if (advertisment.ImageUrl2 != null)
-            //{
-            //    AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl2 };
-            //    _context.Add(img);
-            //    _context.SaveChanges();
-
-            //}
-            //if (advertisment.ImageUrl3 != null)
-            //{
-            //    AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl3 };
-            //    _context.Add(img);
-            //    _context.SaveChanges();
-
-            //}
-            //if (advertisment.ImageUrl4 != null)
-            //{
-            //    AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl4 };
-            //    _context.Add(img);
-            //    _context.SaveChanges();
-
-            //}
-            //if (advertisment.ImageUrl5 != null)
-            //{
-            //    AdImage img = new AdImage() { AdID = ad.AdID, img = advertisment.ImageUrl5 };
-            //    _context.Add(img);
-            //    _context.SaveChanges();
-            //}
-            //advertisment.AdID = ad.AdID;
+            advertisment.ImageUrl1 = ad.AdImages.ToList()[0].img;
+            advertisment.ImageUrl2 = ad.AdImages.ToList()[1].img;
+            advertisment.ImageUrl3 = ad.AdImages.ToList()[2].img;
+            advertisment.ImageUrl4 = ad.AdImages.ToList()[3].img;
+            advertisment.ImageUrl5 = ad.AdImages.ToList()[4].img;
+           
             return advertisment;
         }
 
@@ -177,7 +161,7 @@ namespace HaragApp.Component.Services
 
 
 
-        public AdsImagesVm Details(int? id)
+        public AdsImagesVM2 Details(int? id)
         {
             if (id == null)
             {
@@ -189,7 +173,7 @@ namespace HaragApp.Component.Services
                 .Include(a => a.City)
                 .Include(a => a.User).Include(c => c.AdImages)
                 .FirstOrDefault(m => m.AdID == id);
-            var adsVM = new AdsImagesVm();
+            var adsVM = new AdsImagesVM2();
             adsVM.AdID = adv.AdID;
             adsVM.Title = adv.Title;
             adsVM.UserId = adv.UserId;
@@ -679,7 +663,7 @@ namespace HaragApp.Component.Services
             var TOP = results.OrderByDescending(xx => xx.total).Take(5);
             List<favoriteViewModel> favoriteViewModel = new List<favoriteViewModel>();
 
-            IAdverstisment aa = new AdvertisementServices(_context);
+            IAdverstisment aa = new AdvertisementServices(_context,_hosting);
             foreach (var item in TOP)
             {
                 var adv = aa.GetAdvertisementByID(item.id);
