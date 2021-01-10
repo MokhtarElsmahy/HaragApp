@@ -203,13 +203,13 @@ namespace HaragApp.Component.Services
         }
 
 
-        public List<AdsImagesVm> GetUserAdvertisementsAsync(string id)
+        public List<AdsImagesVM2> GetUserAdvertisementsAsync(string id)
         {
             var Advs = _context.Advertisments.Include(xx => xx.AdImages).Include(xx => xx.AnimalCategory).Include(xx => xx.City).Where(xx => xx.UserId == id).Where(xx => xx.IsPaid == false).ToList();
-            List<AdsImagesVm> adsImagesVms = new List<AdsImagesVm>();
+            List<AdsImagesVM2> adsImagesVms = new List<AdsImagesVM2>();
             foreach (var item in Advs)
             {
-                AdsImagesVm ads = new AdsImagesVm();
+                AdsImagesVM2 ads = new AdsImagesVM2();
                 ads.AdID = item.AdID;
                 ads.UserId = item.UserId;
                 ads.Title = item.Title;
@@ -321,7 +321,7 @@ namespace HaragApp.Component.Services
                 if (string.IsNullOrEmpty(model.userID) == false)
                 {
                     model.Advertisments = _context.Advertisments.Where(c => c.IsPaid == false).Include(c => c.AdImages).Include(c => c.AnimalCategory).Include(c => c.City)
-                   .Select(x => new AdsImagesVm
+                   .Select(x => new AdsImagesVM2
                    {
                        AdID = x.AdID,
                        Title = x.Title,
@@ -345,7 +345,7 @@ namespace HaragApp.Component.Services
                 else
                 {
                     model.Advertisments = _context.Advertisments.Where(c => c.IsPaid == false).Include(c => c.AdImages).Include(c => c.AnimalCategory).Include(c => c.City)
-                  .Select(x => new AdsImagesVm
+                  .Select(x => new AdsImagesVM2
                   {
                       AdID = x.AdID,
                       Title = x.Title,
@@ -444,11 +444,19 @@ namespace HaragApp.Component.Services
             model.Advertisments = model.Advertisments.OrderByDescending(c => c.AdID).Skip((model.PageNo - 1) * 6).Take(6).ToList();
             return model;
         }
-        public List<AdsImagesVm> GetNearestAdvertisments(double currentLatitude, double currentLongitude,
-         int km, List<AdsImagesVm> data)
+
+
+
+
+
+
+
+
+        public List<AdsImagesVM2> GetNearestAdvertisments(double currentLatitude, double currentLongitude,
+         int km, List<AdsImagesVM2> data)
         {
 
-            List<AdsImagesVm> advertsments = new List<AdsImagesVm>();
+            List<AdsImagesVM2> advertsments = new List<AdsImagesVM2>();
             var query = (from c in data
 
                          select c).ToList();
@@ -457,7 +465,7 @@ namespace HaragApp.Component.Services
                 double distance = Distance(currentLatitude, currentLongitude, Convert.ToDouble(ad.Lat), Convert.ToDouble(ad.Lang));
                 if (distance <= km)         //nearbyplaces which are within 25 kms  50 w 70
                 {
-                    AdsImagesVm dist = new AdsImagesVm();
+                    AdsImagesVM2 dist = new AdsImagesVM2();
 
                     dist.Title = ad.Title;
                     dist.CityID = ad.CityID;

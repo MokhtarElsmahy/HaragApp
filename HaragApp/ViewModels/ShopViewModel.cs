@@ -15,7 +15,7 @@ namespace HaragApp.ViewModels
 
         public string userID { get; set; }
 
-        public List<AdsImagesVm> Advertisments { get; set; }
+        public List<AdsImagesVM2> Advertisments { get; set; }
         public List<AnimalCategory> Categories { get; set; }
         public List<City> Cities { get; set; }
        public int Km { get; set; }

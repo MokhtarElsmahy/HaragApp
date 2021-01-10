@@ -128,6 +128,7 @@ namespace HaragApp.Controllers.api
         {
             IAdverstisment dd = new AdvertisementServices(db, HostingEnvironment);
             var d = dd.Shop(model);
+            
             return Json(new
             {
                 advertisments = d.Advertisments,

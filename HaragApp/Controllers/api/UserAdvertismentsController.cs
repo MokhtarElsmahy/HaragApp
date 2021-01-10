@@ -31,7 +31,7 @@ namespace HaragApp.Controllers.api
 
         // GET: api/UserAdvertisments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AdsImagesVm>>> GetAdvertisments(string userID)
+        public async Task<ActionResult<IEnumerable<AdsImagesVM2>>> GetAdvertisments(string userID)
         {
           
             if (string.IsNullOrEmpty(userID))
