@@ -4,6 +4,7 @@ using HaragApp.Models;
 using HaragApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -99,7 +100,7 @@ namespace HaragApp.Component.Services
             return advertisment;
         }
 
-        public AdsImagesVm UpdateAsync(AdsImagesVm advertisment)
+        public AdsImagesVm UpdateAsync(AdsImagesVm advertisment, IFormFileCollection files)
         {
             Advertisment ad = _context.Advertisments.Include(c=>c.AdImages).FirstOrDefault(c=>c.AdID==advertisment.AdID);
             if (advertisment.CategoryID == 0)
@@ -134,11 +135,11 @@ namespace HaragApp.Component.Services
                     if (advertisment.IsImageChanged[i]==true)
                     {
                         string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
-                        var filename = ContentDispositionHeaderValue.Parse(advertisment.Files[j].ContentDisposition).FileName.Trim('"');
+                        var filename = ContentDispositionHeaderValue.Parse(files[j].ContentDisposition).FileName.Trim('"');
                         var newFileName = Guid.NewGuid() + filename;
                         string fullPath = Path.Combine(uploads, newFileName);
                         ad.AdImages.ToList()[i].img = $"/uploads/{newFileName}";
-                        advertisment.Files[j].CopyTo(new FileStream(fullPath, FileMode.Create));
+                        files[j].CopyTo(new FileStream(fullPath, FileMode.Create));
                         j++;
                     }
                 }

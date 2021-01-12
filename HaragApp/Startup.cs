@@ -38,7 +38,7 @@ namespace HaragApp
             //DefaultConnection  ServerConnection
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("ServerConnection")));
             //services.Configure<FormOptions>(o => {
             //    o.ValueLengthLimit = int.MaxValue;
             //    o.MultipartBodyLengthLimit = int.MaxValue;
@@ -144,10 +144,10 @@ namespace HaragApp
             }
             else
             {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                /*app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();*/
 
-                //app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }

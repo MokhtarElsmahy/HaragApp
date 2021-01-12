@@ -1,5 +1,6 @@
 ﻿using HaragApp.Models;
 using HaragApp.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,6 @@ namespace HaragApp.Component.Interfaces
         public favoriteViewModel GetAdvertisementByID(int ADid);
         public List<favoriteViewModel> GetTopFiveFavs();
 
-        public AdsImagesVm UpdateAsync(AdsImagesVm advertisment);
+        public AdsImagesVm UpdateAsync(AdsImagesVm advertisment , IFormFileCollection files);
     }
 }

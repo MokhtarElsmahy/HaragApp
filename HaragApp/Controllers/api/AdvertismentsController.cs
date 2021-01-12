@@ -71,10 +71,11 @@ namespace HaragApp.Controllers.api
         [HttpPut]
         public async Task<IActionResult> PutAdvertisment(AdsImagesVm advertisment)
         {
-           
+
+            var img = HttpContext.Request.Form.Files;//instead of ---> advertisment.Files;
 
             IAdverstisment ads = new AdvertisementServices(_context, _hosting);
-            ads.UpdateAsync(advertisment);
+            ads.UpdateAsync(advertisment, img);
 
             try
             {
@@ -111,9 +112,12 @@ namespace HaragApp.Controllers.api
         [HttpPost, DisableRequestSizeLimit]
         public async Task<ActionResult<AdsImagesVm>> PostAdvertisment(AdsImagesVm advertisment)
         {
-            if (advertisment.Files != null)
+
+            var img = HttpContext.Request.Form.Files;//instead of ---> advertisment.Files;
+
+            if (img.Count > 0)
             {
-                for (int i = 0; i < advertisment.Files.Count; i++)
+                for (int i = 0; i < img.Count; i++)
                 {
                     //string result = "defaultRecImage.png";
 
@@ -121,10 +125,10 @@ namespace HaragApp.Controllers.api
                     {
 
                         string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
-                        var filename = ContentDispositionHeaderValue.Parse(advertisment.Files[i].ContentDisposition).FileName.Trim('"');
+                        var filename = ContentDispositionHeaderValue.Parse(img[i].ContentDisposition).FileName.Trim('"');
                         var newFileName = Guid.NewGuid() + filename;
                         string fullPath = Path.Combine(uploads, newFileName);
-                        advertisment.Files[i].CopyTo(new FileStream(fullPath, FileMode.Create));
+                        img[i].CopyTo(new FileStream(fullPath, FileMode.Create));
                         if (i==0)
                         {
                             advertisment.ImageUrl1 = $"/uploads/{newFileName}";
@@ -153,31 +157,32 @@ namespace HaragApp.Controllers.api
 
                     }
                 }
-              
-            }
-           
 
-            IAdverstisment ads = new AdvertisementServices(_context, _hosting);
-            ads.CreateAsync(advertisment);
-            AdsImagesVM2 model = new AdsImagesVM2()
-            {
-                AdID = advertisment.AdID,
-                CategoryID = advertisment.CategoryID,
-                Title = advertisment.Title,
-                CityID = advertisment.CityID,
-                IsPaid = advertisment.IsPaid,
-                IsPact = advertisment.IsPact,
-                IsFav = advertisment.IsFav,
-                Description = advertisment.Description,
-                ImageUrl1 = advertisment.ImageUrl1,
-                ImageUrl2 = advertisment.ImageUrl2,
-                ImageUrl3 = advertisment.ImageUrl3,
-                ImageUrl4 = advertisment.ImageUrl4,
-                ImageUrl5 = advertisment.ImageUrl5, 
-                UserId=advertisment.UserId
-            };
-          
-            return CreatedAtAction("GetAdvertisment", new { id = advertisment.AdID }, model);
+
+                IAdverstisment ads = new AdvertisementServices(_context, _hosting);
+                ads.CreateAsync(advertisment);
+                AdsImagesVM2 model = new AdsImagesVM2()
+                {
+                    AdID = advertisment.AdID,
+                    CategoryID = advertisment.CategoryID,
+                    Title = advertisment.Title,
+                    CityID = advertisment.CityID,
+                    IsPaid = advertisment.IsPaid,
+                    IsPact = advertisment.IsPact,
+                    IsFav = advertisment.IsFav,
+                    Description = advertisment.Description,
+                    ImageUrl1 = advertisment.ImageUrl1,
+                    ImageUrl2 = advertisment.ImageUrl2,
+                    ImageUrl3 = advertisment.ImageUrl3,
+                    ImageUrl4 = advertisment.ImageUrl4,
+                    ImageUrl5 = advertisment.ImageUrl5,
+                    UserId = advertisment.UserId
+                };
+                return CreatedAtAction("GetAdvertisment", new { id = advertisment.AdID }, model);
+            }
+
+
+            return NotFound();
         }
 
         // DELETE: api/Advertisments/5
