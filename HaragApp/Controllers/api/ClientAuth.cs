@@ -627,73 +627,73 @@ namespace HaragApp.Controllers.api
 
         #region MyRegion
 
-        //[AllowAnonymous]
-        //[HttpPost(ApiRoutes.Identity.ChangePasswordByCode)]
-        //public async Task<IActionResult> ChangePasswordByCode(ChangePasswordByCodeViewModel userModel)
-        //{
-        //    try
-        //    {
+        [AllowAnonymous]
+        [HttpPost(ApiRoutes.Identity.ChangePasswordByCode)]
+        public async Task<IActionResult> ChangePasswordByCode(ChangePasswordByCodeViewModel userModel)
+        {
+            try
+            {
 
-        //        if (userModel.code == 0)
-        //        {
-        //            return Json(new
-        //            {
-        //                key = 0,
-        //                msg = creatMessage(userModel.lang, "من فضلك ادخل كود التحقق", "Please enter your verification code")
-        //            });
-        //        }
-        //        if (userModel.new_password == "")
-        //        {
-        //            return Json(new
-        //            {
-        //                key = 0,
-        //                msg = creatMessage(userModel.lang, "من فضلك ادخل كلمة المرور الجديدة ", "Please enter your new password")
-        //            });
-        //        }
-        //        try
-        //        {
+                if (userModel.code == 0)
+                {
+                    return Json(new
+                    {
+                        key = 0,
+                        msg = creatMessage(userModel.lang, "من فضلك ادخل كود التحقق", "Please enter your verification code")
+                    });
+                }
+                if (userModel.new_password == "")
+                {
+                    return Json(new
+                    {
+                        key = 0,
+                        msg = creatMessage(userModel.lang, "من فضلك ادخل كلمة المرور الجديدة ", "Please enter your new password")
+                    });
+                }
+                try
+                {
 
-        //            var codeuser = (db.Users.Where(x => x.Id == userModel.user_id).SingleOrDefault());
-        //            if (codeuser != null)
-        //            {
-        //                if (userModel.code != codeuser.code)
-        //                {
-        //                    return Json(new
-        //                    {
-        //                        key = 0,
-        //                        msg = creatMessage(userModel.lang, "يرجى التحقق من الكود  ", "Please check the code")
-        //                    });
-        //                }
-        //                var changePasswordResult = await _userManager.ChangePasswordAsync(codeuser, codeuser.showpassword, userModel.new_password);
-        //                if (!changePasswordResult.Succeeded)
-        //                {
-        //                    return Json(new { key = 0, msg = creatMessage(userModel.lang, changePasswordResult.ToString(), "Something went wrong") });
-        //                }
-        //                codeuser.showpassword = userModel.new_password;
-        //                db.SaveChanges();
+                    var codeuser = (db.Users.Where(x => x.Id == userModel.user_id).SingleOrDefault());
+                    if (codeuser != null)
+                    {
+                        if (userModel.code != codeuser.code)
+                        {
+                            return Json(new
+                            {
+                                key = 0,
+                                msg = creatMessage(userModel.lang, "يرجى التحقق من الكود  ", "Please check the code")
+                            });
+                        }
+                        var changePasswordResult = await _userManager.ChangePasswordAsync(codeuser, codeuser.showpassword, userModel.new_password);
+                        if (!changePasswordResult.Succeeded)
+                        {
+                            return Json(new { key = 0, msg = creatMessage(userModel.lang, changePasswordResult.ToString(), "Something went wrong") });
+                        }
+                        codeuser.showpassword = userModel.new_password;
+                        db.SaveChanges();
 
 
-        //                return Json(new { key = 1, msg = creatMessage(userModel.lang, "تم تغيير الباسورد بنجاح", "Password changed successfully") });
-        //            }
-        //            else
-        //            {
-        //                return Json(new { key = 0, msg = creatMessage(userModel.lang, " كود التحقق غير صحيح", "  Invalid verification code") });
-        //            }
-        //        }
-        //        catch (Exception)
-        //        {
-        //            return Json(new { key = 0, msg = creatMessage(userModel.lang, "حدث خطا ما", "Something went wrong") });
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new
-        //        {
-        //            key = 0,
-        //            msg = ex.Message
-        //        });
-        //    }
-        //}
+                        return Json(new { key = 1, msg = creatMessage(userModel.lang, "تم تغيير الباسورد بنجاح", "Password changed successfully") });
+                    }
+                    else
+                    {
+                        return Json(new { key = 0, msg = creatMessage(userModel.lang, " كود التحقق غير صحيح", "  Invalid verification code") });
+                    }
+                }
+                catch (Exception)
+                {
+                    return Json(new { key = 0, msg = creatMessage(userModel.lang, "حدث خطا ما", "Something went wrong") });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    key = 0,
+                    msg = ex.Message
+                });
+            }
+        }
 
         #endregion
 
