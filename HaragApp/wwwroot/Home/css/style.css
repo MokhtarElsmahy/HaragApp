@@ -322,18 +322,18 @@ img{
 	max-width:100%;	
 }
 
-.preloader{ 
-	position:fixed; 
-	left:0px; 
-	top:0px; 
-	width:100%; 
-	height:100%; 
-	z-index:999999; 
-	background-color:#ffffff; 
-	background-position:center center; 
-	background-repeat:no-repeat;
-	background-size:200px;
-	background-image:url(../images/icons/preloader.svg);
+.preloader {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 999999;
+	background-color: #ffffff;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 100px;
+	background-image: url(../images/icons/preloader2.gif);
 }
 
 /*** 

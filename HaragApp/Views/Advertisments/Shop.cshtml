@@ -117,7 +117,7 @@
                     <!-- Categories -->
                     <div class="sidebar-widget categories">
 
-                        <div class="sidebar-title text-right"><h2>الاصناف</h2></div>
+                        <div class="sidebar-title text-right"><h2><i class="fas fa-angle-double-left"></i>  الأصنـاف   </h2></div>
                         <a asp-action="Shop" class="btn btn-block btn-outline-primary">عرض الكــل</a>
 
                         <ul class="category-list">
@@ -130,9 +130,10 @@
 
                         </ul>
                     </div>
+                    <div style="width:100%;height:100%;border:dotted 1px black;margin-bottom:10px;background-color:#007bff " ></div>
+                    <div class="sidebar-widget categories mt-4">
+                        <div class="sidebar-title text-right"><h2><i class="fas fa-angle-double-left"></i>  المدن   </h2></div>
 
-                    <div class="sidebar-widget categories">
-                        <div class="sidebar-title text-right"><h2>المدن</h2></div>
                         <ul class="category-list">
                             @foreach (var item in Model.Cities)
                             {
