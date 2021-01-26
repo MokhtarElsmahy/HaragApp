@@ -134,6 +134,63 @@
 				<div class="col-6">
 					<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 					<div class="form-group">
+						<label asp-for="OutlinkText1" class="control-label"> اسم الموقع الأول</label>
+						<input asp-for="OutlinkText1" class="form-control" />
+						<span asp-validation-for="OutlinkText1" class="text-danger"> </span>
+					</div>
+				</div>
+				<div class="col-6">
+					<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+					<div class="form-group">
+						<label asp-for="OutHyperlink1" class="control-label"> رابط الموقع الأول</label>
+						<input asp-for="OutHyperlink1" class="form-control" />
+						<span asp-validation-for="OutHyperlink1" class="text-danger"> </span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-6">
+					<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+					<div class="form-group">
+						<label asp-for="OutlinkText2" class="control-label"> اسم الموقع الأول</label>
+						<input asp-for="OutlinkText2" class="form-control" />
+						<span asp-validation-for="OutlinkText2" class="text-danger"> </span>
+					</div>
+				</div>
+				<div class="col-6">
+					<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+					<div class="form-group">
+						<label asp-for="OutHyperlink2" class="control-label"> رابط الموقع الأول</label>
+						<input asp-for="OutHyperlink2" class="form-control" />
+						<span asp-validation-for="OutHyperlink2" class="text-danger"> </span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-6">
+					<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+					<div class="form-group">
+						<label asp-for="OutlinkText3" class="control-label"> اسم الموقع الأول</label>
+						<input asp-for="OutlinkText3" class="form-control" />
+						<span asp-validation-for="OutlinkText3" class="text-danger"> </span>
+					</div>
+				</div>
+				<div class="col-6">
+					<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+					<div class="form-group">
+						<label asp-for="OutHyperlink3" class="control-label"> رابط الموقع الأول</label>
+						<input asp-for="OutHyperlink3" class="form-control" />
+						<span asp-validation-for="OutHyperlink3" class="text-danger"> </span>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-6">
+					<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+					<div class="form-group">
 						<label asp-for="slider1Image" class="control-label"> صورة السلايدر الاولى</label>
 						<img id="loader1" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 						<input type="file" name="files" id="files1" class="btn btn-block form-control">
@@ -192,14 +249,15 @@
 				</div>
 			</div>
 
+
 			<div class="form-group">
 				<input type="button" value="Create" class="btn btn-primary btn-block w-50 m-auto" id="save" />
 			</div>
 
 
-			<input id="slider1Image" name="slider1Image" type="hidden" value=""/>
-			<input id="slider2Image" name="slider2Image" type="hidden" value=""/>
-			<input id="slider3Image" name="slider3Image" type="hidden" value=""/>
+			<input id="slider1Image" name="slider1Image" type="hidden" value="" />
+			<input id="slider2Image" name="slider2Image" type="hidden" value="" />
+			<input id="slider3Image" name="slider3Image" type="hidden" value="" />
 
 
 
@@ -236,8 +294,8 @@
 					contentType: false,
 					processData: false,
 					success: function (response) {
-                        $("#slider1Image").val(response.image);
-                        $("#loader1").hide();
+						$("#slider1Image").val(response.image);
+						$("#loader1").hide();
 					},
 					error: function () {
 						alert("FAIL");
@@ -255,7 +313,7 @@
 				//});
 	 });
 	 $("#files2").change(function () {
-         var element = this;
+		 var element = this;
 		  $("#loader2").show();
 
 			  var formData = new FormData();
@@ -275,8 +333,8 @@
 					contentType: false,
 					processData: false,
 					success: function (response) {
-                        $("#slider2Image").val(response.image);
-                        $("#loader2").hide();
+						$("#slider2Image").val(response.image);
+						$("#loader2").hide();
 					},
 					error: function () {
 						alert("FAIL");
@@ -313,7 +371,7 @@
 					contentType: false,
 					processData: false,
 					success: function (response) {
-                        $("#slider3Image").val(response.image);
+						$("#slider3Image").val(response.image);
 						 $("#loader3").hide();
 					},
 					error: function () {
@@ -322,9 +380,9 @@
 				})
 
 	});
-		$("#save").click(function () {            if ($("#slider1Image").val() != "" && $("#slider2Image").val() != "" && $("#slider3Image").val() != "") {                $("#createform").submit();
-            } else {                alert("Please wait files are still UPLOADING !!")
-            }			});
+		$("#save").click(function () {			if ($("#slider1Image").val() != "" && $("#slider2Image").val() != "" && $("#slider3Image").val() != "") {				$("#createform").submit();
+			} else {				alert("Please wait files are still UPLOADING !!")
+			}			});
 
 	</script>
 }

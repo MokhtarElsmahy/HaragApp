@@ -26,6 +26,12 @@ namespace HaragApp.Models
         public string slider1Text { get; set; }
         public string slider2Text { get; set; }
         public string slider3Text { get; set; }
+        public string OutlinkText1 { get; set; }
+        public string OutlinkText2 { get; set; }
+        public string OutlinkText3 { get; set; }
+        public string OutHyperlink1 { get; set; }
+        public string OutHyperlink2 { get; set; }
+        public string OutHyperlink3 { get; set; }
 
 
     }

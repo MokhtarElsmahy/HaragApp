@@ -126,7 +126,62 @@
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-6">
+				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+				<div class="form-group">
+					<label asp-for="OutlinkText1" class="control-label"> اسم الموقع الأول</label>
+					<input asp-for="OutlinkText1" class="form-control" />
+					<span asp-validation-for="OutlinkText1" class="text-danger"> </span>
+				</div>
+			</div>
+			<div class="col-6">
+				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+				<div class="form-group">
+					<label asp-for="OutHyperlink1" class="control-label"> رابط الموقع الأول</label>
+					<input asp-for="OutHyperlink1" class="form-control" />
+					<span asp-validation-for="OutHyperlink1" class="text-danger"> </span>
+				</div>
+			</div>
+		</div>
 
+		<div class="row">
+			<div class="col-6">
+				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+				<div class="form-group">
+					<label asp-for="OutlinkText2" class="control-label"> اسم الموقع الثاني</label>
+					<input asp-for="OutlinkText2" class="form-control" />
+					<span asp-validation-for="OutlinkText2" class="text-danger"> </span>
+				</div>
+			</div>
+			<div class="col-6">
+				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+				<div class="form-group">
+					<label asp-for="OutHyperlink2" class="control-label"> رابط الموقع الثاني</label>
+					<input asp-for="OutHyperlink2" class="form-control" />
+					<span asp-validation-for="OutHyperlink2" class="text-danger"> </span>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-6">
+				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+				<div class="form-group">
+					<label asp-for="OutlinkText3" class="control-label"> اسم الموقع الثالث</label>
+					<input asp-for="OutlinkText3" class="form-control" />
+					<span asp-validation-for="OutlinkText3" class="text-danger"> </span>
+				</div>
+			</div>
+			<div class="col-6">
+				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+				<div class="form-group">
+					<label asp-for="OutHyperlink3" class="control-label"> رابط الموقع الثالث</label>
+					<input asp-for="OutHyperlink3" class="form-control" />
+					<span asp-validation-for="OutHyperlink3" class="text-danger"> </span>
+				</div>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-6">
 				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
@@ -208,10 +263,10 @@
 
 @section Scripts {
 	<script>
-        $("#files1").change(function () {
+		$("#files1").change(function () {
 		 $("#loader1").show();
 
-            $("#save").prop('disabled', true);
+			$("#save").prop('disabled', true);
 			  var element = this;
 
 			  var formData = new FormData();
@@ -231,10 +286,10 @@
 					contentType: false,
 					processData: false,
 					success: function (response) {
-                        $("#slider1Image").val(response.image);
-                        $("#loader1").hide();
+						$("#slider1Image").val(response.image);
+						$("#loader1").hide();
 
-            $("#save").prop('disabled', false);
+			$("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
@@ -251,10 +306,10 @@
 				//    	alert("FAIL");
 				//});
 	 });
-        $("#files2").change(function () {
+		$("#files2").change(function () {
 		 $("#loader2").show();
 
-            $("#save").prop('disabled', true);
+			$("#save").prop('disabled', true);
 			  var element = this;
 
 			  var formData = new FormData();
@@ -274,8 +329,8 @@
 					contentType: false,
 					processData: false,
 					success: function (response) {
-                        $("#slider2Image").val(response.image);
-                        $("#loader2").hide();
+						$("#slider2Image").val(response.image);
+						$("#loader2").hide();
 
 					$("#save").prop('disabled', false);
 					},
@@ -294,10 +349,10 @@
 				//    	alert("FAIL");
 				//});
 	 });
-        $("#files3").change(function () {
+		$("#files3").change(function () {
 		 $("#loader3").show();
 
-            $("#save").prop('disabled', true);
+			$("#save").prop('disabled', true);
 			  var element = this;
 
 			  var formData = new FormData();
@@ -317,8 +372,8 @@
 					contentType: false,
 					processData: false,
 					success: function (response) {
-                        $("#slider3Image").val(response.image);
-                        $("#loader3").hide();
+						$("#slider3Image").val(response.image);
+						$("#loader3").hide();
 
 						$("#save").prop('disabled', false);
 					},
@@ -327,15 +382,15 @@
 					}
 				})
 
-        });
+		});
 		$("#save").click(function () {
 
-            if ($('#loader1').css('display') != 'none' || $('#loader2').css('display') != 'none' || $('#loader3').css('display') != 'none') {
-                alert("Please wait files are still UPLOADING !!")
-               
-            } else {
+			if ($('#loader1').css('display') != 'none' || $('#loader2').css('display') != 'none' || $('#loader3').css('display') != 'none') {
+				alert("Please wait files are still UPLOADING !!")
+			   
+			} else {
 				 $("#EditForm").submit();
-            }
+			}
 
 			});
 
