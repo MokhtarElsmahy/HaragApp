@@ -1,4 +1,9 @@
 ﻿@model HaragApp.ViewModels.AdsImagesVM2
+
+@inject HaragApp.Data.ApplicationDbContext Context
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<HaragApp.Data.ApplicationDbUser> SignInManager
+@inject UserManager<HaragApp.Data.ApplicationDbUser> UserManager
 @{
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 
@@ -7,7 +12,7 @@
 }
 @section Styles{
 
-  
+
 
 
 }
@@ -23,7 +28,7 @@
             <h1>تفاصيل الاعلان</h1>
             <ul class="bread-crumb clearfix">
                 <li><a href="/Home/index">الرئيسيه</a></li>
-                <li>إضافة إعلان </li>
+                <li>تفاصيل </li>
             </ul>
         </div>
     </div>
@@ -162,7 +167,7 @@
                                     @*<div class="text">@Model.Description</div>*@
                                     <div class="clearfix">
                                         <button onclick="addtoFav(@Model.AdID)" type="button" class="btn btn-danger btn-block mb-1"> أضف الي المفضله  <i class="fa  fa-heart fa-1x " aria-hidden="true"></i></button>
-                                        <a  href="https://wa.me/@Model.userPhone"> <button type="button" class="btn btn-success btn-block">  تواصل واتســاب <i class="fab  fa-whatsapp fa-1x " aria-hidden="true"></i></button></a>
+                                        <a href="https://wa.me/@Model.userPhone"> <button type="button" class="btn btn-success btn-block">  تواصل واتســاب <i class="fab  fa-whatsapp fa-1x " aria-hidden="true"></i></button></a>
                                     </div>
                                 </div>
                             </div>
@@ -178,7 +183,7 @@
                             <!--Tab Btns-->
                             <ul class="tab-btns tab-buttons clearfix">
                                 <li data-tab="#prod-description" class="tab-btn ">الوصف </li>
-                                @*<li data-tab="#prod-reviews" class="tab-btn active-btn">التعليقـات</li>*@
+                                <li data-tab="#prod-reviews" class="tab-btn active-btn">التقييمات</li>
                             </ul>
 
                             <!--Tabs Content-->
@@ -195,56 +200,69 @@
                                 </div>
 
                                 <!--Tab-->
-                                <!--<div class="tab active-tab" id="prod-reviews">-->
+                                <div class="tab " id="prod-reviews">
 
                                     <!--Reviews Container-->
-                                    <!--<div class="reviews-container">-->
+                                    <div class="reviews-container">
+                                        @{
+                                            foreach (var com in Model.comments)
+                                            {
 
-                                        <!--Reviews-->
-                                        <!--<article class="review-box clearfix">
-                                            <figure class="rev-thumb"><img src="~/assets/img/userLogo.png" alt=""></figure>
-                                            <div class="rev-content">
-                                                <div class="rev-info"><span>دينا محمد</span> June 7, 2013</div>
-                                                <div class="rating"><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span></div>
-                                                <div class="rev-text"><p>لوريم ايبسوم هو نموذج افتراضي يوضع في التصاميم لتعرض على العميل ليتصور طريقه وضع النصوص بالتصاميم سواء كانت تصاميم مطبوعه ...</p></div>
-                                            </div>
-                                        </article>
+                                                <!--Reviews-->
+                                                <article class="review-box clearfix">
+                                                    <figure class="rev-thumb"><img src="~/assets/img/userLogo.png" alt=""></figure>
+                                                    <div class="rev-content">
+                                                        <div class="rev-info"><span>@com.Name</span>@com.Date.ToShortDateString()</div>
+                                                        <div class="rev-text"><p>@com.CommentText</p></div><br />
+                                                        @if (SignInManager.IsSignedIn(User))
+                                                        {
+                                                            var user = await UserManager.GetUserAsync(User);
+                                                            var roles = await UserManager.GetRolesAsync(user);
+                                                            if (roles.Contains("admin"))
+                                                            {
+                                                                <div><a asp-route-commentID="@com.CommentID" asp-route-advID="@com.advID" asp-controller="Advertisments" asp-action="RemoveComment" class="btn btn-danger">مسح التعليق</a></div>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </article>
 
+                                            }
+                                        }
 
-                                    </div>-->
+                                    </div>
 
                                     <!-- Comment Form -->
-                                    <!--<div class="shop-comment-form">
-                                        <h2>أضف تقيم</h2>
-                                        <div class="mail-text"><span class="theme_color">ملحوظه* بريدك الالكتروني لن يتم نشره </span> </div>
-                                        <div class="rating-box">
-                                            <div class="text"> تقيمك : </div>
-                                            <div class="rating">
-                                                <a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a><a href="#"><span class="fa fa-star"></span></a>
-                                            </div>
-                                        </div>
-                                        <form>
+                                    <div class="shop-comment-form">
+                                        <h2>أضف تقييم</h2>
+                                        <form asp-action="AddComment" asp-controller="Advertisments" method="post">
                                             <div class="form-group">
                                                 <label>الاسم</label>
-                                                <input type="text" name="username" placeholder="" required>
+                                                <input type="text" name="Name" placeholder="" required id="Name">
+
                                             </div>
                                             <div class="form-group">
-                                                <label>الايميل</label>
-                                                <input type="text" name="email" placeholder="" required>
+                                                <label>تعليقك</label>
+                                                <textarea name="CommentText" placeholder="" id="CommentText"></textarea>
                                             </div>
-                                            <div class="form-group">
-                                                <label>تقيمك</label>
-                                                <textarea name="message" placeholder=""></textarea>
-                                            </div>
-                                            <div class="form-group">
-                                                <button class="theme-btn btn-style-two" type="submit" name="submit-form">ارسل الان</button>
-                                            </div>
+                                            <input name="advID" type="hidden" value="@Model.AdID">
+                                            @if (SignInManager.IsSignedIn(User))
+                                            {
+                                                <div class="form-group">
+                                                    <button class="theme-btn btn-style-two" type="submit" name="submit-form">ارسل الان</button>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="form-group">
+                                                     <button  class="theme-btn btn-style-two" type="button" disabled>برجاء تسجيل الدخول اولا</button>
+                                                </div>
+                                            }
+
 
                                         </form>
 
                                     </div>
-
-                                </div>-->
+                                </div>
                             </div>
                         </div>
                     </div><!-- End product info tabs -->
@@ -291,7 +309,7 @@
                                 <div class="col-6 m-auto">
                                     <img class="replaceImg img-thumbnail rounded" style="width:100%;height:100%;" src="@Model.ImageUrl5" alt="">
                                 </div>
-                               
+
                             </div>
 
 
@@ -309,10 +327,27 @@
 
 
 @section Scripts {
-    @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
+        //Tabs Box
+        if ($('.tabs-box').length) {
+            $('.tabs-box .tab-buttons .tab-btn').on('click', function (e) {
+                e.preventDefault();
+                var target = $($(this).attr('data-tab'));
 
+                if ($(target).is(':visible')) {
+                    return false;
+                } else {
+                    target.parents('.tabs-box').find('.tab-buttons').find('.tab-btn').removeClass('active-btn');
+                    $(this).addClass('active-btn');
+                    target.parents('.tabs-box').find('.tabs-content').find('.tab').fadeOut(0);
+                    target.parents('.tabs-box').find('.tabs-content').find('.tab').removeClass('active-tab');
+                    $(target).fadeIn(300);
+                    $(target).addClass('active-tab');
+                }
+            });
+        }
 
         var imgs = document.getElementsByClassName("replaceImg");
         var currImg = document.getElementById("shownImg");
@@ -330,20 +365,20 @@
                 type: "POST",
                 dataType: "json",
                 data: {
-                    adID: id  
+                    adID: id
                 },
                 success: function (result) {
                     if (result.message == "success") {
-                       Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'تم الإضافة إلى المفضلة',
-                                showConfirmButton: false,
-                                timer: 3000
-                            });
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'تم الإضافة إلى المفضلة',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
 
 
-                    } else if (result.message =="Please Login First") {
+                    } else if (result.message == "Please Login First") {
                         Swal.fire({
                             icon: 'error',
                             title: 'برجاء تسجيل الدخول',
@@ -364,5 +399,7 @@
                 }
             });
         }
+
     </script>
+
 }

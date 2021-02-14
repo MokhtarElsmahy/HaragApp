@@ -4,14 +4,16 @@ using HaragApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HaragApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210214191326_addCommentTable")]
+    partial class addCommentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,6 +236,9 @@ namespace HaragApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AdvertismentAdID")
+                        .HasColumnType("int");
+
                     b.Property<string>("CommentText")
                         .HasColumnType("nvarchar(max)");
 
@@ -246,14 +251,14 @@ namespace HaragApp.Data.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("advID")
-                        .HasColumnType("int");
+                    b.Property<string>("advID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CommentID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AdvertismentAdID");
 
-                    b.HasIndex("advID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -528,15 +533,13 @@ namespace HaragApp.Data.Migrations
 
             modelBuilder.Entity("HaragApp.Models.Comment", b =>
                 {
+                    b.HasOne("HaragApp.Models.Advertisment", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("AdvertismentAdID");
+
                     b.HasOne("HaragApp.Data.ApplicationDbUser", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId");
-
-                    b.HasOne("HaragApp.Models.Advertisment", "Advertisment")
-                        .WithMany("Comments")
-                        .HasForeignKey("advID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("HaragApp.Models.Favorite", b =>

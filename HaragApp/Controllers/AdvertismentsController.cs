@@ -463,7 +463,32 @@ namespace HaragApp.Controllers
             return RedirectToAction("ShowFavourite", "Advertisments");
         }
 
-    
+        //--------------------------------------------------------------------------------------
+
+        [Authorize]
+        public async Task<IActionResult> AddComment(Comment comment)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            CommentVM comVM = new CommentVM() { advID = comment.advID , UserId = user.Id , CommentText = comment.CommentText , Name = comment.Name , CommentID = comment.CommentID};
+            if (ModelState.IsValid)
+            {
+                IAdverstisment adverstisment = new AdvertisementServices(_context, _hosting);
+                
+                adverstisment.AddComment(comVM);
+            }
+            return RedirectToAction("Details", new { id = comment.advID });
+
+        }
+
+
+        public IActionResult RemoveComment(int CommentID , int advID)
+        {
+            var com = _context.Comments.SingleOrDefault(x => x.CommentID == CommentID);
+            _context.Comments.Remove(com);
+            _context.SaveChanges();
+            return RedirectToAction("Details", new { id = advID });
+        }
+
 
     }
 }

@@ -28,5 +28,6 @@ namespace HaragApp.Data
        // public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<Favorite> Favorites { get; set; }
         public virtual DbSet<Configs> Configs { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HaragApp.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -35,5 +36,7 @@ namespace HaragApp.ViewModels
         public string ImageUrl3 { get; set; }
         public string ImageUrl4 { get; set; }
         public string ImageUrl5 { get; set; }
+
+        public ICollection<CommentVM> comments { get; set; }
     }
 }

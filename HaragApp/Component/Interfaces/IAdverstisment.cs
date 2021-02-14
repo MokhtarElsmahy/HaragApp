@@ -36,5 +36,7 @@ namespace HaragApp.Component.Interfaces
         public List<favoriteViewModel> GetTopFiveFavs();
 
         public AdsImagesVm UpdateAsync(AdsImagesVm advertisment , IFormFileCollection files);
+
+        public AdsImagesVM2 AddComment(CommentVM comment);
     }
 }

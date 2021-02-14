@@ -172,7 +172,7 @@ namespace HaragApp.Component.Services
             var adv = _context.Advertisments
                 .Include(a => a.AnimalCategory)
                 .Include(a => a.City)
-                .Include(a => a.User).Include(c => c.AdImages)
+                .Include(a => a.User).Include(c => c.AdImages).Include(x => x.Comments)
                 .FirstOrDefault(m => m.AdID == id);
             var adsVM = new AdsImagesVM2();
             adsVM.AdID = adv.AdID;
@@ -184,6 +184,9 @@ namespace HaragApp.Component.Services
             adsVM.CityName = adv.City.CityName;
             adsVM.Description = adv.Description;
             adsVM.userPhone = adv.User.Phone;
+
+            adsVM.comments = adv.Comments.Select(x => new CommentVM { advID = x.advID, Name = x.Name, CommentText = x.CommentText, UserId = x.UserId, Date = x.Date , CommentID = x.CommentID }).ToList();
+
             var adImages = adv.AdImages.ToList();
 
             adsVM.ImageUrl1 = adImages[0].img;
@@ -200,6 +203,7 @@ namespace HaragApp.Component.Services
             {
                 return null;
             }
+
             return adsVM;
         }
 
@@ -689,6 +693,24 @@ namespace HaragApp.Component.Services
 
             }
             return favoriteViewModel;
+        }
+
+        //--------------------------------------------------------------------------------------------------------------
+
+        public AdsImagesVM2 AddComment(CommentVM comment)
+        {
+            var com = new Comment();
+
+            com.advID = comment.advID;
+            com.CommentText = comment.CommentText;
+            com.Date = DateTime.Now;
+            com.Name = comment.Name;
+            com.UserId = comment.UserId;
+
+            _context.Comments.Add(com);
+            _context.SaveChanges();
+
+            return Details(comment.advID);
         }
     }
 }

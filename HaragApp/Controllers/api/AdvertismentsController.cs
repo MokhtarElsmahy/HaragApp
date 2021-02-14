@@ -202,6 +202,8 @@ namespace HaragApp.Controllers.api
             return advertisment;
         }
 
+        
+
         private bool AdvertismentExists(int id)
         {
             return _context.Advertisments.Any(e => e.AdID == id);

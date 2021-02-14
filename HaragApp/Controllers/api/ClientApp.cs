@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace HaragApp.Controllers.api
@@ -146,6 +147,40 @@ namespace HaragApp.Controllers.api
             });
         }
 
+
+        [AllowAnonymous]
+        [HttpPost(ApiRoutes.setting.addComment)]
+        public IActionResult addComment(CommentVM comment)
+        {
+            if (!String.IsNullOrEmpty(comment.UserId))
+            {
+                IAdverstisment ads = new AdvertisementServices(db, HostingEnvironment);
+                ads.AddComment(comment);
+
+                var allComments = db.Comments.Select(x => new CommentVM
+                {
+                    advID = x.advID,
+                    Name = x.Name,
+                    CommentText = x.CommentText,
+                    UserId = x.UserId,
+                    Date = x.Date,
+                    CommentID = x.CommentID                    
+                }).Where(x => x.advID == comment.advID).ToList();
+                return Json(new
+                {
+                    data = allComments
+                }
+               );
+
+            }
+            else
+            {
+                return Json(new
+                {
+                    data = "برجاء تسجيل الدخول"
+                });
+            }          
+        }
 
         //[AllowAnonymous]
         //[HttpPost(ApiRoutes.setting.Condtions)]

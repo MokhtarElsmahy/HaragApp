@@ -55,5 +55,7 @@ namespace HaragApp.Data
 
         public virtual ICollection<Advertisment> Advertisments { get; set; }
         public virtual ICollection<Favorite> Favorites { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }
