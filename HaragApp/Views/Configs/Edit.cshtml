@@ -18,6 +18,8 @@
 <div class="container">
 	<hr />
 	<h1>تعديــل</h1>
+	<h3 style="text-align:center">(ارفق Https او Http قبل اسم الرابط المراد الوصول اليه)</h3>
+	<h4 style="text-align:center"><span class="text-danger">https://</span>www.google.com</h4>
 
 	<hr />
 	<form asp-action="Edit" id="EditForm">
@@ -74,7 +76,7 @@
 			<div class="col-6">
 				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 				<div class="form-group">
-					<label asp-for="FaceBookLink" class="control-label"> لينك الفيسبوك</label>
+					<label asp-for="FaceBookLink" class="control-label"> لينك الفيسبوك(برجاء ارفاق https مع رابط الموقع)</label>
 					<input asp-for="FaceBookLink" class="form-control" />
 					<span asp-validation-for="FaceBookLink" class="text-danger"> </span>
 				</div>
@@ -82,7 +84,7 @@
 			<div class="col-6">
 				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 				<div class="form-group">
-					<label asp-for="TwitterLink" class="control-label"> لينك التويتر</label>
+					<label asp-for="TwitterLink" class="control-label"> لينك التويتر(برجاء ارفاق https مع رابط الموقع)</label>
 					<input asp-for="TwitterLink" class="form-control" />
 					<span asp-validation-for="TwitterLink" class="text-danger"> </span>
 				</div>
@@ -138,7 +140,7 @@
 			<div class="col-6">
 				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 				<div class="form-group">
-					<label asp-for="OutHyperlink1" class="control-label"> رابط الموقع الأول</label>
+					<label asp-for="OutHyperlink1" class="control-label"> (برجاء ارفاق https مع رابط الموقع)رابط الموقع الأول</label>
 					<input asp-for="OutHyperlink1" class="form-control" />
 					<span asp-validation-for="OutHyperlink1" class="text-danger"> </span>
 				</div>
@@ -157,7 +159,7 @@
 			<div class="col-6">
 				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 				<div class="form-group">
-					<label asp-for="OutHyperlink2" class="control-label"> رابط الموقع الثاني</label>
+					<label asp-for="OutHyperlink2" class="control-label"> (برجاء ارفاق https مع رابط الموقع)رابط الموقع الثاني</label>
 					<input asp-for="OutHyperlink2" class="form-control" />
 					<span asp-validation-for="OutHyperlink2" class="text-danger"> </span>
 				</div>
@@ -176,7 +178,7 @@
 			<div class="col-6">
 				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 				<div class="form-group">
-					<label asp-for="OutHyperlink3" class="control-label"> رابط الموقع الثالث</label>
+					<label asp-for="OutHyperlink3" class="control-label"> (برجاء ارفاق https مع رابط الموقع)رابط الموقع الثالث</label>
 					<input asp-for="OutHyperlink3" class="form-control" />
 					<span asp-validation-for="OutHyperlink3" class="text-danger"> </span>
 				</div>
@@ -241,9 +243,23 @@
 			</div>
 		</div>
 
+		<div class="row">
+			<div class="col-6">
+				<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
+				<div class="form-group">
+					<label asp-for="shopSliderImage" class="control-label"> صورة سلايدر الاعلانات</label> <img id="loader4" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
+					<input type="file" name="files" id="files4" class="btn btn-block form-control" value="@Model.slider3Image">
+					<span asp-validation-for="shopSliderImage" class="text-danger"> </span>
+				</div>
+
+
+			</div>
+		</div>
+
 		<input id="slider1Image" name="slider1Image" type="hidden" value="@Model.slider1Image" />
 		<input id="slider2Image" name="slider2Image" type="hidden" value="@Model.slider2Image" />
 		<input id="slider3Image" name="slider3Image" type="hidden" value="@Model.slider3Image" />
+		<input id="shopSliderImage" name="shopSliderImage" type="hidden" value="@Model.shopSliderImage" />
 		<input id="ID" name="ID" type="hidden" value="@Model.ID" />
 		<div class="form-group">
 			<input type="button" value="Save" class="btn btn-primary btn-block w-50 m-auto" id="save" />
@@ -383,9 +399,45 @@
 				})
 
 		});
+
+		$("#files4").change(function () {
+		 $("#loader4").show();
+
+			$("#save").prop('disabled', true);
+			  var element = this;
+
+			  var formData = new FormData();
+
+		 var totalFiles = element.files.length;
+
+			  for (var i = 0; i < totalFiles; i++) {
+				var file = element.files[i];
+				formData.append("Photo", file);
+			  }
+
+				$.ajax({
+					type: 'POST',
+					url: '@Url.Action("UploadImage", "Advertisments")',
+					dataType: 'json',
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						$("#shopSliderImage").val(response.image);
+						$("#loader4").hide();
+
+						$("#save").prop('disabled', false);
+					},
+					error: function () {
+						alert("FAIL");
+					}
+				})
+
+		});
+
 		$("#save").click(function () {
 
-			if ($('#loader1').css('display') != 'none' || $('#loader2').css('display') != 'none' || $('#loader3').css('display') != 'none') {
+			if ($('#loader1').css('display') != 'none' || $('#loader2').css('display') != 'none' || $('#loader3').css('display') != 'none' || $('#loader4').css('display') != 'none') {
 				alert("Please wait files are still UPLOADING !!")
 			   
 			} else {

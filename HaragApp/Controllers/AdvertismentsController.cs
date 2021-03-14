@@ -86,6 +86,7 @@ namespace HaragApp.Controllers
 
             ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName", addedADV.CityID);
             ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", addedADV.CategoryID);
+            ViewData["SliderImage"] = _context.Configs.ToList()[0].shopSliderImage;
 
             return View(addedADV);
         }
@@ -116,15 +117,14 @@ namespace HaragApp.Controllers
             ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName");
 
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["SliderImage"] = _context.Configs.ToList()[0].shopSliderImage;
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(AdsImagesVm advertisment)
         {
-            /*_context.Roles.Add(new IdentityRole { Name = "admin" });
-            _context.Roles.Add(new IdentityRole { Name = "user" });
-            _context.SaveChanges();*/
+
             if (ModelState.IsValid)
             {
                 IAdverstisment ads = new AdvertisementServices(_context, _hosting);
@@ -160,6 +160,8 @@ namespace HaragApp.Controllers
             ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", advertisment.CategoryID);
             ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityID", advertisment.CityID);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", advertisment.UserId);
+            ViewData["SliderImage"] = _context.Configs.ToList()[0].shopSliderImage;
+
             return View(advertisment);
         }
 
@@ -265,6 +267,7 @@ namespace HaragApp.Controllers
             adsVM.ImageUrl3 = adImages[2].img;
             adsVM.ImageUrl4 = adImages[3].img;
             adsVM.ImageUrl5 = adImages[4].img;
+            adsVM.SliderImage = _context.Configs.ToList()[0].shopSliderImage;
             ViewData["CategoryID"] = new SelectList(_context.AnimalCategories, "CategoryID", "CategoryName", adsVM.CategoryID);
             ViewData["CityID"] = new SelectList(_context.Cities, "CityID", "CityName", adsVM.CityID);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", adsVM.UserId);
@@ -405,7 +408,7 @@ namespace HaragApp.Controllers
         {
             IAdverstisment ss = new AdvertisementServices(_context, _hosting);
             var shop = ss.Shop(model);
-            model.Advertisments = shop.Advertisments;
+            model.Advertisments = shop.Advertisments.OrderByDescending(p => p.AdID).ToList();
             model.Cities = shop.Cities;
             model.Categories = shop.Categories;
             model.PageNo = shop.PageNo;
@@ -416,7 +419,7 @@ namespace HaragApp.Controllers
             model.Lat = shop.Lat;
             model.CityId = shop.CityId;
             model.CategoryId = shop.CategoryId;
-            
+            model.shopSliderImage = _context.Configs.ToList()[0].shopSliderImage;
             return View(model);
         }
 

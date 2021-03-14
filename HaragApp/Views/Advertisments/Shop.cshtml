@@ -10,12 +10,10 @@
     var pageNumber = Model.PageNo;
     var pageNumberNext = pageNumber + 1;
     var pageNumberPrev = pageNumber - 1;
-
-
 }
 
 
-<section class="page-title" style="background-image:url(/Home/images/background/8.jpg);">
+<section class="page-title" style="background-image:url(@Model.shopSliderImage);">
     <div class="auto-container">
         <div class="inner-container clearfix">
             <h1>كل الاعلانات</h1>
@@ -118,7 +116,7 @@
                     <div class="sidebar-widget categories">
 
                         <div class="sidebar-title text-right"><h2><i class="fas fa-angle-double-left"></i>  الأصنـاف   </h2></div>
-                        <a asp-action="Shop" class="btn btn-block btn-outline-primary">عرض الكــل</a>
+                        <a asp-action="Shop" class="btn btn-block btn-outline-primary"> عرض جميع الاصناف بجميع المدن</a>
 
                         <ul class="category-list">
                             @foreach (var item in Model.Categories)

@@ -34,6 +34,6 @@ namespace HaragApp.Models
         public string OutHyperlink2 { get; set; }
         public string OutHyperlink3 { get; set; }
 
-
+        public string shopSliderImage { get; set; }
     }
 }

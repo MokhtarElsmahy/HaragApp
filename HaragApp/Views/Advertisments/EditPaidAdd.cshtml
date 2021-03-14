@@ -12,6 +12,9 @@
 				<div class="column col-lg-12 col-md-12 col-sm-12 ">
 					<!-- Login Form -->
 					<h2>تعديل اعلان ممول </h2>
+					<h3 style="text-align:center">(ارفق Https او Http قبل اسم الرابط المراد الوصول اليه)</h3>
+					<h4 style="text-align:center"><span class="text-danger">https://</span>www.google.com</h4>
+					
 					<div class="login-form text-right">
 						<!--Login Form-->
 						<form asp-action="EditPaidAdd" method="post" id="EditForm">
@@ -23,7 +26,7 @@
 
 
 							<div class="form-group">
-								<input class="form-control" id="exampleFormControlTextarea1" placeholder="رابط الإعلان الممول" type="text" asp-for="Description">
+								<input class="form-control" id="exampleFormControlTextarea1" placeholder="رابط الإعلان الممول(برجاء ارفاق https مع رابط الموقع) " type="text" asp-for="Description">
 							</div>
 							<div class="form-group" style="display:none">
 								<input type="checkbox" id="vehicle1" asp-for="IsPaid" checked="checked">
@@ -32,7 +35,7 @@
 
 							<div class="row">
 								<label>صورة الإعــلان</label>
-								<input type="file" required id="files1" name="files" class="btn btn-block w-50 mb-2 m-auto"><img id="loader1" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
+								<input type="file" id="files1" name="files" class="btn btn-block w-50 mb-2 m-auto"><img id="loader1" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 								<img id="SelectedImage1" src="@Model.ImageUrl1" class="img-thumbnail align-content-center m-auto" style="height:auto;" />
 							</div>
 							<br />
@@ -48,7 +51,7 @@
 
 							</div>
 							<input id="ImageUrl1" name="ImageUrl1" value="@Model.ImageUrl1" type="hidden" />
-							
+
 						</form>
 					</div>
 					<!--End Login Form -->
@@ -64,8 +67,8 @@
 	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 	<script>
-        $("#files1").change(function () {
-            $("#loader1").show();
+		$("#files1").change(function () {
+			$("#loader1").show();
 			 $("#save").prop('disabled', true);
 			  var element = this;
 
@@ -87,7 +90,7 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl1").val(response.image);
-                        $("#SelectedImage1").attr("src", response.image);
+						$("#SelectedImage1").attr("src", response.image);
 						$("#loader1").hide();
 						$("#save").prop('disabled', false);
 					},
@@ -107,12 +110,12 @@
 				//});
 	 });
 		$("#save").click(function () {
-            if ($('#loader1').css('display') != 'none') {
-                alert("Please wait files are still UPLOADING !!")
-               
-            } else {
+			if ($('#loader1').css('display') != 'none') {
+				alert("Please wait files are still UPLOADING !!")
+			   
+			} else {
 				 $("#EditForm").submit();
-            }
+			}
 
 			});
 	</script>

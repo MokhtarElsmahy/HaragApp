@@ -12,14 +12,11 @@
 
 
 <!--Page Title-->
-<section class="page-title" style="background-image:url(/Home/images/background/8.jpg);">
+<section class="page-title" style="background-image:url(@ViewBag.SliderImage);">
 	<div class="auto-container">
 		<div class="inner-container clearfix">
 			<h1>إضافة إعلان </h1>
-			<ul class="bread-crumb clearfix">
-				<li><a href="/Home/index">الرئيسيه</a></li>
-				<li>إضافة إعلان </li>
-			</ul>
+			
 		</div>
 	</div>
 </section>
@@ -62,7 +59,7 @@
 						<div class="form-group">
 
 							<input type="checkbox" id="vehicle1" asp-for="IsPact" required>
-							<input type="checkbox" id="vehicle1" asp-for="IsPaid" style="display:none">
+							<input type="checkbox" id="vehicle1" asp-for="IsPaid" style="display: none">
 							<label for="vehicle1">اتعهد بدفع 15ريال فى كل راس يتم بيعه عن طريق الموقع</label><br>
 
 						</div>
@@ -129,8 +126,8 @@
 	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 	<script>
-        $("#files1").change(function () {
-            $("#loader1").show();
+		$("#files1").change(function () {
+			$("#loader1").show();
 			  var element = this;
 
 			  var formData = new FormData();
@@ -151,8 +148,8 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl1").val(response.image);
-                        $("#SelectedImage1").attr("src", response.image);
-                        $("#loader1").hide();
+						$("#SelectedImage1").attr("src", response.image);
+						$("#loader1").hide();
 					},
 					error: function () {
 						alert("FAIL");
@@ -169,7 +166,7 @@
 				//    	alert("FAIL");
 				//});
 	 });
-        $("#files2").change(function () {
+		$("#files2").change(function () {
 		 $("#loader2").show();
 			  var element = this;
 
@@ -191,8 +188,8 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl2").val(response.image);
-                        $("#SelectedImage2").attr("src", response.image);
-                        $("#loader2").hide();
+						$("#SelectedImage2").attr("src", response.image);
+						$("#loader2").hide();
 					},
 					error: function () {
 						alert("FAIL");
@@ -209,7 +206,7 @@
 				//    	alert("FAIL");
 				//});
 	 });
-        $("#files3").change(function () {
+		$("#files3").change(function () {
 		 $("#loader3").show();
 			  var element = this;
 
@@ -231,8 +228,8 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl3").val(response.image);
-                        $("#SelectedImage3").attr("src", response.image);
-                        $("#loader3").hide();
+						$("#SelectedImage3").attr("src", response.image);
+						$("#loader3").hide();
 					},
 					error: function () {
 						alert("FAIL");
@@ -249,7 +246,7 @@
 				//    	alert("FAIL");
 				//});
 	});
-        $("#files4").change(function () {
+		$("#files4").change(function () {
 		 $("#loader4").show();
 			  var element = this;
 
@@ -271,8 +268,8 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl4").val(response.image);
-                        $("#SelectedImage4").attr("src", response.image);
-                        $("#loader4").hide();
+						$("#SelectedImage4").attr("src", response.image);
+						$("#loader4").hide();
 					},
 					error: function () {
 						alert("FAIL");
@@ -289,7 +286,7 @@
 				//    	alert("FAIL");
 				//});
 	});
-        $("#files5").change(function () {
+		$("#files5").change(function () {
 		 $("#loader5").show();
 			  var element = this;
 
@@ -311,8 +308,8 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl5").val(response.image);
-                        $("#SelectedImage5").attr("src", response.image);
-                        $("#loader5").hide();
+						$("#SelectedImage5").attr("src", response.image);
+						$("#loader5").hide();
 					},
 					error: function () {
 						alert("FAIL");
@@ -328,12 +325,12 @@
 				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
 				//    	alert("FAIL");
 				//});
-     });
+	 });
 
 
-		$("#save").click(function () {            if ($("#ImageUrl1").val() != "" && $("#ImageUrl2").val() != "" && $("#ImageUrl3").val() != "" && $("#ImageUrl4").val() != "" && $("#ImageUrl5").val() != "") {                $("#createform").submit();
-            } else {                alert("Please wait files are still UPLOADING !!")
-            }			});
+		$("#save").click(function () {			if ($("#ImageUrl1").val() != "" && $("#ImageUrl2").val() != "" && $("#ImageUrl3").val() != "" && $("#ImageUrl4").val() != "" && $("#ImageUrl5").val() != "") {				$("#createform").submit();
+			} else {				alert("Please wait files are still UPLOADING !!")
+			}			});
 
 	</script>
 }

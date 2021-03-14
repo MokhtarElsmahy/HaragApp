@@ -11,14 +11,11 @@
 
 
 <!--Page Title-->
-<section class="page-title" style="background-image:url(/Home/images/background/8.jpg);">
+<section class="page-title" style="background-image:url(@Model.SliderImage);">
 	<div class="auto-container">
 		<div class="inner-container clearfix">
-			<h1>إضافة إعلان </h1>
-			<ul class="bread-crumb clearfix">
-				<li><a href="/Home/index">الرئيسيه</a></li>
-				<li>إضافة إعلان </li>
-			</ul>
+			<h1>تعديل اعلاني </h1>
+			
 		</div>
 	</div>
 </section>
@@ -30,7 +27,7 @@
 
 			<div class="column col-lg-12 col-md-12 col-sm-12 ">
 				<!-- Login Form -->
-				<h2>إضافه اعلان عادي </h2>
+				<h2>تعديل اعلاني </h2>
 				<div class="login-form text-right">
 					<!--Login Form-->
 					<form asp-action="userUpdateADV" method="post" id="EditForm">
@@ -126,10 +123,10 @@
 	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 	<script>
-        $("#files1").change(function () {
-            $("#loader1").show();
+		$("#files1").change(function () {
+			$("#loader1").show();
 
-            $("#save").prop('disabled', true);
+			$("#save").prop('disabled', true);
 
 			  var element = this;
 
@@ -151,8 +148,8 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl1").val(response.image);
-                        $("#SelectedImage1").attr("src", response.image);
-                        $("#loader1").hide();
+						$("#SelectedImage1").attr("src", response.image);
+						$("#loader1").hide();
 						$("#save").prop('disabled', false);
 					},
 					error: function () {
@@ -170,7 +167,7 @@
 				//    	alert("FAIL");
 				//});
 	 });
-        $("#files2").change(function () {
+		$("#files2").change(function () {
 		 $("#save").prop('disabled', true);
 		 $("#loader2").show();
 			  var element = this;
@@ -193,9 +190,9 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl2").val(response.image);
-                        $("#SelectedImage2").attr("src", response.image);
-                        $("#loader2").hide();
-                        $("#save").prop('disabled', false);
+						$("#SelectedImage2").attr("src", response.image);
+						$("#loader2").hide();
+						$("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
@@ -212,7 +209,7 @@
 				//    	alert("FAIL");
 				//});
 	 });
-        $("#files3").change(function () {
+		$("#files3").change(function () {
 			$("#save").prop('disabled', true);
 		 $("#loader3").show();
 			  var element = this;
@@ -235,8 +232,8 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl3").val(response.image);
-                        $("#SelectedImage3").attr("src", response.image);
-                        $("#loader3").hide();
+						$("#SelectedImage3").attr("src", response.image);
+						$("#loader3").hide();
 						$("#save").prop('disabled', false);
 					},
 					error: function () {
@@ -254,7 +251,7 @@
 				//    	alert("FAIL");
 				//});
 	});
-        $("#files4").change(function () {
+		$("#files4").change(function () {
 			$("#save").prop('disabled', true);
 		 $("#loader4").show();
 			  var element = this;
@@ -277,9 +274,9 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl4").val(response.image);
-                        $("#SelectedImage4").attr("src", response.image);
-                        $("#loader4").hide();
-                        $("#save").prop('disabled', false);
+						$("#SelectedImage4").attr("src", response.image);
+						$("#loader4").hide();
+						$("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
@@ -296,7 +293,7 @@
 				//    	alert("FAIL");
 				//});
 	});
-        $("#files5").change(function () {
+		$("#files5").change(function () {
 			$("#save").prop('disabled', true);
 		 $("#loader5").show();
 			  var element = this;
@@ -319,9 +316,9 @@
 					processData: false,
 					success: function (response) {
 						$("#ImageUrl5").val(response.image);
-                        $("#SelectedImage5").attr("src", response.image);
-                        $("#loader5").hide();
-                        $("#save").prop('disabled', false);
+						$("#SelectedImage5").attr("src", response.image);
+						$("#loader5").hide();
+						$("#save").prop('disabled', false);
 					},
 					error: function () {
 						alert("FAIL");
@@ -337,17 +334,17 @@
 				//.fail(function (XMLHttpRequest, textStatus, errorThrown) {
 				//    	alert("FAIL");
 				//});
-     });
+	 });
 
 
 		$("#save").click(function () {
 			//$("#ImageUrl1").val() != "" && $("#ImageUrl2").val() != "" && $("#ImageUrl3").val() != "" && $("#ImageUrl4").val() != "" && $("#ImageUrl5").val() != ""
-            if ($('#loader1').css('display') != 'none' || $('#loader2').css('display') != 'none' || $('#loader3').css('display') != 'none' || $('#loader4').css('display') != 'none' || $('#loader5').css('display') != 'none') {
-                alert("Please wait files are still UPLOADING !!")
-               
-            } else {
+			if ($('#loader1').css('display') != 'none' || $('#loader2').css('display') != 'none' || $('#loader3').css('display') != 'none' || $('#loader4').css('display') != 'none' || $('#loader5').css('display') != 'none') {
+				alert("Please wait files are still UPLOADING !!")
+			   
+			} else {
 				 $("#EditForm").submit();
-            }
+			}
 
 			});
 

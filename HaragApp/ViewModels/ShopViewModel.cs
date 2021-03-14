@@ -18,11 +18,11 @@ namespace HaragApp.ViewModels
         public List<AdsImagesVM2> Advertisments { get; set; }
         public List<AnimalCategory> Categories { get; set; }
         public List<City> Cities { get; set; }
-       public int Km { get; set; }
+        public int Km { get; set; }
         public double Lang { get; set; }
         public double Lat { get; set; }
 
         public int AllAdsCount { get; set; }
-
+        public string shopSliderImage { get; set; }
     }
 }

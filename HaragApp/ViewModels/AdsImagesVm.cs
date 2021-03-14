@@ -39,6 +39,8 @@ namespace HaragApp.ViewModels
         public List<IFormFile> Files { get; set; }//for api post
         public List<bool> IsImageChanged { get; set; } = new List<bool>() { false, false, false, false, false};
 
+        public string SliderImage { get; set; }
+
 
 
     }
