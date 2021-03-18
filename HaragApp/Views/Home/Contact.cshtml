@@ -29,8 +29,8 @@
 
                         <li>
                             <span class="icon flaticon-phone"></span>
-                            <p><strong>رقم الجوال  </strong> <a href="https://wa.me/@Model.Mobile1">@Model.Mobile1</a>  -  <a href="https://wa.me/@Model.Mobile2">@Model.Mobile2</a></p>
-                            <p><a href="https://mail.google.com/mail/?view=cm&fs=1&to=@Model.Email">@Model.Email</a>   <strong>الايميل  </strong></p>
+                            <p><strong>رقم الجوال  </strong> <a href="https://wa.me/@Model.Mobile1" target="_blank">@Model.Mobile1</a>  -  <a href="https://wa.me/@Model.Mobile2" target="_blank">@Model.Mobile2</a></p>
+                            <p><a href="https://mail.google.com/mail/?view=cm&fs=1&to=@Model.Email" target="_blank">@Model.Email</a>   <strong>الايميل  </strong></p>
                         </li>
 
                         <li>
@@ -46,8 +46,32 @@
                         </li>
                         <li>
 
-                            <p><img src="~/Home/images/background/b2.jpg" /></p>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-info w-100" data-toggle="modal" data-target="#exampleModalCenter">
+                                عــرض تفاصيل الحساب البنكي
+                            </button>
 
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">مصـرف الراجحـي</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <b>مؤسسة سوق المواشي للتجارة</b> <br />
+                                            <br /> <b> حساب رقم </b> 209608014114119
+                                            <br />SA1280000209608014114119 <b> ايبان </b>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغــلاق</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>
