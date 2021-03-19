@@ -426,7 +426,7 @@ namespace HaragApp.Controllers
             model.Categories = shop.Categories;
             model.PageNo = shop.PageNo;
             model.search = shop.search;
-            model.Km = 10;
+            model.Km = 26;
             model.AllAdsCount = shop.AllAdsCount;
             model.Lang = shop.Lang;
             model.Lat = shop.Lat;
