@@ -201,6 +201,7 @@
 
                                     <li class="">
                                         <a href="/Advertisments/Shop">الاعلانات</a>
+                                        <a asp-action="Shop"></a>
 
                                     </li>
                                     <li><a href="/Home/Contact">تواصل معنا</a></li>
@@ -420,6 +421,35 @@
     @*<script src="~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>*@
 
     @RenderSection("Scripts", false)
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            function getLocationn() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPositionn);
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+
+            function showPositionn(position) {
+
+                //$("#Lat").val(position.coords.latitude);
+                //$("#Lang").val(position.coords.longitude);
+                 position.coords.latitude;
+                position.coords.longitude;
+
+            }
+
+            getLocationn();
+
+
+        })
+
+    </script>
     <!--End Google Map APi-->
 </body>
 

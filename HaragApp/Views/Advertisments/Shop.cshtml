@@ -37,9 +37,9 @@
                     <form asp-action="Shop" id="myform" > 
 
                         <div class="sort-by pull-right">
-                            <span style="color:black; font-weight:bold">المسافة بال Km :  </span>
-                            <input type="number" value="@Model.Km" class="btn btn-light-dark" style="border:solid;" min="0" name="Km"  />
-                            <button  class="btn btn-primary mr-2" >بحــث</button>
+                            @*<span style="color:black; font-weight:bold">الاعلانات الاقرب لموقعك الحالى</span>*@
+                            <input type="number" value="@Model.Km" class="btn btn-light-dark" style="border:solid;display:none;" min="0" name="Km"  />
+                            <button  class="btn btn-primary mr-2" >الاعلانات الاقرب لموقعك</button>
                             <a  class="btn btn-success mr-2" asp-action="Create" asp-controller="Advertisments" >أضف اعلانك من هنا</a>
                             <input value="@Model.CategoryId" name="CategoryId" type="hidden" />
                             <input value="@Model.CityId" name="CityId" type="hidden" />

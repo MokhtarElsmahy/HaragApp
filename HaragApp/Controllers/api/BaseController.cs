@@ -373,7 +373,7 @@ namespace HaragApp.Controllers.api
         //{
 
 
-        //    string url = "http://api.yamamah.com/SendSMSV2?Username=966532866666&Password=Ht5pTY26&Message=987654321&RecepientNumber=966532866666&Tagname=Haraajm&SendDateTime=0";
+        //    string url = "http://api.yamamah.com/SendSMS?Username=966532866666&Password=Ht5pTY26&Tagname=Haraajm&RecepientNumber=966545853212&Message=11111111";
 
         //    var client = new RestClient(url);
         //     var data = await client.Get();

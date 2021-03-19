@@ -19,6 +19,10 @@ using HaragApp.Component.Interfaces;
 using HaragApp.Component.Services;
 using System.Net;
 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Primitives;
+
+
 namespace HaragApp.Controllers
 {
 
@@ -30,11 +34,17 @@ namespace HaragApp.Controllers
         private IHostingEnvironment _hosting { get; set; }
         private readonly UserManager<ApplicationDbUser> _userManager;
 
-        public AdvertismentsController(ApplicationDbContext context, IHostingEnvironment hosting, UserManager<ApplicationDbUser> userManager)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IConfiguration _config;
+
+        public AdvertismentsController(ApplicationDbContext context, IHostingEnvironment hosting, UserManager<ApplicationDbUser> userManager , IHttpContextAccessor httpContextAccessor, IConfiguration config)
         {
             _hosting = hosting;
             _context = context;
             _userManager = userManager;
+
+            _config = config;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<IActionResult> SendResendAsync(string numbers)
         {
@@ -408,12 +418,15 @@ namespace HaragApp.Controllers
         {
             IAdverstisment ss = new AdvertisementServices(_context, _hosting);
             var shop = ss.Shop(model);
+
+          
+
             model.Advertisments = shop.Advertisments.OrderByDescending(p => p.AdID).ToList();
             model.Cities = shop.Cities;
             model.Categories = shop.Categories;
             model.PageNo = shop.PageNo;
             model.search = shop.search;
-            model.Km = shop.Km;
+            model.Km = 10;
             model.AllAdsCount = shop.AllAdsCount;
             model.Lang = shop.Lang;
             model.Lat = shop.Lat;
@@ -422,7 +435,7 @@ namespace HaragApp.Controllers
             model.shopSliderImage = _context.Configs.ToList()[0].shopSliderImage;
             return View(model);
         }
-
+      
 
         public async Task<IActionResult> AddToFav(int adID,string userID)
         {

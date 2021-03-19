@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using RestSharp;
 using System.Net;
+using System.Net.Http;
+using HaragApp.ViewModels;
 
 namespace HaragApp.Areas.Identity.Pages.Account
 {
@@ -118,15 +120,16 @@ namespace HaragApp.Areas.Identity.Pages.Account
              
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
                     var code = GetFormNumber().ToString();
+                    _logger.LogInformation("User created a new account with password.");
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
                    var x = await  SendMessage(code, user.Phone);
                     user.code =int.Parse(code);
                     await _userManager.UpdateAsync(user);
                     _ctx.SaveChanges();
-                    return RedirectToPage("RegisterConfirmation");
+                  
+                    RegisterConModel model = new RegisterConModel() { UserID = user.Id, Phone= user.Phone, IsCreated = result.Succeeded };
+                    return RedirectToPage("RegisterConfirmation",model);
                    
                   
                    
@@ -191,7 +194,7 @@ namespace HaragApp.Areas.Identity.Pages.Account
             return Page();
         }
 
-        public  async Task<IRestResponse> SendMessage(string msg, string numbers)
+        public static async Task<string> SendMessage(string msg, string numbers)
         {
             var client = new RestClient($"http://api.yamamah.com/SendSMS");
             var request = new RestRequest(Method.POST);
@@ -206,8 +209,9 @@ namespace HaragApp.Areas.Identity.Pages.Account
             });
             IRestResponse response = await client.ExecuteAsync(request);
 
-            return response;
+            return "";
         }
+
         public static int GetFormNumber()
         {
             Random rnd = new Random();
