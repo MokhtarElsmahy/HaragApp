@@ -140,8 +140,10 @@ namespace HaragApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var city = await _context.Cities.FindAsync(id);
+            var animals = _context.Advertisments.Where(c => c.CityID == city.CityID).ToList();
+            _context.Advertisments.RemoveRange(animals);
             _context.Cities.Remove(city);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
