@@ -24,5 +24,8 @@ namespace HaragApp.ViewModels
 
         public int AllAdsCount { get; set; }
         public string shopSliderImage { get; set; }
+
+        public int ActiveCity { get; set; }
+        public int ActiveCategory { get; set; }
     }
 }

@@ -102,7 +102,7 @@ namespace HaragApp.Component.Services
 
         public AdsImagesVm UpdateAsync(AdsImagesVm advertisment, IFormFileCollection files)
         {
-            Advertisment ad = _context.Advertisments.Include(c=>c.AdImages).FirstOrDefault(c=>c.AdID==advertisment.AdID);
+            Advertisment ad = _context.Advertisments.Include(c => c.AdImages).FirstOrDefault(c => c.AdID == advertisment.AdID);
             if (advertisment.CategoryID == 0)
             {
 
@@ -131,8 +131,8 @@ namespace HaragApp.Component.Services
                 int j = 0;
                 for (int i = 0; i < advertisment.IsImageChanged.Count; i++)
                 {
-                  
-                    if (advertisment.IsImageChanged[i]==true)
+
+                    if (advertisment.IsImageChanged[i] == true)
                     {
                         string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
                         var filename = ContentDispositionHeaderValue.Parse(files[j].ContentDisposition).FileName.Trim('"');
@@ -143,7 +143,7 @@ namespace HaragApp.Component.Services
                         j++;
                     }
                 }
-              
+
 
             }
 
@@ -154,7 +154,7 @@ namespace HaragApp.Component.Services
             advertisment.ImageUrl3 = ad.AdImages.ToList()[2].img;
             advertisment.ImageUrl4 = ad.AdImages.ToList()[3].img;
             advertisment.ImageUrl5 = ad.AdImages.ToList()[4].img;
-           
+
             return advertisment;
         }
 
@@ -185,7 +185,7 @@ namespace HaragApp.Component.Services
             adsVM.Description = adv.Description;
             adsVM.userPhone = adv.User.Phone;
 
-            adsVM.comments = adv.Comments.Select(x => new CommentVM { advID = x.advID, Name = x.Name, CommentText = x.CommentText, UserId = x.UserId, Date = x.Date , CommentID = x.CommentID }).ToList();
+            adsVM.comments = adv.Comments.Select(x => new CommentVM { advID = x.advID, Name = x.Name, CommentText = x.CommentText, UserId = x.UserId, Date = x.Date, CommentID = x.CommentID }).ToList();
 
             var adImages = adv.AdImages.ToList();
 
@@ -412,10 +412,10 @@ namespace HaragApp.Component.Services
             }
             else
             {
-                if (model.CategoryId != 0)
+                if (model.CategoryId != 0)//categoryId=5 , CityId=-1
                 {
 
-                    if (model.CityId != 0)
+                    if (model.CityId != 0 && model.CityId != -1)
                     {
 
                         model.Advertisments = model.Advertisments.Where(c => c.CategoryID == model.CategoryId && c.CityID == model.CityId).ToList();
@@ -431,10 +431,16 @@ namespace HaragApp.Component.Services
                 }
                 else
                 {
-                    if (model.CityId != 0)
+                    if (model.CityId != 0 && model.CityId == -1)
+                    {
+                        model.Advertisments = model.Advertisments.ToList();
+                    }
+                    else if (model.CityId != 0 )
                     {
                         model.Advertisments = model.Advertisments.Where(c => c.CityID == model.CityId).ToList();
                     }
+
+
 
 
                 }
@@ -676,7 +682,7 @@ namespace HaragApp.Component.Services
             var TOP = results.OrderByDescending(xx => xx.total).Take(5);
             List<favoriteViewModel> favoriteViewModel = new List<favoriteViewModel>();
 
-            IAdverstisment aa = new AdvertisementServices(_context,_hosting);
+            IAdverstisment aa = new AdvertisementServices(_context, _hosting);
             foreach (var item in TOP)
             {
                 var adv = aa.GetAdvertisementByID(item.id);

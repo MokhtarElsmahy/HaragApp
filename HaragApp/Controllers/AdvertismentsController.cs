@@ -432,6 +432,8 @@ namespace HaragApp.Controllers
             model.Lat = shop.Lat;
             model.CityId = shop.CityId;
             model.CategoryId = shop.CategoryId;
+            model.ActiveCity = model.CityId;
+            model.ActiveCategory = model.CategoryId;
             model.shopSliderImage = _context.Configs.ToList()[0].shopSliderImage;
             return View(model);
         }

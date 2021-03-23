@@ -102,12 +102,14 @@ namespace HaragApp.Controllers
             {
                 try
                 {
-                   
 
-                    var client = new RestClient($"https://localhost:44396/api/AnimalCategories/"+animalCategory.CategoryID);
-                    var request = new RestRequest(Method.PUT);
-                    request.AddJsonBody(animalCategory);
-                    IRestResponse response = await client.ExecuteAsync(request);
+                    var category = _context.AnimalCategories.Find(animalCategory.CategoryID);
+                    category.CategoryName = animalCategory.CategoryName;
+                    _context.SaveChanges();
+                    //var client = new RestClient($"https://localhost:44396/api/AnimalCategories/"+animalCategory.CategoryID);
+                    //var request = new RestRequest(Method.PUT);
+                    //request.AddJsonBody(animalCategory);
+                    //IRestResponse response = await client.ExecuteAsync(request);
                    
                 }
                 catch (DbUpdateConcurrencyException)
@@ -129,12 +131,17 @@ namespace HaragApp.Controllers
         // GET: AnimalCategories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-          
-            var client = new RestClient($"https://localhost:44396/api/AnimalCategories/"+id);
-            var request = new RestRequest(Method.DELETE);
-           // request.AddJsonBody(id);
-            IRestResponse response = await client.ExecuteAsync(request);
-            return RedirectToAction(nameof(Create));
+
+            var category = _context.AnimalCategories.Find(id);
+            var animals = _context.Advertisments.Where(c => c.CategoryID == category.CategoryID).ToList();
+            _context.Advertisments.RemoveRange(animals);
+            _context.AnimalCategories.Remove(category);
+            _context.SaveChanges();
+           // var client = new RestClient($"https://localhost:44396/api/AnimalCategories/"+id);
+           // var request = new RestRequest(Method.DELETE);
+           //// request.AddJsonBody(id);
+           // IRestResponse response = await client.ExecuteAsync(request);
+           return RedirectToAction(nameof(Create));
         }
 
         private bool AnimalCategoryExists(int id)
