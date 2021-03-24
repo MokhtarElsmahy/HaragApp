@@ -6,7 +6,7 @@
 }
     <div class="container">
         <h1 class="mt-4 text-center">إضافة مدينــة</h1>
-
+        <h3 class="mt-4 text-center text-danger">برجاء البحث عن خطوط الطول و العرض للمدينة من محرك البحث جوجل للدقة</h3>
         <hr />
         <div class="row">
             <div class="col-md-4">
@@ -14,17 +14,17 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="CityName" class="control-label"> إسم المدينــة</label>
-                        <input asp-for="CityName" class="form-control" required/>
+                        <input asp-for="CityName" class="form-control" required />
                         <span asp-validation-for="CityName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Langtude" class="control-label">خط الطــول</label>
-                        <input asp-for="Langtude" class="form-control" required/>
+                        <input asp-for="Langtude" class="form-control" required />
                         <span asp-validation-for="Langtude" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Lantitude" class="control-label">خط العــرض</label>
-                        <input asp-for="Lantitude" class="form-control" required/>
+                        <input asp-for="Lantitude" class="form-control" required />
                         <span asp-validation-for="Lantitude" class="text-danger"></span>
                     </div>
                     <div class="form-group">
