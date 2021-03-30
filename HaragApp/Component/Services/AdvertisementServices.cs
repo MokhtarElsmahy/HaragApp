@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -305,7 +306,63 @@ namespace HaragApp.Component.Services
                    .Where(xx => xx.AdID == newADV.AdID).FirstOrDefault();
 
             oldADV.Title = newADV.Title;
-            oldADV.AdImages.ToList()[0].img = newADV.ImageUrl1;
+            if (oldADV.AdImages.ToList()[0].img != newADV.ImageUrl1)
+            {
+
+                string[] arr = oldADV.AdImages.ToList()[0].img.Split('/');
+                string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
+
+                string fullPath = Path.Combine(uploads, arr[arr.Length-1]);//   ----------/uploads/filename
+
+                File.Delete(fullPath);
+                oldADV.AdImages.ToList()[0].img = newADV.ImageUrl1;
+
+
+            }
+            else
+            {
+                oldADV.AdImages.ToList()[0].img = newADV.ImageUrl1;
+            }
+
+            if (oldADV.AdImages.ToList()[1].img != newADV.ImageUrl1)
+            {
+
+                string[] arr = oldADV.AdImages.ToList()[1].img.Split('/');
+                string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
+
+                string fullPath = Path.Combine(uploads, arr[arr.Length - 1]);//   ----------/uploads/filename
+
+                File.Delete(fullPath);
+                oldADV.AdImages.ToList()[1].img = newADV.ImageUrl1;
+
+
+            }
+            else
+            {
+                oldADV.AdImages.ToList()[2].img = newADV.ImageUrl1;
+            }
+
+            if (oldADV.AdImages.ToList()[2].img != newADV.ImageUrl1)
+            {
+
+                string[] arr = oldADV.AdImages.ToList()[2].img.Split('/');
+                string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
+
+                string fullPath = Path.Combine(uploads, arr[arr.Length - 1]);//   ----------/uploads/filename
+
+                File.Delete(fullPath);
+                oldADV.AdImages.ToList()[2].img = newADV.ImageUrl1;
+
+
+            }
+            else
+            {
+                oldADV.AdImages.ToList()[2].img = newADV.ImageUrl1;
+            }
+
+
+
+
             oldADV.AdImages.ToList()[1].img = newADV.ImageUrl2;
             oldADV.AdImages.ToList()[2].img = newADV.ImageUrl3;
             oldADV.AdImages.ToList()[3].img = newADV.ImageUrl4;
@@ -314,11 +371,33 @@ namespace HaragApp.Component.Services
             oldADV.CategoryID = newADV.CategoryID;
             oldADV.Description = newADV.Description;
 
+          
+
+            
+
+           
+
+           
             _context.SaveChanges();
 
             return newADV;
         }
+         void DeleteFiles(IFileProvider physicalFileProvider)
+        {
+            if (physicalFileProvider is PhysicalFileProvider)
+            {
+                var directory = physicalFileProvider.GetDirectoryContents(string.Empty);
+                foreach (var file in directory)
+                {
+                    if (!file.IsDirectory)
+                    {
+                        var fileInfo = new System.IO.FileInfo(file.PhysicalPath);
+                        fileInfo.Delete();
 
+                    }
+                }
+            }
+        }
         public ShopViewModel Shop(ShopViewModel model)
         {
             if (model != null)

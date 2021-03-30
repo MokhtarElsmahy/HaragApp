@@ -63,33 +63,33 @@
 							<label for="vehicle1">اتعهد بدفع 15ريال فى كل راس يتم بيعه عن طريق الموقع</label><br>
 
 						</div>
-
+                        
 						<div class="row justify-content-center">
 							<div class="col-lg-2 col-md-6 col-sm-12">
 								<label>الصورة الاولى</label>
 								<input type="file" required id="files1" name="files" class="btn btn-block" >
-								<img id="SelectedImage1" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader1" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
+								<img id="SelectedImage1" src="~/Home/images/default.png" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader1" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 							</div>
 
 							<div class="col-lg-2 col-md-6 col-sm-12">
 								<label>الصورة الثانيه</label>
 								<input type="file" id="files2" name="files" required class="btn btn-block">
-								<img id="SelectedImage2" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader2" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
+								<img id="SelectedImage2" src="~/Home/images/default.png" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader2" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 							</div>
 							<div class="col-lg-2 col-md-6 col-sm-12">
 								<label>الصورة الثالثه</label>
 								<input type="file" id="files3" name="files" required class="btn btn-block">
-								<img id="SelectedImage3" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader3" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
+								<img id="SelectedImage3" src="~/Home/images/default.png" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader3" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 							</div>
 							<div class="col-lg-2 col-md-6 col-sm-12">
 								<label>الصورة الرابعه</label>
 								<input type="file" id="files4" name="files" required class="btn btn-block">
-								<img id="SelectedImage4" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader4" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
+								<img id="SelectedImage4" src="~/Home/images/default.png" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader4" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none" />
 							</div>
 							<div class="col-lg-2 col-md-6 col-sm-12">
 								<label>الصورةالخامسه</label>
 								<input type="file" id="files5" name="files" required class="btn btn-block">
-								<img id="SelectedImage5" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader5" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none"/>
+								<img id="SelectedImage5" src="~/Home/images/default.png" class="img-thumbnail align-content-center" style="width:100px;height:100px;" /><img id="loader5" src="~/assets/img/lodingLoader.gif" style="width:30px;height:30px;display:none"/>
 							</div>
 						</div>
 
@@ -106,11 +106,11 @@
 							</div>
 							
 						</div>
-						<input id="ImageUrl1" name="ImageUrl1" type="hidden" value="" />
-						<input id="ImageUrl2" name="ImageUrl2" type="hidden" value="" />
-						<input id="ImageUrl3" name="ImageUrl3" type="hidden" value="" />
-						<input id="ImageUrl4" name="ImageUrl4" type="hidden" value="" />
-						<input id="ImageUrl5" name="ImageUrl5" type="hidden" value=""  />
+						<input id="ImageUrl1" name="ImageUrl1" type="hidden" value="/Home/images/default.png" />
+						<input id="ImageUrl2" name="ImageUrl2" type="hidden" value="/Home/images/default.png" />
+						<input id="ImageUrl3" name="ImageUrl3" type="hidden" value="/Home/images/default.png" />
+						<input id="ImageUrl4" name="ImageUrl4" type="hidden" value="/Home/images/default.png" />
+						<input id="ImageUrl5" name="ImageUrl5" type="hidden" value="/Home/images/default.png"  />
 					</form>
 				</div>
 			</div>
@@ -128,6 +128,7 @@
 	<script>
 		$("#files1").change(function () {
 			$("#loader1").show();
+			
 			  var element = this;
 
 			  var formData = new FormData();
@@ -150,6 +151,7 @@
 						$("#ImageUrl1").val(response.image);
 						$("#SelectedImage1").attr("src", response.image);
 						$("#loader1").hide();
+                       
 					},
 					error: function () {
 						alert("FAIL");
@@ -328,9 +330,15 @@
 	 });
 
 
-		$("#save").click(function () {			if ($("#ImageUrl1").val() != "" && $("#ImageUrl2").val() != "" && $("#ImageUrl3").val() != "" && $("#ImageUrl4").val() != "" && $("#ImageUrl5").val() != "") {				$("#createform").submit();
-			} else {				alert("Please wait files are still UPLOADING !!")
-			}			});
+		$("#save").click(function () {			//if ($("#ImageUrl1").val() != "" && $("#ImageUrl2").val() != "" && $("#ImageUrl3").val() != "" && $("#ImageUrl4").val() != "" && $("#ImageUrl5").val() != "") {			//	$("#createform").submit();
+			//} else {			//	alert("Please wait files are still UPLOADING !!")
+			//}            if ($("#loader1").is(":hidden") && $("#loader2").is(":hidden") && $("#loader3").is(":hidden")&& $("#loader4").is(":hidden")&& $("#loader5").is(":hidden")) {
+				
+				$("#createform").submit();
+            } else {
+				alert("برجاء الانتظار حتى يتم تحميل الصور")
+               
+            }			});
 
 	</script>
 }
