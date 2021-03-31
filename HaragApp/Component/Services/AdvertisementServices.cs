@@ -283,9 +283,31 @@ namespace HaragApp.Component.Services
         }
         public bool userDeleteADV(int id)
         {
+            var imgNames = _context.AdImages.Where(x => x.AdID == id).ToList();
+
             var advertisment = _context.Advertisments.Find(id);
             _context.Advertisments.Remove(advertisment);
             _context.SaveChanges();
+
+            string uploadsFolder = Path.Combine(_hosting.WebRootPath, @"uploads");
+            foreach (var x in imgNames)
+            {
+                var arr = x.img.Split('/');
+                var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, arr[arr.Length-1]);
+
+                System.GC.Collect();
+                System.GC.WaitForPendingFinalizers();
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                    System.IO.File.Delete(path);
+                }
+            }           
+            
+
+
             var advertismentCheck = _context.Advertisments.Find(id);
             if (advertismentCheck == null)
             {
@@ -310,12 +332,28 @@ namespace HaragApp.Component.Services
             {
 
                 string[] arr = oldADV.AdImages.ToList()[0].img.Split('/');
-                string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
+                //string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
 
-                string fullPath = Path.Combine(uploads, arr[arr.Length-1]);//   ----------/uploads/filename
+                //string fullPath = Path.Combine(uploads, arr[arr.Length - 1]);//   ----------/uploads/filename
 
-                File.Delete(fullPath);
-                oldADV.AdImages.ToList()[0].img = newADV.ImageUrl1;
+                //oldADV.AdImages.ToList()[0].img = newADV.ImageUrl1;
+
+                //File.Delete(fullPath);
+
+                string uploadsFolder = Path.Combine(_hosting.WebRootPath, @"uploads");
+                var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, arr[arr.Length - 1]);
+
+                System.GC.Collect();
+                System.GC.WaitForPendingFinalizers();
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                    System.IO.File.Delete(path);
+                    oldADV.AdImages.ToList()[0].img = newADV.ImageUrl1;
+                }
+
 
 
             }
@@ -324,80 +362,156 @@ namespace HaragApp.Component.Services
                 oldADV.AdImages.ToList()[0].img = newADV.ImageUrl1;
             }
 
-            if (oldADV.AdImages.ToList()[1].img != newADV.ImageUrl1)
+            if (oldADV.AdImages.ToList()[1].img != newADV.ImageUrl2)
             {
 
                 string[] arr = oldADV.AdImages.ToList()[1].img.Split('/');
-                string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
+                //string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
 
-                string fullPath = Path.Combine(uploads, arr[arr.Length - 1]);//   ----------/uploads/filename
+                //string fullPath = Path.Combine(uploads, arr[arr.Length - 1]);//   ----------/uploads/filename
 
-                File.Delete(fullPath);
-                oldADV.AdImages.ToList()[1].img = newADV.ImageUrl1;
+                //oldADV.AdImages.ToList()[1].img = newADV.ImageUrl2;
+                //File.Delete(fullPath);
+
+                string uploadsFolder = Path.Combine(_hosting.WebRootPath, @"uploads");
+                var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, arr[arr.Length - 1]);
+
+                System.GC.Collect();
+                System.GC.WaitForPendingFinalizers();
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                    System.IO.File.Delete(path);
+                    oldADV.AdImages.ToList()[1].img = newADV.ImageUrl2;
+                }
 
 
             }
             else
             {
-                oldADV.AdImages.ToList()[2].img = newADV.ImageUrl1;
+                oldADV.AdImages.ToList()[1].img = newADV.ImageUrl2;
             }
 
-            if (oldADV.AdImages.ToList()[2].img != newADV.ImageUrl1)
+            if (oldADV.AdImages.ToList()[2].img != newADV.ImageUrl3)
             {
 
                 string[] arr = oldADV.AdImages.ToList()[2].img.Split('/');
-                string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
+                //string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
 
-                string fullPath = Path.Combine(uploads, arr[arr.Length - 1]);//   ----------/uploads/filename
+                //string fullPath = Path.Combine(uploads, arr[arr.Length - 1]);//   ----------/uploads/filename
 
-                File.Delete(fullPath);
-                oldADV.AdImages.ToList()[2].img = newADV.ImageUrl1;
+                //oldADV.AdImages.ToList()[2].img = newADV.ImageUrl3;
+                //File.Delete(fullPath);
+                string uploadsFolder = Path.Combine(_hosting.WebRootPath, @"uploads");
+                var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, arr[arr.Length - 1]);
+
+                System.GC.Collect();
+                System.GC.WaitForPendingFinalizers();
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                    System.IO.File.Delete(path);
+                    oldADV.AdImages.ToList()[2].img = newADV.ImageUrl3;
+                }
 
 
             }
             else
             {
-                oldADV.AdImages.ToList()[2].img = newADV.ImageUrl1;
+                oldADV.AdImages.ToList()[2].img = newADV.ImageUrl3;
+            }
+
+            if (oldADV.AdImages.ToList()[3].img != newADV.ImageUrl4)
+            {
+
+                string[] arr = oldADV.AdImages.ToList()[3].img.Split('/');
+                //string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
+
+                //string fullPath = Path.Combine(uploads, arr[arr.Length - 1]);//   ----------/uploads/filename
+
+                //oldADV.AdImages.ToList()[3].img = newADV.ImageUrl4;
+                //File.Delete(fullPath);
+                string uploadsFolder = Path.Combine(_hosting.WebRootPath, @"uploads");
+                var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, arr[arr.Length - 1]);
+
+                System.GC.Collect();
+                System.GC.WaitForPendingFinalizers();
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                    System.IO.File.Delete(path);
+                    oldADV.AdImages.ToList()[3].img = newADV.ImageUrl4;
+                }
+
+
+            }
+            else
+            {
+                oldADV.AdImages.ToList()[3].img = newADV.ImageUrl4;
+            }
+
+            if (oldADV.AdImages.ToList()[4].img != newADV.ImageUrl5)
+            {
+
+                string[] arr = oldADV.AdImages.ToList()[4].img.Split('/');
+                //string uploads = Path.Combine(_hosting.WebRootPath, @"uploads");
+
+                //string fullPath = Path.Combine(uploads, arr[arr.Length - 1]);//   ----------/uploads/filename
+
+                //oldADV.AdImages.ToList()[4].img = newADV.ImageUrl5;
+                //File.Delete(fullPath);
+                string uploadsFolder = Path.Combine(_hosting.WebRootPath, @"uploads");
+                var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, arr[arr.Length - 1]);
+
+                System.GC.Collect();
+                System.GC.WaitForPendingFinalizers();
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+                    System.IO.File.Delete(path);
+                    oldADV.AdImages.ToList()[4].img = newADV.ImageUrl5;
+                }
+
+
+
+            }
+            else
+            {
+                oldADV.AdImages.ToList()[4].img = newADV.ImageUrl5;
             }
 
 
 
 
-            oldADV.AdImages.ToList()[1].img = newADV.ImageUrl2;
-            oldADV.AdImages.ToList()[2].img = newADV.ImageUrl3;
-            oldADV.AdImages.ToList()[3].img = newADV.ImageUrl4;
-            oldADV.AdImages.ToList()[4].img = newADV.ImageUrl5;
+            //oldADV.AdImages.ToList()[0].img = newADV.ImageUrl1;
+            //oldADV.AdImages.ToList()[1].img = newADV.ImageUrl2;
+            //oldADV.AdImages.ToList()[2].img = newADV.ImageUrl3;
+            //oldADV.AdImages.ToList()[3].img = newADV.ImageUrl4;
+            //oldADV.AdImages.ToList()[4].img = newADV.ImageUrl5;
             oldADV.CityID = newADV.CityID;
             oldADV.CategoryID = newADV.CategoryID;
             oldADV.Description = newADV.Description;
 
-          
 
-            
 
-           
 
-           
+
+
+
+
             _context.SaveChanges();
 
             return newADV;
         }
-         void DeleteFiles(IFileProvider physicalFileProvider)
-        {
-            if (physicalFileProvider is PhysicalFileProvider)
-            {
-                var directory = physicalFileProvider.GetDirectoryContents(string.Empty);
-                foreach (var file in directory)
-                {
-                    if (!file.IsDirectory)
-                    {
-                        var fileInfo = new System.IO.FileInfo(file.PhysicalPath);
-                        fileInfo.Delete();
-
-                    }
-                }
-            }
-        }
+ 
         public ShopViewModel Shop(ShopViewModel model)
         {
             if (model != null)
@@ -514,7 +628,7 @@ namespace HaragApp.Component.Services
                     {
                         model.Advertisments = model.Advertisments.ToList();
                     }
-                    else if (model.CityId != 0 )
+                    else if (model.CityId != 0)
                     {
                         model.Advertisments = model.Advertisments.Where(c => c.CityID == model.CityId).ToList();
                     }
