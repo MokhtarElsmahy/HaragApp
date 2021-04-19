@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Scripts\" />
-    <Folder Include="wwwroot\uploads\" />
+    <Folder Include="wwwroot\uploads\NewFolder\" />
   </ItemGroup>
 
 </Project>

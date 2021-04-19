@@ -66,8 +66,10 @@ namespace HaragApp.Areas.Identity.Pages.Account
                 return RedirectToAction("Index","Home");
             }
 
-          
-              var changePasswordResult = await _userManager.ChangePasswordAsync(user, user.showpassword, Input.newPass);
+         
+
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, user.showpassword, Input.newPass);
+           
               user.showpassword = Input.newPass;
               await _userManager.UpdateAsync(user);
               await _context.SaveChangesAsync();

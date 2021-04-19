@@ -115,8 +115,13 @@ namespace HaragApp.Controllers.api
 
             var img = HttpContext.Request.Form.Files;//instead of ---> advertisment.Files;
 
-            if (img.Count > 0)
+            if (img.Any() ||img.Count >0)
             {
+                if (img.Count == 1) { advertisment.ImageUrl2 = advertisment.ImageUrl3 = advertisment.ImageUrl4 = advertisment.ImageUrl5 = $"/Home/images/default.png"; }
+                if (img.Count == 2) { advertisment.ImageUrl3 = advertisment.ImageUrl4 = advertisment.ImageUrl5 = $"/Home/images/default.png"; }
+                if (img.Count == 3) { advertisment.ImageUrl4 = advertisment.ImageUrl5 = $"/Home/images/default.png"; }
+                if (img.Count == 4) { advertisment.ImageUrl5 = $"/Home/images/default.png"; }
+
                 for (int i = 0; i < img.Count; i++)
                 {
                     //string result = "defaultRecImage.png";
@@ -129,7 +134,7 @@ namespace HaragApp.Controllers.api
                         var newFileName = Guid.NewGuid() + filename;
                         string fullPath = Path.Combine(uploads, newFileName);
                         img[i].CopyTo(new FileStream(fullPath, FileMode.Create));
-                        if (i==0)
+                        if (i == 0)
                         {
                             advertisment.ImageUrl1 = $"/uploads/{newFileName}";
                         }
@@ -153,11 +158,40 @@ namespace HaragApp.Controllers.api
                     }
                     catch (Exception ex)
                     {
-                       
+
 
                     }
                 }
 
+               
+
+                IAdverstisment ads = new AdvertisementServices(_context, _hosting);
+                ads.CreateAsync(advertisment);
+                AdsImagesVM2 model = new AdsImagesVM2()
+                {
+                    AdID = advertisment.AdID,
+                    CategoryID = advertisment.CategoryID,
+                    Title = advertisment.Title,
+                    CityID = advertisment.CityID,
+                    IsPaid = advertisment.IsPaid,
+                    IsPact = advertisment.IsPact,
+                    IsFav = advertisment.IsFav,
+                    Description = advertisment.Description,
+                    ImageUrl1 = advertisment.ImageUrl1,
+                    ImageUrl2 = advertisment.ImageUrl2,
+                    ImageUrl3 = advertisment.ImageUrl3,
+                    ImageUrl4 = advertisment.ImageUrl4,
+                    ImageUrl5 = advertisment.ImageUrl5,
+                    UserId = advertisment.UserId
+                };
+                return CreatedAtAction("GetAdvertisment", new { id = advertisment.AdID }, model);
+            }
+            else
+            {
+
+
+                advertisment.ImageUrl1= advertisment.ImageUrl2 = advertisment.ImageUrl3 = advertisment.ImageUrl4 = advertisment.ImageUrl5 = $"/Home/images/default.png"; 
+               
 
                 IAdverstisment ads = new AdvertisementServices(_context, _hosting);
                 ads.CreateAsync(advertisment);

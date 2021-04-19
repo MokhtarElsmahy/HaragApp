@@ -160,9 +160,6 @@ namespace HaragApp.Component.Services
         }
 
 
-
-
-
         public AdsImagesVM2 Details(int? id)
         {
             if (id == null)
