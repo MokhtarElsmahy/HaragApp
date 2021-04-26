@@ -11,7 +11,7 @@ namespace HaragApp.ViewModels
         public string search { get; set; }
         public int CategoryId { get; set; }
         public int CityId { get; set; }
-        public int PageNo { get; set; }
+        public int? PageNo { get; set; }
 
         public string userID { get; set; }
 

@@ -531,7 +531,7 @@ namespace HaragApp.Component.Services
                        ImageUrl3 = x.AdImages.ToList()[2].img,
                        ImageUrl4 = x.AdImages.ToList()[3].img,
                        ImageUrl5 = x.AdImages.ToList()[4].img,
-                       IsFav = _context.Favorites.Where(c => c.AdID == x.AdID && c.UserId == x.UserId).FirstOrDefault() == null ? false : true
+                       IsFav = _context.Favorites.Where(c => c.AdID == x.AdID && c.UserId == model.userID).FirstOrDefault() == null ? false : true
 
 
 
@@ -642,7 +642,7 @@ namespace HaragApp.Component.Services
             }
 
             model.AllAdsCount = model.Advertisments.Count();
-            model.Advertisments = model.Advertisments.OrderByDescending(c => c.AdID).Skip((model.PageNo - 1) * 6).Take(6).ToList();
+            model.Advertisments = model.Advertisments.OrderByDescending(c => c.AdID).Skip((model.PageNo.Value - 1) * 6).Take(6).ToList();
             return model;
         }
 

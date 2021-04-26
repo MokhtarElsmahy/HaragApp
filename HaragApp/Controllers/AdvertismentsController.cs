@@ -414,12 +414,20 @@ namespace HaragApp.Controllers
         }
 
 
-        public IActionResult Shop(ShopViewModel model)
+        public async Task<IActionResult> Shop(ShopViewModel model)
         {
+            model.PageNo =  model.PageNo ?? 1;
             IAdverstisment ss = new AdvertisementServices(_context, _hosting);
-            var shop = ss.Shop(model);
+           // var shop = ss.Shop(model);
 
-          
+            var user = await _userManager.GetUserAsync(User);
+            string UserID = string.Empty;
+            if (user != null)
+            {
+                UserID = user.Id;
+            }
+            model.userID = UserID;
+            var shop = ss.Shop(model);
 
             model.Advertisments = shop.Advertisments.OrderByDescending(p => p.AdID).ToList();
             model.Cities = shop.Cities;

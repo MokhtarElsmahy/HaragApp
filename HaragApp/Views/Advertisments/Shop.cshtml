@@ -7,7 +7,7 @@
     var Cities = ViewBag.Cities as List<City>;
 
     var pagesCounter = Math.Ceiling(Model.AllAdsCount / 6d);
-    var pageNumber = Model.PageNo;
+    var pageNumber = Model.PageNo.Value;
     var pageNumberNext = pageNumber + 1;
     var pageNumberPrev = pageNumber - 1;
 }
@@ -61,16 +61,27 @@
                                 <div class="inner-box">
                                     <div class="image">
                                         <img src="@item.ImageUrl1" class="img-thumbnail" style="width:100%;height:270px" alt="">
-                                        @*<div class="overlay-box">
+                                        @*@if (item.IsFav)
+                                        {
+                                            <div class="overlay-box">
                                                 <div class="icon-box">
-                                                    <a href="cart.html" class="cart-btn"><i class="fa fa-heart"></i> أضف الي المفضله</a>
+                                                    <a href="#" class="cart-btn"><i class="fa fa-heart"></i></a>
                                                 </div>
-                                            </div>*@
+                                            </div>
+
+                                        }*@
+
                                     </div>
                                     <div class="lower-content">
                                         <h3><a asp-action="Details" asp-controller="Advertisments" asp-route-id="@item.AdID">@item.Title</a></h3>
-
+                                    
                                     </div>
+
+
+
+
+
+
                                 </div>
                             </div>
                         }

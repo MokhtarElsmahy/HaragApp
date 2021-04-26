@@ -125,9 +125,17 @@ namespace HaragApp.Controllers.api
 
         [AllowAnonymous]
         [HttpPost(ApiRoutes.setting.Shop)]
-        public IActionResult Shop(ShopViewModel model)
+        public async Task<IActionResult> Shop(ShopViewModel model)
         {
+            model.PageNo = model.PageNo ?? 1;
             IAdverstisment dd = new AdvertisementServices(db, HostingEnvironment);
+            var user = await _userManager.GetUserAsync(User);
+            string UserID = string.Empty;
+            if (user != null)
+            {
+                UserID = user.Id;
+            }
+            model.userID = UserID;
             var d = dd.Shop(model);
             
             return Json(new
