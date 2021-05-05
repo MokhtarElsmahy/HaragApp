@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace HaragApp.Data
@@ -57,5 +58,8 @@ namespace HaragApp.Data
         public virtual ICollection<Favorite> Favorites { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+
+
+     
     }
 }

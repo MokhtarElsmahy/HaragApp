@@ -42,6 +42,7 @@ namespace HaragApp.Areas.Identity.Pages.Account
         public class InputModel { 
         
             [Required]
+            [MaxLength(9, ErrorMessage = "من فضلك ادخل رقم مكون من 9 ارقام")]
             public string Phone { get; set; }
         }
 
@@ -49,7 +50,8 @@ namespace HaragApp.Areas.Identity.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var user = _context.Users.FirstOrDefault(c=>c.Phone==Input.Phone);
+                string phone = $"966{Input.Phone}";
+                var user = _context.Users.FirstOrDefault(c=>c.Phone==phone);
                 if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed

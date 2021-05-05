@@ -31,6 +31,10 @@ namespace HaragApp.Controllers
 
         public IActionResult Index()
         {
+           
+
+
+
             HomeViewModel model = new HomeViewModel();
             IAdverstisment dd = new AdvertisementServices(_context, _hosting);
             IAnimalCategory aa = new AnimalServices(_context);

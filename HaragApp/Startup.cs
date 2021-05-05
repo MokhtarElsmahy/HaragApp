@@ -38,7 +38,7 @@ namespace HaragApp
             //DefaultConnection  ServerConnection
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("ServerConnection")));
             //services.Configure<FormOptions>(o => {
             //    o.ValueLengthLimit = int.MaxValue;
             //    o.MultipartBodyLengthLimit = int.MaxValue;
@@ -88,6 +88,7 @@ namespace HaragApp
             #region Swagger
             services.AddSwaggerGen(c =>
             {
+
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -118,11 +119,21 @@ namespace HaragApp
                 // Set the comments path for the Swagger JSON and UI from xml file.
                 var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = System.IO.Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+
                // c.IncludeXmlComments(xmlPath); افتكر تشيل الكومت
              
             });
             #endregion
 
+
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".AdventureWorks.Session";
+                options.IdleTimeout = TimeSpan.FromDays(30);
+                options.Cookie.IsEssential = true;
+            });
+            services.AddHttpContextAccessor();
             // services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllersWithViews();
            // services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -171,7 +182,7 @@ namespace HaragApp
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

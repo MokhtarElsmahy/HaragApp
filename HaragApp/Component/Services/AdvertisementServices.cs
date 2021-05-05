@@ -182,7 +182,6 @@ namespace HaragApp.Component.Services
             adsVM.CityName = adv.City.CityName;
             adsVM.Description = adv.Description;
             adsVM.userPhone = adv.User.Phone;
-
             adsVM.comments = adv.Comments.Select(x => new CommentVM { advID = x.advID, Name = x.Name, CommentText = x.CommentText, UserId = x.UserId, Date = x.Date, CommentID = x.CommentID }).ToList();
 
             var adImages = adv.AdImages.ToList();
@@ -642,7 +641,7 @@ namespace HaragApp.Component.Services
             }
 
             model.AllAdsCount = model.Advertisments.Count();
-            model.Advertisments = model.Advertisments.OrderByDescending(c => c.AdID).Skip((model.PageNo.Value - 1) * 6).Take(6).ToList();
+            model.Advertisments = model.Advertisments.OrderByDescending(c => c.AdID).Skip((model.PageNo.Value - 1) * 15).Take(15).ToList();
             return model;
         }
 

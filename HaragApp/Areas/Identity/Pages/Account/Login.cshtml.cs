@@ -46,6 +46,7 @@ namespace HaragApp.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [MaxLength(9,ErrorMessage ="من فضلك ادخل رقم مكون من 9 ارقام")]
             public string Phone { get; set; }
 
             [Required]
@@ -81,7 +82,8 @@ namespace HaragApp.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var user = _dbContext.Users.Where(c => c.Phone == Input.Phone).FirstOrDefault();
+                string phone = $"966{Input.Phone}";
+                var user = _dbContext.Users.Where(c => c.Phone == phone ).FirstOrDefault();
                 if (user == null)
                 {
                     return Page();

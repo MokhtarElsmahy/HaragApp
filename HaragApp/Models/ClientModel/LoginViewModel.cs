@@ -10,6 +10,7 @@ namespace HaragApp.Controllers.api
     {
 
         [Required(ErrorMessage = "من فضلك ادخل رقم الجوال")]
+        [MaxLength(9,ErrorMessage ="من فضلك ادخل رقم مكون من 9 ارقام")]
         public string phone { get; set; }
         [Required(ErrorMessage = "من فضلك ادخل كلمة المرور")]
         public string password { get; set; }

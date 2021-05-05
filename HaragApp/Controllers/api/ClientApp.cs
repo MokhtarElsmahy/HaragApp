@@ -10,6 +10,7 @@ using HaragApp.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -127,15 +128,27 @@ namespace HaragApp.Controllers.api
         [HttpPost(ApiRoutes.setting.Shop)]
         public async Task<IActionResult> Shop(ShopViewModel model)
         {
+            string ID;
+            if (string.IsNullOrEmpty(model.userID))
+            {
+               ID = HttpContext.Session.GetString("ID");
+
+            }
+            else
+            {
+                ID = model.userID;
+            }
+
             model.PageNo = model.PageNo ?? 1;
             IAdverstisment dd = new AdvertisementServices(db, HostingEnvironment);
-            var user = await _userManager.GetUserAsync(User);
-            string UserID = string.Empty;
-            if (user != null)
-            {
-                UserID = user.Id;
-            }
-            model.userID = UserID;
+            //var user = await _userManager.GetUserAsync(User);
+            //string UserID = string.Empty;
+            //if (user != null)
+            //{
+            //    UserID = user.Id;
+            //}
+            //model.userID = UserID;
+            model.userID = ID;
             var d = dd.Shop(model);
             
             return Json(new

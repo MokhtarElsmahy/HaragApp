@@ -8,16 +8,14 @@ namespace HaragApp.PathUrl
     public class ApiRoutes
     {
         public const string Root = "api";
-
         public const string Version = "v1";
-
         public const string Base = Root + "/" + Version;
 
      
         public static class setting
         {
-            
- public const string PostAdvertisment = Base + "/PostAdvertisment";
+
+            public const string PostAdvertisment = Base + "/PostAdvertisment";
             public const string GetOffersDashbord = Base + "/GetOffersDashbord";
             public const string GetQAndAnswer = Base + "/GetQAndAnswer";
             public const string CondtionsForDelegt = Base + "/CondtionsForDelegt";
@@ -29,11 +27,9 @@ namespace HaragApp.PathUrl
             public const string GetSetting = Base + "/GetSetting";
             public const string GetAllPaidAdv = Base + "/GetAllPaidAdv";
             public const string Shop = Base + "/Shop";
-
             public const string addComment = Base + "/addComment";
-
-
             public const string Addcomplaints = Base + "/Addcomplaints";
+
 
             public const string GetQAndAnswerforDeleget = Base + "/GetQAndAnswerforDeleget";
             public const string CondtionsforDeleget = Base + "/CondtionsforDeleget";
@@ -53,7 +49,6 @@ namespace HaragApp.PathUrl
             // delegt
 
             public const string DeleteNotificationDeleget = Base + "/DeleteNotificationDeleget";
-
             public const string UpdateDataForDelegt = Base + "/UpdateDataForDelegt";
             public const string GetListOfNotifyForDelegt = Base + "/GetListOfNotifyForDelegt";
             public const string GetDataOfUserForDelegt = Base + "/GetDataOfUserForDelegt";
@@ -62,9 +57,9 @@ namespace HaragApp.PathUrl
             public const string ChangePasswordByCodeForDelegt = Base + "/ChangePasswordByCodeForDelegt";
             public const string LoginForDelegt = Base + "/loginForDelegt";
             public const string Forget_passwordForDelegt = Base + "/Forget_passwordForDelegt";
-
             public const string RegisterforDeleget = Base + "/registerforDeleget";
             public const string ConfirmCodeRegisterforDeleget = Base + "/ConfirmCodeRegisterforDeleget";
+
             // client
             public const string DeleteNotificationClient = Base + "/DeleteNotificationClient";
             public const string GetFinancial_accounts = Base + "/GetFinancial_accounts";
@@ -80,7 +75,6 @@ namespace HaragApp.PathUrl
             public const string reset_password = Base + "/reset_password";
             public const string ChangePassward = Base + "/ChangePassward";
             public const string GetDataOfUser = Base + "/GetDataOfUser";
-
             public const string GetCities = Base + "/GetCities";
 
 

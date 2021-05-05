@@ -13,6 +13,7 @@ using HaragApp.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -25,14 +26,14 @@ namespace HaragApp.Controllers.api
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ClientAuthController : BaseController
     {
-        
+
         private readonly UserManager<ApplicationDbUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly SignInManager<ApplicationDbUser> _signInManager;
         private readonly ApplicationDbContext db;
         private readonly IHostingEnvironment HostingEnvironment;
 
-        public ClientAuthController(ApplicationDbContext _db, IHostingEnvironment HostingEnvironment, UserManager<ApplicationDbUser> userManager, SignInManager<ApplicationDbUser> signInManager, IConfiguration configuration)
+        public ClientAuthController(ApplicationDbContext _db, IHostingEnvironment HostingEnvironment, UserManager<ApplicationDbUser> userManager, SignInManager<ApplicationDbUser> signInManager, IConfiguration configuration, IHttpContextAccessor haccess)
             : base(_db, HostingEnvironment, userManager, signInManager, configuration)
         {
             _userManager = userManager;
@@ -40,14 +41,14 @@ namespace HaragApp.Controllers.api
             _signInManager = signInManager;
             db = _db;
             this.HostingEnvironment = HostingEnvironment;
-           
+
         }
 
 
         #region MainInfo
 
 
-        
+
 
         [AllowAnonymous]
         // /register
@@ -55,7 +56,7 @@ namespace HaragApp.Controllers.api
         public async Task<ActionResult> InsertUser(RegisterViewModel userModel)
         {
 
-         // string PhoneNumber=   await LoadPhoneNumberAsync();
+            // string PhoneNumber=   await LoadPhoneNumberAsync();
 
             //try
             //{
@@ -80,12 +81,14 @@ namespace HaragApp.Controllers.api
 
             #region validation
 
-            if (userModel.user_name == null)
+           
+
+            if (userModel.phone.Length > 12)
             {
                 return Json(new
                 {
                     key = 0,
-                    msg = creatMessage(userModel.lang, "من فضلك ادخل اسم المستخدم", "Please enter your user name")
+                    msg = creatMessage("ar", "من فضلك ادخل رقم الهاتف دون كود الدوله", "Please enter your phone number without country code")
                 });
             }
             //if (userModel.fk_city == 0)
@@ -202,7 +205,7 @@ namespace HaragApp.Controllers.api
                 msg = creatMessage(userModel.lang, "تم التسجيل بنجاح", "successfully registered"),
                 status = false,
                 code
-            }); 
+            });
         }
 
         [AllowAnonymous]
@@ -264,7 +267,6 @@ namespace HaragApp.Controllers.api
         [HttpPost(ApiRoutes.Identity.Login)]
         public async Task<ActionResult> Login(LoginViewModel userModel)
         {
-
             #region validation
 
             if (userModel.phone == "")
@@ -273,6 +275,15 @@ namespace HaragApp.Controllers.api
                 {
                     key = 0,
                     msg = creatMessage("ar", "من فضلك ادخل من رقم الهاتف", "Please enter your phone number")
+                });
+            }
+
+            if (userModel.phone.Length>12)
+            {
+                return Json(new
+                {
+                    key = 0,
+                    msg = creatMessage("ar", "من فضلك ادخل رقم الهاتف دون كود الدوله", "Please enter your phone number without country code")
                 });
             }
 
@@ -285,6 +296,7 @@ namespace HaragApp.Controllers.api
                 });
             }
 
+            HttpContext.Session.SetString("ID", "The Doctor");
             var user = (db.Users.Where(x => x.Phone == userModel.phone).SingleOrDefault());
 
             if (user == null)
@@ -340,11 +352,16 @@ namespace HaragApp.Controllers.api
                     new Claim("user_id", user.Id),
                    // new Claim("lang", userModel.lang)
                 };
+                HttpContext.Session.SetString("ID", user.Id.ToString());
+
+
 
                 var signinKey = new SymmetricSecurityKey(
                   Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
 
                 int expiryInMinutes = Convert.ToInt32(_configuration["Jwt:ExpiryInMinutes"]);
+
+               
 
                 var token = new JwtSecurityToken(
                   issuer: _configuration["Jwt:Site"],
@@ -380,12 +397,30 @@ namespace HaragApp.Controllers.api
         {
             try
             {
-              //  string user_id = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
-                var user = await _userManager.FindByIdAsync(userModel.user_id);
+                //var id = HttpContext.Session.GetString("ID");
+                //var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
+                //string id = User.FindFirstValue(ClaimTypes.PrimarySid);
+                //Filter specific claim    
+                //  string id = claims?.FirstOrDefault(x => x.Type.Equals("user_id", StringComparison.OrdinalIgnoreCase))?.Value;
+                //string user_id = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
+                //var user = await _userManager.FindByIdAsync(id);
+
+
+                // var user = await _userManager.FindByIdAsync(userModel.user_id);
+                string ID ;
+                if (!string.IsNullOrEmpty(userModel.user_id))
+                {
+                    var user = await _userManager.FindByIdAsync(userModel.user_id);
+                    ID = userModel.user_id;
+                }
+                else
+                {
+                    ID = HttpContext.Session.GetString("ID");
+                }
                 return Json(new
                 {
                     key = 1,
-                    data = GetUserInfo(user.Id),
+                    data = GetUserInfo(ID),
                 });
             }
             catch (Exception ex)
@@ -478,7 +513,7 @@ namespace HaragApp.Controllers.api
         [HttpPost(ApiRoutes.Identity.ChangePassward)]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel userModel)
         {
-           // string user_id = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
+            // string user_id = User.Claims.FirstOrDefault(x => x.Type == "user_id")?.Value;
             var user = await _userManager.FindByIdAsync(userModel.user_id);
             if (user == null)
             {
@@ -541,6 +576,17 @@ namespace HaragApp.Controllers.api
                         msg = creatMessage(userModel.lang, "من فضلك ادخل رقم الهاتف", "Plaese enter your phone number")
                     });
                 }
+
+                if (userModel.phone.Length > 12)
+                {
+
+                    return Json(new
+                    {
+                        key = 0,
+                        msg = creatMessage("ar", "من فضلك ادخل رقم الهاتف دون كود الدوله", "Please enter your phone number without country code")
+                    }) ; 
+
+                }
                 var codeuser = (db.Users.Where(x => x.PhoneNumber == userModel.phone).SingleOrDefault());
 
                 if (codeuser != null)
@@ -588,6 +634,7 @@ namespace HaragApp.Controllers.api
         [HttpPost(ApiRoutes.Identity.resend_code)]
         public ActionResult resend_code(ResendCodeViewModel userModel)
         {
+
             try
             {
                 var codeuser = (db.Users.Where(x => x.Id == userModel.user_id).SingleOrDefault());
@@ -701,9 +748,8 @@ namespace HaragApp.Controllers.api
         [HttpPost(ApiRoutes.Identity.GetCities)]
         public List<City> getAllCities()
         {
+
             var cities = db.Cities.ToList();
-
-
             return cities;
         }
 
@@ -759,7 +805,7 @@ namespace HaragApp.Controllers.api
 
 
 
-        #endregion
+    #endregion
 
-    
+
 }

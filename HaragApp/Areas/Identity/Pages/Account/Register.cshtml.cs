@@ -54,8 +54,10 @@ namespace HaragApp.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+          
             [Display(Name = "Phone")]
+            [Required]
+            [MaxLength(9, ErrorMessage = "من فضلك ادخل رقم مكون من 9 ارقام")]
             public string Phone { get; set; }
 
 
@@ -104,7 +106,8 @@ namespace HaragApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationDbUser { UserName = $"{Input.Phone}user.com", Email = $"{Input.Phone}user.com", Phone=Input.Phone, CityID=1,showpassword=Input.Password};
+                string phone = $"966{Input.Phone}";
+                var user = new ApplicationDbUser { UserName = $"{phone}user.com", Email = $"{phone}user.com", Phone= phone, CityID=1,showpassword=Input.Password};
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 var Loginguser = await _userManager.GetUserAsync(User);
@@ -130,9 +133,9 @@ namespace HaragApp.Areas.Identity.Pages.Account
                   
                     RegisterConModel model = new RegisterConModel() { UserID = user.Id, Phone= user.Phone, IsCreated = result.Succeeded };
                     return RedirectToPage("RegisterConfirmation",model);
-                   
-                  
-                   
+
+
+
 
                     ////await _userManager.AddToRoleAsync(user, "admin");
 
