@@ -235,7 +235,7 @@ namespace HaragApp.Component.Services
         public List<PaidAddViewModel> GetAllPaidAdv()
         {
 
-            return _context.Advertisments.Include(x => x.AdImages).ToList().Where(c => c.IsPaid == true)
+            return _context.Advertisments.Include(x => x.AdImages).ToList().Where(c => c.IsPaid == true)?
                 .Select(x => new PaidAddViewModel { Title = x.Title, AdID = x.AdID, ImageUrl1 = x.AdImages.ToList()[0].img, URL = x.Description }).ToList();
         }
 
@@ -641,7 +641,7 @@ namespace HaragApp.Component.Services
             }
 
             model.AllAdsCount = model.Advertisments.Count();
-            model.Advertisments = model.Advertisments.OrderByDescending(c => c.AdID).Skip((model.PageNo.Value - 1) * 15).Take(15).ToList();
+            model.Advertisments = model.Advertisments.OrderByDescending(c => c.AdID).Skip((model.PageNo.Value - 1) * 6).Take(6).ToList();
             return model;
         }
 

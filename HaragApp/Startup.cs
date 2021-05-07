@@ -38,7 +38,7 @@ namespace HaragApp
             //DefaultConnection  ServerConnection
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("ServerConnection")));
+                    Configuration.GetConnectionString("DefaultConnection")));
             //services.Configure<FormOptions>(o => {
             //    o.ValueLengthLimit = int.MaxValue;
             //    o.MultipartBodyLengthLimit = int.MaxValue;
