@@ -108,11 +108,11 @@
                                     @*<input id="username" asp-for="Input.Phone" class="form-control" />*@
 
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-sm-8 col-md-8">
                                             <input asp-for="Input.Phone" id="username" class="form-control" />
                                             @Html.ValidationMessageFor(x => x.Input.Phone, null, new { @class = "form-control-feedback" })
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-sm-4 col-md-4">
                                             <input value="966+" disabled id="username" class="form-control" />
                                         </div>
 
