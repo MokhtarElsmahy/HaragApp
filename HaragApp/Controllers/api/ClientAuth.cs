@@ -107,8 +107,8 @@ namespace HaragApp.Controllers.api
                     msg = creatMessage(userModel.lang, "من فضلك ادخل رقم الجوال", "Please enter your phone number")
                 });
             }
-
-            var phone = (db.Users.Where(x => x.PhoneNumber == userModel.phone).FirstOrDefault());
+            string Registerphone = $"966{userModel.phone}";
+            var phone = (db.Users.Where(x => x.Phone == Registerphone).FirstOrDefault());
             if (phone != null)
             {
                 return Json(new
@@ -118,27 +118,27 @@ namespace HaragApp.Controllers.api
                 });
             }
             // email
-            if (userModel.email != null)
-            {
-                bool checkemail = IsValidEmail(userModel.email);
-                if (!checkemail)
-                {
-                    return Json(new
-                    {
-                        key = 0,
-                        msg = creatMessage(userModel.lang, "من فضلك ادخل البريد الالكترونى بشكل صحيح", "Make sure your e-mail is written correctly")
-                    });
-                }
-                var email = (db.Users.Where(x => x.Email == userModel.email).FirstOrDefault());
-                if (email != null)
-                {
-                    return Json(new
-                    {
-                        key = 0,
-                        msg = creatMessage(userModel.lang, "عذرا هذا البريد الالكترونى موجود بالفعل", "Sorry this email is already present")
-                    });
-                }
-            }
+            //if (userModel.email != null)
+            //{
+            //    bool checkemail = IsValidEmail(userModel.email);
+            //    if (!checkemail)
+            //    {
+            //        return Json(new
+            //        {
+            //            key = 0,
+            //            msg = creatMessage(userModel.lang, "من فضلك ادخل البريد الالكترونى بشكل صحيح", "Make sure your e-mail is written correctly")
+            //        });
+            //    }
+            //    var email = (db.Users.Where(x => x.Email == userModel.email).FirstOrDefault());
+            //    if (email != null)
+            //    {
+            //        return Json(new
+            //        {
+            //            key = 0,
+            //            msg = creatMessage(userModel.lang, "عذرا هذا البريد الالكترونى موجود بالفعل", "Sorry this email is already present")
+            //        });
+            //    }
+            //}
 
             //Password
             if (userModel.password == null)
@@ -173,11 +173,11 @@ namespace HaragApp.Controllers.api
 
                 publish_date = TimeNow(),
                 code = code,
-                PhoneNumber = userModel.phone,
+                PhoneNumber = Registerphone,
                 type_user = 1,
                 CityID = userModel.CityID,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                Phone = userModel.phone
+                Phone = Registerphone
 
             };
 
@@ -197,7 +197,7 @@ namespace HaragApp.Controllers.api
             //}user.code.ToString()
 
             db.SaveChanges();
-            Task<string> s = SendMessage(user.code.ToString(), user.PhoneNumber.ToString());
+            Task<string> s = SendMessage(user.code.ToString(), user.Phone.ToString());
             return Json(new
             {
                 key = 1,
@@ -297,7 +297,8 @@ namespace HaragApp.Controllers.api
             }
 
             HttpContext.Session.SetString("ID", "The Doctor");
-            var user = (db.Users.Where(x => x.Phone == userModel.phone).SingleOrDefault());
+            string phone = $"966{userModel.phone}";
+            var user = (db.Users.Where(x => x.Phone == phone).SingleOrDefault());
 
             if (user == null)
             {

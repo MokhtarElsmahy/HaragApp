@@ -239,6 +239,12 @@ namespace HaragApp.Component.Services
                 .Select(x => new PaidAddViewModel { Title = x.Title, AdID = x.AdID, ImageUrl1 = x.AdImages.ToList()[0].img, URL = x.Description }).ToList();
         }
 
+        public List<City> GetAllCities()
+        {
+
+            return _context.Cities.ToList();
+        }
+
         public void DeletePaidAdd(int id)
         {
             var add = _context.Advertisments.Find(id);

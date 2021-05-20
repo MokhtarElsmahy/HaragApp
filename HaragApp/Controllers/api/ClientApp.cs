@@ -203,6 +203,17 @@ namespace HaragApp.Controllers.api
             }          
         }
 
+
+        [AllowAnonymous]
+        [HttpGet(ApiRoutes.setting.GetCities)]
+        public IActionResult GetCities()
+        {
+            IAdverstisment dd = new AdvertisementServices(db, HostingEnvironment);
+            var Cities = dd.GetAllCities();
+            return Json(new { Cities = Cities });
+        }
+
+
         //[AllowAnonymous]
         //[HttpPost(ApiRoutes.setting.Condtions)]
         //public ActionResult Condtions(string lang = "ar")

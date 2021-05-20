@@ -27,6 +27,7 @@ namespace HaragApp.Component.Interfaces
 
         public bool AddToFav(int AdID, String userID);
 
+        public List<City> GetAllCities();
         List<favoriteViewModel> GetUserFavorites(string userID);
         public bool DeleteFav(string userID, int ADVid);
 
