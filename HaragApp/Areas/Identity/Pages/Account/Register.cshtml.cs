@@ -124,10 +124,11 @@ namespace HaragApp.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     var code = GetFormNumber().ToString();
+                    string smallCode = code.Substring(0, 4);
                     _logger.LogInformation("User created a new account with password.");
                     //await _signInManager.SignInAsync(user, isPersistent: false);
-                   var x = await  SendMessage(code, user.Phone);
-                    user.code =int.Parse(code);
+                   var x = await  SendMessage(smallCode, user.Phone);
+                    user.code =int.Parse(smallCode);
                     await _userManager.UpdateAsync(user);
                     _ctx.SaveChanges();
                   
@@ -204,10 +205,10 @@ namespace HaragApp.Areas.Identity.Pages.Account
             request.AddJsonBody(new
             {
                 Username = "966532866666",
-                Password = "Ht5pTY26",
+                Password = "Ahmed05328",
                 Tagname = "Haraajm",
                 RecepientNumber = numbers,
-                Message = msg
+                Message = $"Your Verification Code for SouqElMawashi is : {msg}"
 
             });
             IRestResponse response = await client.ExecuteAsync(request);

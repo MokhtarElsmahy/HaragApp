@@ -56,6 +56,7 @@ namespace HaragApp.Controllers.api
         public async Task<ActionResult> InsertUser(RegisterViewModel userModel)
         {
 
+            #region MyRegion
             // string PhoneNumber=   await LoadPhoneNumberAsync();
 
             //try
@@ -77,11 +78,12 @@ namespace HaragApp.Controllers.api
             //{
             //    ModelState.AddModelError("",
             //        "There was an error sending the verification code, please check the phone number is correct and try again");
-            //}
+            //} 
+            #endregion
 
             #region validation
 
-           
+
 
             if (userModel.phone.Length > 12)
             {
@@ -117,6 +119,7 @@ namespace HaragApp.Controllers.api
                     msg = creatMessage(userModel.lang, "عذرا هذا الجوال موجود بالفعل", "Sorry this mobile is already present")
                 });
             }
+            #region MyRegion
             // email
             //if (userModel.email != null)
             //{
@@ -138,7 +141,8 @@ namespace HaragApp.Controllers.api
             //            msg = creatMessage(userModel.lang, "عذرا هذا البريد الالكترونى موجود بالفعل", "Sorry this email is already present")
             //        });
             //    }
-            //}
+            //} 
+            #endregion
 
             //Password
             if (userModel.password == null)
@@ -154,16 +158,15 @@ namespace HaragApp.Controllers.api
             #endregion
 
             int code = GetFormNumber();
+            string smallCode = code.ToString().Substring(0,4);
             Random rnd = new Random();
             int num = rnd.Next(1000, 99999);
             var user = new ApplicationDbUser
             {
 
-
-
-                Email = userModel.email ?? "",
-                UserName = userModel.phone + num + "@yahoo.com",
-                user_name = userModel.user_name,
+                UserName = $"{Registerphone}user.com",
+                Email = $"{Registerphone}user.com",
+                user_name = string.Empty,
                 showpassword = userModel.password,
                 img = BaisUrlHoste + "/images/User/generic-user.png",
                 IsActive = true,
@@ -172,16 +175,18 @@ namespace HaragApp.Controllers.api
                 lng = userModel.lng,
 
                 publish_date = TimeNow(),
-                code = code,
+                code = int.Parse(smallCode),
                 PhoneNumber = Registerphone,
                 type_user = 1,
-                CityID = userModel.CityID,
+                CityID = 1,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 Phone = Registerphone
 
             };
 
             var result = await _userManager.CreateAsync(user, userModel.password);
+
+            #region MyRegion
             //if (result.Succeeded)
             //{
             //    await _userManager.AddToRoleAsync(user, "Mobile");
@@ -194,7 +199,8 @@ namespace HaragApp.Controllers.api
             //        key = 0,
             //        msg = creatMessage(userModel.lang, result.ToString(), result.ToString())
             //    });
-            //}user.code.ToString()
+            //}user.code.ToString() 
+            #endregion
 
             db.SaveChanges();
             Task<string> s = SendMessage(user.code.ToString(), user.Phone.ToString());
@@ -204,7 +210,7 @@ namespace HaragApp.Controllers.api
                 data = GetUserInfo(user.Id, userModel.lang),
                 msg = creatMessage(userModel.lang, "تم التسجيل بنجاح", "successfully registered"),
                 status = false,
-                code
+                code = int.Parse(smallCode)
             });
         }
 
@@ -588,7 +594,9 @@ namespace HaragApp.Controllers.api
                     }) ; 
 
                 }
-                var codeuser = (db.Users.Where(x => x.PhoneNumber == userModel.phone).SingleOrDefault());
+                string phone = $"966{userModel.phone}";
+                var codeuser = (db.Users.Where(x => x.Phone == phone).SingleOrDefault());
+               // var codeuser = (db.Users.Where(x => x.PhoneNumber == userModel.phone).SingleOrDefault());
 
                 if (codeuser != null)
                 {
@@ -603,7 +611,7 @@ namespace HaragApp.Controllers.api
                         });
                     }
 
-                    int code = GetFormNumber();
+                    int code =int.Parse(codeuser.code.ToString());
                     Task<string> s = SendMessage(code.ToString(), userModel.phone);
                     codeuser.code = code;
                     db.SaveChanges();

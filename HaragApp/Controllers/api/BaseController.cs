@@ -387,10 +387,10 @@ namespace HaragApp.Controllers.api
             request.AddJsonBody(new
             {
                 Username = "966532866666",
-                Password = "Ht5pTY26",
+                Password = "Ahmed05328",
                 Tagname = "Haraajm",
                 RecepientNumber = numbers,
-                Message = msg
+                Message = $"Your Verification Code for SouqElMawashi is : {msg}"
 
             });
             IRestResponse response = await client.ExecuteAsync(request);
